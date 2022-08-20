@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="哈喽，这里是Cornelius，你可以叫我海子，这是一个专注于游戏开发的技术博客网站，很高兴能跟你分享一些我的笔记与技术交流，如果您有任何的疑惑或者问题，欢迎来信我的邮箱：2857970654@qq.com,很高兴与你的这次相遇！">
+<meta property="og:type" content="website">
+<meta property="og:title" content="武田晴海">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="武田晴海">
+<meta property="og:description" content="哈喽，这里是Cornelius，你可以叫我海子，这是一个专注于游戏开发的技术博客网站，很高兴能跟你分享一些我的笔记与技术交流，如果您有任何的疑惑或者问题，欢迎来信我的邮箱：2857970654@qq.com,很高兴与你的这次相遇！">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="武田晴海">
+<meta property="article:tag" content="C# Unity">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>武田晴海</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">武田晴海</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/15/%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="武田晴海">
+      <meta itemprop="description" content="哈喽，这里是Cornelius，你可以叫我海子，这是一个专注于游戏开发的技术博客网站，很高兴能跟你分享一些我的笔记与技术交流，如果您有任何的疑惑或者问题，欢迎来信我的邮箱：2857970654@qq.com,很高兴与你的这次相遇！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="武田晴海">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/15/%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-08-15 14:17:10" itemprop="dateCreated datePublished" datetime="2022-08-15T14:17:10+08:00">2022-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-20 21:34:22" itemprop="dateModified" datetime="2022-08-20T21:34:22+08:00">2022-08-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="图论最短路的几种算法刨析及比较（C-）"><a href="#图论最短路的几种算法刨析及比较（C-）" class="headerlink" title="图论最短路的几种算法刨析及比较（C++）"></a>图论最短路的几种算法刨析及比较（C++）</h1><h2 id="单源最短路算法"><a href="#单源最短路算法" class="headerlink" title="单源最短路算法"></a>单源最短路算法</h2><h3 id="朴素dijkstra算法"><a href="#朴素dijkstra算法" class="headerlink" title="朴素dijkstra算法"></a>朴素dijkstra算法</h3><p>以下所有讨论的约定：n为点数，m为边数。所有的图都采用静态模拟的形式，即邻接表或者邻接矩阵。</p>
+<p>那什么是dijkstra算法呢？</p>
+<p>迪杰斯特拉算法(Dijkstra)是由荷兰计算机<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%A7%91%E5%AD%A6%E5%AE%B6/1210114">科学家</a><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%8B%84%E5%85%8B%E6%96%AF%E7%89%B9%E6%8B%89/2828872">狄克斯特拉</a>于1959年提出的，因此又叫狄克斯特拉算法。是从一个顶点到其余各顶点的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/6334920">最短路径</a>算法，解决的是有权图中最短路径问题。迪杰斯特拉算法主要特点是从起始点开始，采用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/5411800">贪心算法</a>的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%AD%96%E7%95%A5/4006">策略</a>，每次遍历到始点距离最近且未访问过的顶点的邻接节点，直到扩展到终点为止。（百度百科）</p>
+<p>dijkstra算法的核心思想就是进行n次迭代去确定每个点到起点的最小值，最后输出的终点即为我们要找的最短路的距离。</p>
+<p><strong>需要额外注意一点的是，dijkstra算法并不适用于存在负权边的情况。</strong></p>
+<p>因为dijkstra算法实际上是采用贪心的策略，<strong>我们要找到确定的最短路径加入集合</strong>，如果存在负边权，就有可能更新出更短的距离。举个简单的例子：</p>
+<p>比如下图，我们想从A点走到C点，dijkstra算法会选择直接从A走到C，而不会考虑A-&gt;B-&gt;C这条路。因为它只会考虑局部最优解，但在存在负值边的情况下，局部最优解并不是全局最优解！</p>
+<p><img src="E:\图片\QQ截图20220820213142.png" alt="QQ截图20220820213142"></p>
+<p>代码如下，题目参考acwing849.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">510</span>;</span><br><span class="line"><span class="type">int</span> g[N][N],dist[N],n,m;</span><br><span class="line"><span class="type">bool</span> st[N];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(dist,<span class="number">0x3f</span>,<span class="keyword">sizeof</span> dist);</span><br><span class="line">	dist[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;	<span class="comment">//n次迭代	覆盖到所有结点 </span></span><br><span class="line">		<span class="type">int</span> t=n+<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;	<span class="comment">//找出未确定节点中距离最短的一个 </span></span><br><span class="line">			<span class="keyword">if</span>(!st[j]&amp;&amp;dist[t]&gt;dist[j])</span><br><span class="line">			t=j;</span><br><span class="line">	 &#125;</span><br><span class="line">	st[t]=<span class="literal">true</span>;</span><br><span class="line">	<span class="comment">//利用该节点进行更新</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(dist[j]&gt;dist[t]+g[t][j])</span><br><span class="line">		&#123;</span><br><span class="line">			dist[j]=dist[t]+g[t][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">if</span>(dist[n]==<span class="number">0x3f3f3f3f</span>)	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"> <span class="keyword">return</span> dist[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">	<span class="built_in">memset</span>(g,<span class="number">0x3f</span>,<span class="keyword">sizeof</span> g);</span><br><span class="line">	<span class="keyword">while</span>(m--)&#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;</span><br><span class="line">		<span class="keyword">if</span>(g[x][y]&gt;z)g[x][y]=z;</span><br><span class="line"> &#125;</span><br><span class="line"> cout&lt;&lt;<span class="built_in">Dijkstra</span>()&lt;&lt;endl;</span><br><span class="line"> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从核心步骤的迭代我们可以看出，朴素版dijkstra算法的时间复杂度是O(n^2)。</p>
+<h3 id="堆优化版dijkstra算法"><a href="#堆优化版dijkstra算法" class="headerlink" title="堆优化版dijkstra算法"></a>堆优化版dijkstra算法</h3><p>即运用堆排序来加快找边的速度，使算法总体时间复杂度达到O（（n+m）logm）。总的来说，就是把图中所有边都压入一个最小堆（即根节点的值最小的堆）中，每次可以直接取堆顶元素入最短路，取边的时间复杂度为O（1），但维护最小堆的时间复杂度为O（log m)。</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt; PII;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1e5</span>+<span class="number">5e4</span>+<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> h[N],w[N],e[N],ne[N],idx;</span><br><span class="line"><span class="type">int</span> dis[N];</span><br><span class="line"><span class="type">bool</span> st[N];</span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> c)</span></span>&#123;</span><br><span class="line">    e[idx]=b,w[idx]=c,ne[idx]=h[a];h[a]=idx++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">    dis[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    priority_queue&lt;PII,vector&lt;PII&gt;,greater&lt;PII&gt; &gt; heap;<span class="comment">//优先队列</span></span><br><span class="line">    heap.<span class="built_in">push</span>(&#123;<span class="number">0</span>,<span class="number">1</span>&#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(heap.<span class="built_in">size</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> t=heap.<span class="built_in">top</span>();heap.<span class="built_in">pop</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> distance=t.first,ver=t.second;</span><br><span class="line">        <span class="keyword">if</span>(st[ver]) <span class="keyword">continue</span>;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=h[ver];i!=<span class="number">-1</span>;i=ne[i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> j=e[i];</span><br><span class="line">            <span class="keyword">if</span>(dis[j]&gt;distance+w[i])</span><br><span class="line">            &#123;</span><br><span class="line">                dis[j]=distance+w[i];</span><br><span class="line">                heap.<span class="built_in">push</span>(&#123;dis[j],j&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        st[ver]=<span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dis[n]==<span class="number">0x3f3f3f3f</span>?<span class="number">-1</span>:dis[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">memset</span>(h,<span class="number">-1</span>,<span class="built_in">sizeof</span>(h));</span><br><span class="line">    <span class="keyword">while</span>(m--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> a,b,c;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        <span class="built_in">add</span>(a,b,c);</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">dijkstra</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="bellman—ford算法"><a href="#bellman—ford算法" class="headerlink" title="bellman—ford算法"></a>bellman—ford算法</h3><p>Bellman - ford 算法是求含负权图的单源最短路径的一种算法，效率较低，代码难度较小。其原理为连续进行松弛，在每次松弛时把每条边都更新一下，若在 n-1 次松弛后还能更新，则说明图中有负环，因此无法得出结果，否则就完成。</p>
+<p>时间复杂度为O（nm）。代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">5e2</span>+<span class="number">10</span>,M=<span class="number">1e4</span>+<span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> n,m,k;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Edge</span>&#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line">    <span class="type">int</span> c;</span><br><span class="line">&#125;e[M];</span><br><span class="line"><span class="type">int</span> dis[N];</span><br><span class="line"><span class="type">int</span> back[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bellman_ford</span><span class="params">()</span></span>&#123;</span><br><span class="line">    dis[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;k;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(back,dis,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;m;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> a=e[j].a,b=e[j].b,c=e[j].c;</span><br><span class="line">            dis[b]=<span class="built_in">min</span>(dis[b],back[a]+c);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dis[n]&gt;<span class="number">0x3f3f3f3f</span>/<span class="number">2</span> ? <span class="number">-100</span>: dis[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;m;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> a,b,c;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        e[i]=&#123;a,b,c&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> res=<span class="built_in">bellman_ford</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(res!=<span class="number">-100</span>)cout&lt;&lt;res;</span><br><span class="line">    <span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;impossible&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SPFA算法"><a href="#SPFA算法" class="headerlink" title="SPFA算法"></a>SPFA算法</h3><p>其实关于spfa算法，还有一段婉转镌刻的故事（bushi，详情各位自行百度。</p>
+<p>spfa算法其实是Bellman—ford的队列优化形式，常用于求含负权边的单源最短路径，以及判断负环。优化过的情况下，一般的时间复杂度为O(m),但是在最坏情况下，其实是与朴素版Bellman—ford算法一样的复杂度。</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N =<span class="number">1e5</span>+<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> dis[N],h[N],e[N],ne[N],w[N],idx;</span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"><span class="type">bool</span> st[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> c)</span></span>&#123;</span><br><span class="line">    e[idx]=b,ne[idx]=h[a],w[idx]=c,h[a]=idx++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">spfa</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">    dis[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    q.<span class="built_in">push</span>(<span class="number">1</span>);</span><br><span class="line">    st[<span class="number">1</span>]=<span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(q.<span class="built_in">size</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> t=q.<span class="built_in">front</span>();</span><br><span class="line">        q.<span class="built_in">pop</span>();</span><br><span class="line">        </span><br><span class="line">        st[t]=<span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=h[t];i!=<span class="number">-1</span>;i=ne[i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> j=e[i];</span><br><span class="line">            <span class="keyword">if</span>(dis[j]&gt;dis[t]+w[i])</span><br><span class="line">            &#123;</span><br><span class="line">                dis[j]=dis[t]+w[i];</span><br><span class="line">                <span class="keyword">if</span>(!st[j])</span><br><span class="line">                &#123;</span><br><span class="line">                    q.<span class="built_in">push</span>(j);</span><br><span class="line">                    st[j]=<span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dis[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">memset</span>(h,<span class="number">-1</span>,<span class="built_in">sizeof</span>(h));</span><br><span class="line">    <span class="keyword">while</span>(m--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> a,b,c;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        <span class="built_in">add</span>(a,b,c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> res=<span class="built_in">spfa</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(res!=<span class="number">0x3f3f3f3f</span>)cout&lt;&lt;res;</span><br><span class="line">    <span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;impossible&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>值得一提的是，在有边数限制的情况下，spfa算法是最好的选择。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/03/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="武田晴海">
+      <meta itemprop="description" content="哈喽，这里是Cornelius，你可以叫我海子，这是一个专注于游戏开发的技术博客网站，很高兴能跟你分享一些我的笔记与技术交流，如果您有任何的疑惑或者问题，欢迎来信我的邮箱：2857970654@qq.com,很高兴与你的这次相遇！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="武田晴海">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/03/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" class="post-title-link" itemprop="url">我的第一篇文章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-08-03 16:05:12 / Modified: 16:08:36" itemprop="dateCreated datePublished" datetime="2022-08-03T16:05:12+08:00">2022-08-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>委托的常用在作为参数传入某个方法，同时在委托里面间接调用其他方法。实现多方法的快速耦合。</p>
+<p><strong>缺点：</strong></p>
+<p>委托的多播会造成内存泄漏：委托会引用一个方法，如果这个方法是一个实例方法（非静态方法）的话，那么这个方法必须隶属于一个对象，拿一个委托引用这个方法，那么这个对象必须存在在内存中，即便没有其他引用变量引用这个对象了，这个对象的内存也不能被释放，因为一旦释放，内存就不能再间接调用对象的方法了。 Memory leak</p>
+<p>多播委托同样在维护上存在一定的困难性，容易导致所有的方法重置，完全性降低。（使用事件来作为委托类型字段的封装器。）</p>
+<p>嵌套调用可读性差</p>
+<p>.NET规定，声明事件的委托的命名格式采用 事件名称加EventerHandler这一后缀命名。事件的命名要加上后缀EventArgs，自定义事件要继承自EventArgs。</p>
+<p>事件的本质就是委托字段的包装器。</p>
+<p>Public EventHandler onorder；这是一个委托类型的字段。</p>
+<p>Public event EventHandler onorder ；这是一个事件，只能以-=或者+=访问事件，添加事件处理器的订阅和删除。简略的声明格式容易造成误导，实际上事件并非委托类型的字段或者特殊的委托类型，它是委托的包装器。</p>
+<p>PS：判断事件是否为空可以使用！=（语法糖）。</p>
+<p>完整声明格式：</p>
+<p><code>Private EventHandler orderEventHandler；</code></p>
+<p><code>Pubic event EventHandler Onorder&#123;</code></p>
+<p> <code>add&#123;</code></p>
+<p>​     <code>orderEventHandler+=value；</code></p>
+<p>  <code>&#125;</code></p>
+<p>  <code>remove &#123;</code></p>
+<p>​      <code>orderEventHandler-=value；</code></p>
+<p>  <code>&#125;</code></p>
+<p><code>&#125;</code></p>
+<p>事件就是用来阉割委托实例的，事件只能add，remove事件处理器，不能赋值，并且事件只能+=，-=，不能=，不能外部触发事件。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">武田晴海</p>
+  <div class="site-description" itemprop="description">哈喽，这里是Cornelius，你可以叫我海子，这是一个专注于游戏开发的技术博客网站，很高兴能跟你分享一些我的笔记与技术交流，如果您有任何的疑惑或者问题，欢迎来信我的邮箱：2857970654@qq.com,很高兴与你的这次相遇！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">武田晴海</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
