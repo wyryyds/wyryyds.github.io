@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <title>我的第一篇文章 - 武田晴海</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="C# Unity">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="委托的常用在作为参数传入某个方法，同时在委托里面间接调用其他方法。实现多方法的快速耦合。 缺点： 委托的多播会造成内存泄漏：委托会引用一个方法，如果这个方法是一个实例方法（非静态方法）的话，那么这个方法必须隶属于一个对象，拿一个委托引用这个方法，那么这个对象必须存在在内存中，即便没有其他引用变量引用这个对象了，这个对象的内存也不能被释放，因为一旦释放，内存就不能再间接调用对象的方法了。 Memor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的第一篇文章">
+<meta property="og:url" content="http://example.com/2022/08/03/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/index.html">
+<meta property="og:site_name" content="武田晴海">
+<meta property="og:description" content="委托的常用在作为参数传入某个方法，同时在委托里面间接调用其他方法。实现多方法的快速耦合。 缺点： 委托的多播会造成内存泄漏：委托会引用一个方法，如果这个方法是一个实例方法（非静态方法）的话，那么这个方法必须隶属于一个对象，拿一个委托引用这个方法，那么这个对象必须存在在内存中，即便没有其他引用变量引用这个对象了，这个对象的内存也不能被释放，因为一旦释放，内存就不能再间接调用对象的方法了。 Memor">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-08-03T08:05:12.000Z">
+<meta property="article:modified_time" content="2022-08-03T08:08:36.010Z">
+<meta property="article:author" content="武田晴海">
+<meta property="article:tag" content="C# Unity">
+<meta name="twitter:card" content="summary">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.min.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662086982249">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1662086982249">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1662086982249">
+        
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(http://r.photo.store.qq.com/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU12cNpT/ruAMsa53pVQWN7FLK88i5qP8pcEXEhHMSTzYmiwToluQZHoil6dFrVN6B4MUHspXDOblX5YJ5asHZutB8RUnUaPEnNCUjLiy3GS.nuaiCto!/r)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="武田晴海" class="mdui-btn mdui-btn-icon"><img src="http://m.qpic.cn/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU0yur17/ruAMsa53pVQWN7FLK88i5nUP3un6Ab9xdqK0Ws9jkn5rRWjZRKqd6Fb*mGzjCAYhutcu6o3pzBIgkZRCovStpcm2vmtgKoNYRMYYTUGOnOs!/b&amp;bo=OAQ4BAAAAAABByA!&amp;rf=viewer_4" alt="武田晴海"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="武田晴海">
+            <img src="http://m.qpic.cn/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU0yur17/ruAMsa53pVQWN7FLK88i5nUP3un6Ab9xdqK0Ws9jkn5rRWjZRKqd6Fb*mGzjCAYhutcu6o3pzBIgkZRCovStpcm2vmtgKoNYRMYYTUGOnOs!/b&amp;bo=OAQ4BAAAAAABByA!&amp;rf=viewer_4" alt="武田晴海" alt="武田晴海">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>3</div>
+        <div><span>Tags</span>0</div>
+        <div><span>Categories</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/662176529"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/wyryyds"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/guo-de-huan-hao-26"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+
+    
+        
+        
+    
+        
+        <!-- 一言 -->
+<div class="nexmoe-widget-wrap">
+  <h3 class="nexmoe-widget-title">
+    一言
+  </h3>
+  <div class="nexmoe-widget">
+    <ul class="hitokoto-box">
+      <li id="hitokoto_text_parent" class="hitokoto-text" hitokotoCategory="">
+        <a href="#" id="hitokoto_text">
+          
+        </a>
+        <a href="#" id="hitokoto_error_text" style="display: none;">
+          
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  let hitokotoText = document.getElementById('hitokoto_text')
+  let hitokotoErroText = document.getElementById('hitokoto_error_text')
+  let hitokotoCategory = document.getElementById('hitokoto_text_parent').getAttribute('hitokotoCategory')
+  window.onload = function () {
+    let url = 'https://v1.hitokoto.cn'
+    if (hitokotoCategory) {
+      url += '?c=' + hitokotoCategory
+    }
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        hitokotoText.innerText = "「 " + data.hitokoto + " 」 from " + data.from
+        hitokotoText.href = 'https://hitokoto.cn/?uuid=' + data.uuid
+      })
+      .catch((reason) => {
+        console.error(11, reason)
+        hitokotoText.style.display = 'none'
+        hitokotoErroText.style.display = 'block'
+      })
+  }
+</script>
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/31/%E5%88%A9%E7%94%A8%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/15/%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/03/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/">我的第一篇文章</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 武田晴海
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 56.71874999999999%;"> 
+              <img data-fancybox="gallery" src="http://r.photo.store.qq.com/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU12cNpT/ruAMsa53pVQWN7FLK88i5qP8pcEXEhHMSTzYmiwToluQZHoil6dFrVN6B4MUHspXDOblX5YJ5asHZutB8RUnUaPEnNCUjLiy3GS.nuaiCto!/r" alt="我的第一篇文章" loading="lazy">
+              <h1>我的第一篇文章</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年08月03日</a>
+</div>
+      
+
+      <p>委托的常用在作为参数传入某个方法，同时在委托里面间接调用其他方法。实现多方法的快速耦合。</p>
+<p><strong>缺点：</strong></p>
+<p>委托的多播会造成内存泄漏：委托会引用一个方法，如果这个方法是一个实例方法（非静态方法）的话，那么这个方法必须隶属于一个对象，拿一个委托引用这个方法，那么这个对象必须存在在内存中，即便没有其他引用变量引用这个对象了，这个对象的内存也不能被释放，因为一旦释放，内存就不能再间接调用对象的方法了。 Memory leak</p>
+<p>多播委托同样在维护上存在一定的困难性，容易导致所有的方法重置，完全性降低。（使用事件来作为委托类型字段的封装器。）</p>
+<p>嵌套调用可读性差</p>
+<p>.NET规定，声明事件的委托的命名格式采用 事件名称加EventerHandler这一后缀命名。事件的命名要加上后缀EventArgs，自定义事件要继承自EventArgs。</p>
+<p>事件的本质就是委托字段的包装器。</p>
+<p>Public EventHandler onorder；这是一个委托类型的字段。</p>
+<p>Public event EventHandler onorder ；这是一个事件，只能以-=或者+=访问事件，添加事件处理器的订阅和删除。简略的声明格式容易造成误导，实际上事件并非委托类型的字段或者特殊的委托类型，它是委托的包装器。</p>
+<p>PS：判断事件是否为空可以使用！=（语法糖）。</p>
+<p>完整声明格式：</p>
+<p><code>Private EventHandler orderEventHandler；</code></p>
+<p><code>Pubic event EventHandler Onorder&#123;</code></p>
+<p> <code>add&#123;</code></p>
+<p>​     <code>orderEventHandler+=value；</code></p>
+<p>  <code>&#125;</code></p>
+<p>  <code>remove &#123;</code></p>
+<p>​      <code>orderEventHandler-=value；</code></p>
+<p>  <code>&#125;</code></p>
+<p><code>&#125;</code></p>
+<p>事件就是用来阉割委托实例的，事件只能add，remove事件处理器，不能赋值，并且事件只能+=，-=，不能=，不能外部触发事件。</p>
+
+      
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>武田晴海<br>
+        <strong>Link：</strong><a href="http://example.com/2022/08/03/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;08&#x2F;03&#x2F;%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;08&#x2F;03&#x2F;%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="Search"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/justifiedGallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1662086982257"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+</body>
+
+</html>
