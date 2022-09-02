@@ -30,13 +30,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662118985292">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662119132716">
     
-    <link rel="stylesheet" href="/css/style.css?v=1662118985292">
+    <link rel="stylesheet" href="/css/style.css?v=1662119132716">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1662118985292">
+            <link rel="stylesheet" href="/custom.css?v=1662119132716">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -350,223 +350,21 @@
 <p>比如下图，我们想从A点走到C点，dijkstra算法会选择直接从A走到C，而不会考虑A-&gt;B-&gt;C这条路。因为它只会考虑局部最优解，但在存在负值边的情况下，局部最优解并不是全局最优解！</p>
 <p><img data-fancybox="gallery" src="E:\图片\QQ截图20220820213142.png" alt="QQ截图20220820213142" data-caption="QQ截图20220820213142" loading="lazy"></p>
 <p>代码如下，题目参考acwing849.</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;iostream&gt;
-#include &lt;cstring&gt;
-#include&lt;cstdio&gt;
-using namespace std;
-const int N&#x3D;510;
-int g[N][N],dist[N],n,m;
-bool st[N];
-int Dijkstra()&#123;
-	memset(dist,0x3f,sizeof dist);
-	dist[1]&#x3D;0;
-	
-	for(int i&#x3D;0;i&lt;n;i++)&#123;	&#x2F;&#x2F;n次迭代	覆盖到所有结点 
-		int t&#x3D;n+1;
-		for(int j&#x3D;1;j&lt;&#x3D;n;j++)&#123;	&#x2F;&#x2F;找出未确定节点中距离最短的一个 
-			if(!st[j]&amp;&amp;dist[t]&gt;dist[j])
-			t&#x3D;j;
-	 &#125;
-	st[t]&#x3D;true;
-	&#x2F;&#x2F;利用该节点进行更新
-	for(int j&#x3D;1;j&lt;&#x3D;n;j++)&#123;
-		if(dist[j]&gt;dist[t]+g[t][j])
-		&#123;
-			dist[j]&#x3D;dist[t]+g[t][j];
-		&#125;
-	&#125;
- &#125;
- if(dist[n]&#x3D;&#x3D;0x3f3f3f3f)	return -1;
- return dist[n];
-&#125;
-
-int main()&#123;
-	cin&gt;&gt;n&gt;&gt;m;
-	memset(g,0x3f,sizeof g);
-	while(m--)&#123;
-		int x,y,z;
-		cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;
-		if(g[x][y]&gt;z)g[x][y]&#x3D;z;
- &#125;
- cout&lt;&lt;Dijkstra()&lt;&lt;endl;
- return 0;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">510</span>;<br><span class="hljs-type">int</span> g[N][N],dist[N],n,m;<br><span class="hljs-type">bool</span> st[N];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">Dijkstra</span><span class="hljs-params">()</span></span>&#123;<br>	<span class="hljs-built_in">memset</span>(dist,<span class="hljs-number">0x3f</span>,<span class="hljs-keyword">sizeof</span> dist);<br>	dist[<span class="hljs-number">1</span>]=<span class="hljs-number">0</span>;<br>	<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)&#123;	<span class="hljs-comment">//n次迭代	覆盖到所有结点 </span><br>		<span class="hljs-type">int</span> t=n+<span class="hljs-number">1</span>;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)&#123;	<span class="hljs-comment">//找出未确定节点中距离最短的一个 </span><br>			<span class="hljs-keyword">if</span>(!st[j]&amp;&amp;dist[t]&gt;dist[j])<br>			t=j;<br>	 &#125;<br>	st[t]=<span class="hljs-literal">true</span>;<br>	<span class="hljs-comment">//利用该节点进行更新</span><br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)&#123;<br>		<span class="hljs-keyword">if</span>(dist[j]&gt;dist[t]+g[t][j])<br>		&#123;<br>			dist[j]=dist[t]+g[t][j];<br>		&#125;<br>	&#125;<br> &#125;<br> <span class="hljs-keyword">if</span>(dist[n]==<span class="hljs-number">0x3f3f3f3f</span>)	<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br> <span class="hljs-keyword">return</span> dist[n];<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>	cin&gt;&gt;n&gt;&gt;m;<br>	<span class="hljs-built_in">memset</span>(g,<span class="hljs-number">0x3f</span>,<span class="hljs-keyword">sizeof</span> g);<br>	<span class="hljs-keyword">while</span>(m--)&#123;<br>		<span class="hljs-type">int</span> x,y,z;<br>		cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;<br>		<span class="hljs-keyword">if</span>(g[x][y]&gt;z)g[x][y]=z;<br> &#125;<br> cout&lt;&lt;<span class="hljs-built_in">Dijkstra</span>()&lt;&lt;endl;<br> <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>从核心步骤的迭代我们可以看出，朴素版dijkstra算法的时间复杂度是O(n^2)。</p>
 <h3 id="堆优化版dijkstra算法"><a href="#堆优化版dijkstra算法" class="headerlink" title="堆优化版dijkstra算法"></a>堆优化版dijkstra算法</h3><p>即运用堆排序来加快找边的速度，使算法总体时间复杂度达到O（（n+m）logm）。总的来说，就是把图中所有边都压入一个最小堆（即根节点的值最小的堆）中，每次可以直接取堆顶元素入最短路，取边的时间复杂度为O（1），但维护最小堆的时间复杂度为O（log m)。</p>
 <p>代码如下：</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits&#x2F;stdc++.h&gt;
-using namespace std;
-
-typedef pair&lt;int,int&gt; PII;
-
-const int N &#x3D; 1e5+5e4+10;
-
-int h[N],w[N],e[N],ne[N],idx;
-int dis[N];
-bool st[N];
-int n,m;
-
-void add(int a,int b,int c)&#123;
-    e[idx]&#x3D;b,w[idx]&#x3D;c,ne[idx]&#x3D;h[a];h[a]&#x3D;idx++;
-&#125;
-
-int dijkstra()&#123;
-    memset(dis,0x3f,sizeof(dis));
-    dis[1]&#x3D;0;
-    priority_queue&lt;PII,vector&lt;PII&gt;,greater&lt;PII&gt; &gt; heap;&#x2F;&#x2F;优先队列
-    heap.push(&#123;0,1&#125;);
-    
-    while(heap.size())
-    &#123;
-        auto t&#x3D;heap.top();heap.pop();
-        
-        int distance&#x3D;t.first,ver&#x3D;t.second;
-        if(st[ver]) continue;
-            
-        for(int i&#x3D;h[ver];i!&#x3D;-1;i&#x3D;ne[i])
-        &#123;
-            int j&#x3D;e[i];
-            if(dis[j]&gt;distance+w[i])
-            &#123;
-                dis[j]&#x3D;distance+w[i];
-                heap.push(&#123;dis[j],j&#125;);
-            &#125;
-            
-        &#125;
-        st[ver]&#x3D;true;
-    &#125;
-    return dis[n]&#x3D;&#x3D;0x3f3f3f3f?-1:dis[n];
-&#125;
-
-int main(void)&#123;
-    cin&gt;&gt;n&gt;&gt;m;
-    
-    memset(h,-1,sizeof(h));
-    while(m--)
-    &#123;
-        int a,b,c;
-        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;
-        add(a,b,c);
-    &#125;
-    cout&lt;&lt;dijkstra();
-    return 0;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">typedef</span> pair&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt; PII;<br><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1e5</span>+<span class="hljs-number">5e4</span>+<span class="hljs-number">10</span>;<br><br><span class="hljs-type">int</span> h[N],w[N],e[N],ne[N],idx;<br><span class="hljs-type">int</span> dis[N];<br><span class="hljs-type">bool</span> st[N];<br><span class="hljs-type">int</span> n,m;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a,<span class="hljs-type">int</span> b,<span class="hljs-type">int</span> c)</span></span>&#123;<br>    e[idx]=b,w[idx]=c,ne[idx]=h[a];h[a]=idx++;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">dijkstra</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-built_in">memset</span>(dis,<span class="hljs-number">0x3f</span>,<span class="hljs-built_in">sizeof</span>(dis));<br>    dis[<span class="hljs-number">1</span>]=<span class="hljs-number">0</span>;<br>    priority_queue&lt;PII,vector&lt;PII&gt;,greater&lt;PII&gt; &gt; heap;<span class="hljs-comment">//优先队列</span><br>    heap.<span class="hljs-built_in">push</span>(&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;);<br>    <br>    <span class="hljs-keyword">while</span>(heap.<span class="hljs-built_in">size</span>())<br>    &#123;<br>        <span class="hljs-keyword">auto</span> t=heap.<span class="hljs-built_in">top</span>();heap.<span class="hljs-built_in">pop</span>();<br>        <br>        <span class="hljs-type">int</span> distance=t.first,ver=t.second;<br>        <span class="hljs-keyword">if</span>(st[ver]) <span class="hljs-keyword">continue</span>;<br>            <br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=h[ver];i!=<span class="hljs-number">-1</span>;i=ne[i])<br>        &#123;<br>            <span class="hljs-type">int</span> j=e[i];<br>            <span class="hljs-keyword">if</span>(dis[j]&gt;distance+w[i])<br>            &#123;<br>                dis[j]=distance+w[i];<br>                heap.<span class="hljs-built_in">push</span>(&#123;dis[j],j&#125;);<br>            &#125;<br>            <br>        &#125;<br>        st[ver]=<span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> dis[n]==<span class="hljs-number">0x3f3f3f3f</span>?<span class="hljs-number">-1</span>:dis[n];<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>&#123;<br>    cin&gt;&gt;n&gt;&gt;m;<br>    <br>    <span class="hljs-built_in">memset</span>(h,<span class="hljs-number">-1</span>,<span class="hljs-built_in">sizeof</span>(h));<br>    <span class="hljs-keyword">while</span>(m--)<br>    &#123;<br>        <span class="hljs-type">int</span> a,b,c;<br>        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;<br>        <span class="hljs-built_in">add</span>(a,b,c);<br>    &#125;<br>    cout&lt;&lt;<span class="hljs-built_in">dijkstra</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="bellman—ford算法"><a href="#bellman—ford算法" class="headerlink" title="bellman—ford算法"></a>bellman—ford算法</h3><p>Bellman - ford 算法是求含负权图的单源最短路径的一种算法，效率较低，代码难度较小。其原理为连续进行松弛，在每次松弛时把每条边都更新一下，若在 n-1 次松弛后还能更新，则说明图中有负环，因此无法得出结果，否则就完成。</p>
 <p>时间复杂度为O（nm）。代码如下：</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits&#x2F;stdc++.h&gt;
-using namespace std;
-
-const int N&#x3D;5e2+10,M&#x3D;1e4+10;
-int n,m,k;
-
-struct Edge&#123;
-    int a;
-    int b;
-    int c;
-&#125;e[M];
-int dis[N];
-int back[N];
-
-int bellman_ford()&#123;
-    dis[1]&#x3D;0;
-    for(int i&#x3D;0;i&lt;k;i++)
-    &#123;
-        memcpy(back,dis,sizeof(dis));
-        for(int j&#x3D;0;j&lt;m;j++)
-        &#123;
-            int a&#x3D;e[j].a,b&#x3D;e[j].b,c&#x3D;e[j].c;
-            dis[b]&#x3D;min(dis[b],back[a]+c);
-        &#125;
-    &#125;
-    return dis[n]&gt;0x3f3f3f3f&#x2F;2 ? -100: dis[n];
-&#125;
-
-int main(void)
-&#123;
-    cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;
-    memset(dis,0x3f,sizeof(dis));
-    
-    for(int i&#x3D;0;i&lt;m;i++)
-    &#123;
-        int a,b,c;
-        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;
-        e[i]&#x3D;&#123;a,b,c&#125;;
-    &#125;
-    
-    int res&#x3D;bellman_ford();
-    
-    if(res!&#x3D;-100)cout&lt;&lt;res;
-    else cout&lt;&lt;&quot;impossible&quot;;
-    
-    return 0;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">5e2</span>+<span class="hljs-number">10</span>,M=<span class="hljs-number">1e4</span>+<span class="hljs-number">10</span>;<br><span class="hljs-type">int</span> n,m,k;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Edge</span>&#123;<br>    <span class="hljs-type">int</span> a;<br>    <span class="hljs-type">int</span> b;<br>    <span class="hljs-type">int</span> c;<br>&#125;e[M];<br><span class="hljs-type">int</span> dis[N];<br><span class="hljs-type">int</span> back[N];<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bellman_ford</span><span class="hljs-params">()</span></span>&#123;<br>    dis[<span class="hljs-number">1</span>]=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;k;i++)<br>    &#123;<br>        <span class="hljs-built_in">memcpy</span>(back,dis,<span class="hljs-built_in">sizeof</span>(dis));<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;m;j++)<br>        &#123;<br>            <span class="hljs-type">int</span> a=e[j].a,b=e[j].b,c=e[j].c;<br>            dis[b]=<span class="hljs-built_in">min</span>(dis[b],back[a]+c);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> dis[n]&gt;<span class="hljs-number">0x3f3f3f3f</span>/<span class="hljs-number">2</span> ? <span class="hljs-number">-100</span>: dis[n];<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;<br>    <span class="hljs-built_in">memset</span>(dis,<span class="hljs-number">0x3f</span>,<span class="hljs-built_in">sizeof</span>(dis));<br>    <br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;m;i++)<br>    &#123;<br>        <span class="hljs-type">int</span> a,b,c;<br>        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;<br>        e[i]=&#123;a,b,c&#125;;<br>    &#125;<br>    <br>    <span class="hljs-type">int</span> res=<span class="hljs-built_in">bellman_ford</span>();<br>    <br>    <span class="hljs-keyword">if</span>(res!=<span class="hljs-number">-100</span>)cout&lt;&lt;res;<br>    <span class="hljs-keyword">else</span> cout&lt;&lt;<span class="hljs-string">&quot;impossible&quot;</span>;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="SPFA算法"><a href="#SPFA算法" class="headerlink" title="SPFA算法"></a>SPFA算法</h3><p>其实关于spfa算法，还有一段婉转镌刻的故事（bushi，详情各位自行百度。</p>
 <p>spfa算法其实是Bellman—ford的队列优化形式，常用于求含负权边的单源最短路径，以及判断负环。优化过的情况下，一般的时间复杂度为O(m),但是在最坏情况下，其实是与朴素版Bellman—ford算法一样的复杂度。</p>
 <p>代码如下：</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits&#x2F;stdc++.h&gt;
-using namespace std;
-
-const int N &#x3D;1e5+10;
-
-int dis[N],h[N],e[N],ne[N],w[N],idx;
-int n,m;
-bool st[N];
-
-void add(int a,int b,int c)&#123;
-    e[idx]&#x3D;b,ne[idx]&#x3D;h[a],w[idx]&#x3D;c,h[a]&#x3D;idx++;
-&#125;
-
-int spfa()&#123;
-    memset(dis,0x3f,sizeof(dis));
-    queue&lt;int&gt;q;
-    dis[1]&#x3D;0;
-    q.push(1);
-    st[1]&#x3D;true;
-    
-    while(q.size())
-    &#123;
-        int t&#x3D;q.front();
-        q.pop();
-        
-        st[t]&#x3D;false;
-        for(int i&#x3D;h[t];i!&#x3D;-1;i&#x3D;ne[i])
-        &#123;
-            int j&#x3D;e[i];
-            if(dis[j]&gt;dis[t]+w[i])
-            &#123;
-                dis[j]&#x3D;dis[t]+w[i];
-                if(!st[j])
-                &#123;
-                    q.push(j);
-                    st[j]&#x3D;true;
-                &#125;
-            &#125;
-        &#125;
-    &#125;
-    
-    return dis[n];
-&#125;
-
-int main(void)&#123;
-    cin&gt;&gt;n&gt;&gt;m;
-    
-    memset(h,-1,sizeof(h));
-    while(m--)
-    &#123;
-        int a,b,c;
-        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;
-        add(a,b,c);
-    &#125;
-    int res&#x3D;spfa();
-
-    if(res!&#x3D;0x3f3f3f3f)cout&lt;&lt;res;
-    else cout&lt;&lt;&quot;impossible&quot;;
-    
-    return 0;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N =<span class="hljs-number">1e5</span>+<span class="hljs-number">10</span>;<br><br><span class="hljs-type">int</span> dis[N],h[N],e[N],ne[N],w[N],idx;<br><span class="hljs-type">int</span> n,m;<br><span class="hljs-type">bool</span> st[N];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a,<span class="hljs-type">int</span> b,<span class="hljs-type">int</span> c)</span></span>&#123;<br>    e[idx]=b,ne[idx]=h[a],w[idx]=c,h[a]=idx++;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">spfa</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-built_in">memset</span>(dis,<span class="hljs-number">0x3f</span>,<span class="hljs-built_in">sizeof</span>(dis));<br>    queue&lt;<span class="hljs-type">int</span>&gt;q;<br>    dis[<span class="hljs-number">1</span>]=<span class="hljs-number">0</span>;<br>    q.<span class="hljs-built_in">push</span>(<span class="hljs-number">1</span>);<br>    st[<span class="hljs-number">1</span>]=<span class="hljs-literal">true</span>;<br>    <br>    <span class="hljs-keyword">while</span>(q.<span class="hljs-built_in">size</span>())<br>    &#123;<br>        <span class="hljs-type">int</span> t=q.<span class="hljs-built_in">front</span>();<br>        q.<span class="hljs-built_in">pop</span>();<br>        <br>        st[t]=<span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=h[t];i!=<span class="hljs-number">-1</span>;i=ne[i])<br>        &#123;<br>            <span class="hljs-type">int</span> j=e[i];<br>            <span class="hljs-keyword">if</span>(dis[j]&gt;dis[t]+w[i])<br>            &#123;<br>                dis[j]=dis[t]+w[i];<br>                <span class="hljs-keyword">if</span>(!st[j])<br>                &#123;<br>                    q.<span class="hljs-built_in">push</span>(j);<br>                    st[j]=<span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> dis[n];<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>&#123;<br>    cin&gt;&gt;n&gt;&gt;m;<br>    <br>    <span class="hljs-built_in">memset</span>(h,<span class="hljs-number">-1</span>,<span class="hljs-built_in">sizeof</span>(h));<br>    <span class="hljs-keyword">while</span>(m--)<br>    &#123;<br>        <span class="hljs-type">int</span> a,b,c;<br>        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;<br>        <span class="hljs-built_in">add</span>(a,b,c);<br>    &#125;<br>    <span class="hljs-type">int</span> res=<span class="hljs-built_in">spfa</span>();<br><br>    <span class="hljs-keyword">if</span>(res!=<span class="hljs-number">0x3f3f3f3f</span>)cout&lt;&lt;res;<br>    <span class="hljs-keyword">else</span> cout&lt;&lt;<span class="hljs-string">&quot;impossible&quot;</span>;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>值得一提的是，在有边数限制的情况下，spfa算法是最好的选择。</p>
 
@@ -651,7 +449,7 @@ int main(void)&#123;
 
  
 
-<script async src="/js/app.js?v=1662118985298"></script>
+<script async src="/js/app.js?v=1662119132727"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 

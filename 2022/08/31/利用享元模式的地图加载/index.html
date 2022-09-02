@@ -18,7 +18,7 @@
 <meta property="og:description" content="利用享元模式的地图加载我们都知道，一张一定面积的地图上面会有着非常多的相同元素的地面物品，比如不同种类的树木，石子，一些草坪，蘑菇，枯枝等等，在games104里面我们也把它叫做decorations，也就是地面的装饰品。 其实对于它们中的任何一种，数量都是非常多的，并且有一个非常核心的问题，那就是即便它们是同样的某样场景物体，比如说都是松树，但是在他们的位置，旋转，缩放信息其实不尽是相同的。如果">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-08-31T12:37:16.320Z">
-<meta property="article:modified_time" content="2022-09-02T11:34:13.070Z">
+<meta property="article:modified_time" content="2022-09-02T11:43:40.060Z">
 <meta property="article:author" content="武田晴海">
 <meta property="article:tag" content="地图加载 Unity">
 <meta name="twitter:card" content="summary">
@@ -28,13 +28,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662118985284">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662119132698">
     
-    <link rel="stylesheet" href="/css/style.css?v=1662118985284">
+    <link rel="stylesheet" href="/css/style.css?v=1662119132698">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1662118985284">
+            <link rel="stylesheet" href="/custom.css?v=1662119132698">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -349,243 +349,19 @@
 <p>在我们的项目里面，我们想要共享的是什么呢？我们希望共享这些相同mesh跟materials，并且减少我们的预制体数量，对于不同PRS的同类游戏物体，我们仅需要保存它们最简单的预制体，其余所有的信息都由我们加载出来，并且这样的加载速度是会比直接加载快好几倍的。</p>
 <p>以下是代码实现：</p>
 <p>首先我们定义我们的场景元素集合</p>
-<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">&#96;&#96;&#96;csharp
-using System;
-using UnityEngine;
-
-namespace FlyWeightPattern.Scripts
-&#123;
-    [Serializable]
-    public struct ObjectFlyweightData &#x2F;&#x2F;享元部分
-    &#123;
-        public Mesh mesh;&#x2F;&#x2F;相同的mesh在导入模型后自然就只存在一份，享元中的共享就体现在这里
-        public Material[] materials;&#x2F;&#x2F;这里的材质也是一样的，仅存在一份，这是由模型资源决定的
-    &#125;
-
-    [Serializable]
-    public struct SceneObject
-    &#123;
-        public ObjectFlyweightData flyweightData;
-        public Matrix4x4 matrix; &#x2F;&#x2F;4x矩阵，可以直接将PRS信息存储下来，unity的4x矩阵是按列优先填充，但其实访问的索引依然是行列。
-        public string name;
-    &#125;
-    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-    &#x2F;&#x2F;&#x2F; 场景中元素的数据
-    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-    public class SceneObjectGroup : ScriptableObject
-    &#123;
-        public SceneObject[] SceneObjects; 
-    &#125;
-
-&#125;
-&#96;&#96;&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.Scripts</span><br>&#123;<br>    [<span class="hljs-meta">Serializable</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">struct</span> ObjectFlyweightData <span class="hljs-comment">//享元部分</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> Mesh mesh;<span class="hljs-comment">//相同的mesh在导入模型后自然就只存在一份，享元中的共享就体现在这里</span><br>        <span class="hljs-keyword">public</span> Material[] materials;<span class="hljs-comment">//这里的材质也是一样的，仅存在一份，这是由模型资源决定的</span><br>    &#125;<br><br>    [<span class="hljs-meta">Serializable</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">struct</span> SceneObject<br>    &#123;<br>        <span class="hljs-keyword">public</span> ObjectFlyweightData flyweightData;<br>        <span class="hljs-keyword">public</span> Matrix4x4 matrix; <span class="hljs-comment">//4x矩阵，可以直接将PRS信息存储下来，unity的4x矩阵是按列优先填充，但其实访问的索引依然是行列。</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> name;<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 场景中元素的数据</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SceneObjectGroup</span> : <span class="hljs-title">ScriptableObject</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> SceneObject[] SceneObjects; <br>    &#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
 <p>接着我们利用矩阵加载我们的PRS信息：</p>
-<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using UnityEngine;
-
-namespace FlyWeightPattern
-&#123;
-    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-    &#x2F;&#x2F;&#x2F; 拓展方法类
-    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-    public static class Matrix
-    &#123;
-        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-        &#x2F;&#x2F;&#x2F; 拓展方法：获取旋转信息
-        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;matrix&quot;&gt;&lt;&#x2F;param&gt;
-        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
-        public static Quaternion ExtractRotation(this Matrix4x4 matrix)
-        &#123;
-            Vector3 forward;
-            forward.x &#x3D; matrix.m02;
-            forward.y &#x3D; matrix.m12;
-            forward.z &#x3D; matrix.m22;
-
-            Vector3 upwards;
-            upwards.x &#x3D; matrix.m01;
-            upwards.y &#x3D; matrix.m11;
-            upwards.z &#x3D; matrix.m21;
-
-            return Quaternion.LookRotation(forward, upwards);&#x2F;&#x2F;LookRotation同时使用forward和upward两个参数的时候，就相当于指定了vz和vy两个向量，
-                                                             &#x2F;&#x2F;根据这两个向量可以直接算出对应的vx，然后再用这三个向量去set对应的3×3旋转矩阵的列向量
-                                                             &#x2F;&#x2F;即可获得一个旋转矩阵，再接着可以将其转换到四元数。
-        &#125;
-        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-        &#x2F;&#x2F;&#x2F; 拓展方法：获取位置信息
-        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;matrix&quot;&gt;&lt;&#x2F;param&gt;
-        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
-        public static Vector3 ExtractPosition(this Matrix4x4 matrix)
-        &#123;
-            Vector3 position;
-            position.x &#x3D; matrix.m03;
-            position.y &#x3D; matrix.m13;
-            position.z &#x3D; matrix.m23;
-            return position;
-        &#125;
-        
-        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-        &#x2F;&#x2F;&#x2F; 拓展方法：获取缩放信息
-        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;matrix&quot;&gt;&lt;&#x2F;param&gt;
-        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
-        public static Vector3 ExtractScale(this Matrix4x4 matrix)
-        &#123;
-            Vector3 scale &#x3D; new Vector3(
-                matrix.GetColumn(0).magnitude,
-                matrix.GetColumn(1).magnitude,
-                matrix.GetColumn(2).magnitude
-            );
-            &#x2F;&#x2F;叉乘判断
-            if (Vector3.Cross(matrix.GetColumn(0), matrix.GetColumn(1)).normalized !&#x3D; (Vector3)matrix.GetColumn(2).normalized)
-            &#123;
-                scale.x *&#x3D; -1;
-            &#125;
-            return scale;
-        &#125;
-    &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern</span><br>&#123;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法类</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Matrix</span><br>    &#123;<br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法：获取旋转信息</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;matrix&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Quaternion <span class="hljs-title">ExtractRotation</span>(<span class="hljs-params"><span class="hljs-keyword">this</span> Matrix4x4 matrix</span>)</span><br>        &#123;<br>            Vector3 forward;<br>            forward.x = matrix.m02;<br>            forward.y = matrix.m12;<br>            forward.z = matrix.m22;<br><br>            Vector3 upwards;<br>            upwards.x = matrix.m01;<br>            upwards.y = matrix.m11;<br>            upwards.z = matrix.m21;<br><br>            <span class="hljs-keyword">return</span> Quaternion.LookRotation(forward, upwards);<span class="hljs-comment">//LookRotation同时使用forward和upward两个参数的时候，就相当于指定了vz和vy两个向量，</span><br>                                                             <span class="hljs-comment">//根据这两个向量可以直接算出对应的vx，然后再用这三个向量去set对应的3×3旋转矩阵的列向量</span><br>                                                             <span class="hljs-comment">//即可获得一个旋转矩阵，再接着可以将其转换到四元数。</span><br>        &#125;<br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法：获取位置信息</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;matrix&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Vector3 <span class="hljs-title">ExtractPosition</span>(<span class="hljs-params"><span class="hljs-keyword">this</span> Matrix4x4 matrix</span>)</span><br>        &#123;<br>            Vector3 position;<br>            position.x = matrix.m03;<br>            position.y = matrix.m13;<br>            position.z = matrix.m23;<br>            <span class="hljs-keyword">return</span> position;<br>        &#125;<br>        <br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法：获取缩放信息</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;matrix&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Vector3 <span class="hljs-title">ExtractScale</span>(<span class="hljs-params"><span class="hljs-keyword">this</span> Matrix4x4 matrix</span>)</span><br>        &#123;<br>            Vector3 scale = <span class="hljs-keyword">new</span> Vector3(<br>                matrix.GetColumn(<span class="hljs-number">0</span>).magnitude,<br>                matrix.GetColumn(<span class="hljs-number">1</span>).magnitude,<br>                matrix.GetColumn(<span class="hljs-number">2</span>).magnitude<br>            );<br>            <span class="hljs-comment">//叉乘判断</span><br>            <span class="hljs-keyword">if</span> (Vector3.Cross(matrix.GetColumn(<span class="hljs-number">0</span>), matrix.GetColumn(<span class="hljs-number">1</span>)).normalized != (Vector3)matrix.GetColumn(<span class="hljs-number">2</span>).normalized)<br>            &#123;<br>                scale.x *= <span class="hljs-number">-1</span>;<br>            &#125;<br>            <span class="hljs-keyword">return</span> scale;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>编写加载的代码：</p>
-<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using System;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace FlyWeightPattern.Scripts
-&#123;
-    public class FlyWeightInstanceGeneration : MonoBehaviour
-    &#123;
-        [SerializeField]
-        public SceneObjectGroup sceneObjectGroup;
-        public int batchCount &#x3D; 10; &#x2F;&#x2F;合批数量
-
-
-        private GameObject _Root; &#x2F;&#x2F;父节点
-
-
-        private void Awake()
-        &#123;
-            StartCoroutine(StartGenerate());
-        &#125;
-        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-        &#x2F;&#x2F;&#x2F; 加载场景的协程
-        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
-        private IEnumerator StartGenerate()
-        &#123;
-            int initCount &#x3D; 0;
-            int totalCount &#x3D; 0;
-
-            if (_Root !&#x3D; null)
-            &#123;
-                GameObject.Destroy(_Root);
-            &#125;
-            _Root &#x3D; new GameObject(&quot;root&quot;);
-
-            while (initCount &lt; batchCount)
-            &#123;
-                initCount++;
-                yield return null;
-                var sceneObjects &#x3D; sceneObjectGroup.SceneObjects[totalCount];
-                var go &#x3D; new GameObject(sceneObjects.name);
-
-                MeshRenderer renderer &#x3D; go.AddComponent&lt;MeshRenderer&gt;();
-                MeshFilter filter &#x3D; go.AddComponent&lt;MeshFilter&gt;();
-                MeshCollider meshCollider &#x3D; go.AddComponent&lt;MeshCollider&gt;();
-
-                renderer.sharedMaterials &#x3D; sceneObjects.flyweightData.materials;
-                go.transform.rotation &#x3D; sceneObjects.matrix.ExtractRotation();
-                go.transform.position &#x3D; sceneObjects.matrix.ExtractPosition();
-                go.transform.localScale &#x3D; sceneObjects.matrix.ExtractScale();
-                go.transform.SetParent(_Root.transform, true);
-                filter.mesh &#x3D; sceneObjects.flyweightData.mesh;
-                meshCollider.sharedMesh &#x3D; sceneObjects.flyweightData.mesh;
-                totalCount++;
-
-                if (totalCount &gt;&#x3D; sceneObjectGroup.SceneObjects.Length) break;
-
-                if (initCount &#x3D;&#x3D; batchCount)initCount &#x3D; 0;
-                
-            &#125;
-        &#125;
-
-    &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> UnityEngine.UI;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.Scripts</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">FlyWeightInstanceGeneration</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        [<span class="hljs-meta">SerializeField</span>]<br>        <span class="hljs-keyword">public</span> SceneObjectGroup sceneObjectGroup;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> batchCount = <span class="hljs-number">10</span>; <span class="hljs-comment">//合批数量</span><br><br><br>        <span class="hljs-keyword">private</span> GameObject _Root; <span class="hljs-comment">//父节点</span><br><br><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span><br>        &#123;<br>            StartCoroutine(StartGenerate());<br>        &#125;<br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 加载场景的协程</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> IEnumerator <span class="hljs-title">StartGenerate</span>()</span><br>        &#123;<br>            <span class="hljs-built_in">int</span> initCount = <span class="hljs-number">0</span>;<br>            <span class="hljs-built_in">int</span> totalCount = <span class="hljs-number">0</span>;<br><br>            <span class="hljs-keyword">if</span> (_Root != <span class="hljs-literal">null</span>)<br>            &#123;<br>                GameObject.Destroy(_Root);<br>            &#125;<br>            _Root = <span class="hljs-keyword">new</span> GameObject(<span class="hljs-string">&quot;root&quot;</span>);<br><br>            <span class="hljs-keyword">while</span> (initCount &lt; batchCount)<br>            &#123;<br>                initCount++;<br>                <span class="hljs-keyword">yield</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>                <span class="hljs-keyword">var</span> sceneObjects = sceneObjectGroup.SceneObjects[totalCount];<br>                <span class="hljs-keyword">var</span> go = <span class="hljs-keyword">new</span> GameObject(sceneObjects.name);<br><br>                MeshRenderer renderer = go.AddComponent&lt;MeshRenderer&gt;();<br>                MeshFilter filter = go.AddComponent&lt;MeshFilter&gt;();<br>                MeshCollider meshCollider = go.AddComponent&lt;MeshCollider&gt;();<br><br>                renderer.sharedMaterials = sceneObjects.flyweightData.materials;<br>                go.transform.rotation = sceneObjects.matrix.ExtractRotation();<br>                go.transform.position = sceneObjects.matrix.ExtractPosition();<br>                go.transform.localScale = sceneObjects.matrix.ExtractScale();<br>                go.transform.SetParent(_Root.transform, <span class="hljs-literal">true</span>);<br>                filter.mesh = sceneObjects.flyweightData.mesh;<br>                meshCollider.sharedMesh = sceneObjects.flyweightData.mesh;<br>                totalCount++;<br><br>                <span class="hljs-keyword">if</span> (totalCount &gt;= sceneObjectGroup.SceneObjects.Length) <span class="hljs-keyword">break</span>;<br><br>                <span class="hljs-keyword">if</span> (initCount == batchCount)initCount = <span class="hljs-number">0</span>;<br>                <br>            &#125;<br>        &#125;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>写一个编辑器面板的生成面板：</p>
-<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using System;
-using System.Collections;
-using UnityEngine;
-
-namespace FlyWeightPattern.Scripts
-&#123;
-    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-    &#x2F;&#x2F;&#x2F;用于创建场景元素资源的存储数据
-    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-    public class FlyWeightSceneSaver : MonoBehaviour
-    &#123;
-
-    &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.Scripts</span><br>&#123;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span>用于创建场景元素资源的存储数据</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">FlyWeightSceneSaver</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>编辑器及读取数据：</p>
-<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using System.Collections.Generic;
-using FlyWeightPattern.Scripts;
-using UnityEditor;
-using UnityEngine;
-
-namespace FlyWeightPattern.ScriptsEditor
-&#123;
-    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
-    &#x2F;&#x2F;&#x2F; 创建编辑器面板
-    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
-    [CustomEditor(typeof(FlyWeightSceneSaver))]
-    public class FlyWeightSceneSaverEditor : Editor
-    &#123;
-        public override void OnInspectorGUI()
-        &#123;
-            FlyWeightSceneSaver saver &#x3D; target as FlyWeightSceneSaver;
-            if (GUILayout.Button(&quot;生成&quot;))
-            &#123;
-
-                SceneObjectGroup sceneObjectGroup &#x3D; ScriptableObject.CreateInstance&lt;SceneObjectGroup&gt;();&#x2F;&#x2F;创建数据
-                MeshRenderer[] list &#x3D; GameObject.FindObjectsOfType&lt;MeshRenderer&gt;(true);
-                if (list.Length &#x3D;&#x3D; 0)
-                &#123;
-                    EditorUtility.DisplayDialog(&quot;Sorrry&quot;, &quot;你没有选中任何包含预制体的物体&quot;, &quot;重选&quot;);
-                    return;
-                &#125;
-                List&lt;SceneObject&gt; sceneObjects &#x3D; new List&lt;SceneObject&gt;();
-                foreach (MeshRenderer meshRenderer in list)
-                &#123;
-                    MeshFilter filter &#x3D; meshRenderer.gameObject.GetComponent&lt;MeshFilter&gt;();
-                    var transform &#x3D; meshRenderer.transform;
-                    var matrix &#x3D; transform.localToWorldMatrix;
-                    ObjectFlyweightData flyweightData &#x3D; new ObjectFlyweightData()
-                    &#123;
-                        materials &#x3D; meshRenderer.sharedMaterials,
-                        mesh &#x3D; filter.sharedMesh,
-                    &#125;;
-                    sceneObjects.Add(new SceneObject()
-                    &#123;
-                        flyweightData &#x3D; flyweightData,
-                        matrix &#x3D; matrix,
-                        name &#x3D; meshRenderer.name,
-                    &#125;);
-
-                &#125;
-
-                sceneObjectGroup.SceneObjects &#x3D; sceneObjects.ToArray();
-                AssetDatabase.CreateAsset(sceneObjectGroup, &quot;Assets&#x2F;FlyWeightPattern&#x2F;sceneObjGroup.asset&quot;);
-                AssetDatabase.Refresh();
-
-
-            &#125;
-        &#125;
-    &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Collections.Generic;<br><span class="hljs-keyword">using</span> FlyWeightPattern.Scripts;<br><span class="hljs-keyword">using</span> UnityEditor;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.ScriptsEditor</span><br>&#123;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 创建编辑器面板</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    [<span class="hljs-meta">CustomEditor(typeof(FlyWeightSceneSaver))</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">FlyWeightSceneSaverEditor</span> : <span class="hljs-title">Editor</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnInspectorGUI</span>()</span><br>        &#123;<br>            FlyWeightSceneSaver saver = target <span class="hljs-keyword">as</span> FlyWeightSceneSaver;<br>            <span class="hljs-keyword">if</span> (GUILayout.Button(<span class="hljs-string">&quot;生成&quot;</span>))<br>            &#123;<br><br>                SceneObjectGroup sceneObjectGroup = ScriptableObject.CreateInstance&lt;SceneObjectGroup&gt;();<span class="hljs-comment">//创建数据</span><br>                MeshRenderer[] list = GameObject.FindObjectsOfType&lt;MeshRenderer&gt;(<span class="hljs-literal">true</span>);<br>                <span class="hljs-keyword">if</span> (list.Length == <span class="hljs-number">0</span>)<br>                &#123;<br>                    EditorUtility.DisplayDialog(<span class="hljs-string">&quot;Sorrry&quot;</span>, <span class="hljs-string">&quot;你没有选中任何包含预制体的物体&quot;</span>, <span class="hljs-string">&quot;重选&quot;</span>);<br>                    <span class="hljs-keyword">return</span>;<br>                &#125;<br>                List&lt;SceneObject&gt; sceneObjects = <span class="hljs-keyword">new</span> List&lt;SceneObject&gt;();<br>                <span class="hljs-keyword">foreach</span> (MeshRenderer meshRenderer <span class="hljs-keyword">in</span> list)<br>                &#123;<br>                    MeshFilter filter = meshRenderer.gameObject.GetComponent&lt;MeshFilter&gt;();<br>                    <span class="hljs-keyword">var</span> transform = meshRenderer.transform;<br>                    <span class="hljs-keyword">var</span> matrix = transform.localToWorldMatrix;<br>                    ObjectFlyweightData flyweightData = <span class="hljs-keyword">new</span> ObjectFlyweightData()<br>                    &#123;<br>                        materials = meshRenderer.sharedMaterials,<br>                        mesh = filter.sharedMesh,<br>                    &#125;;<br>                    sceneObjects.Add(<span class="hljs-keyword">new</span> SceneObject()<br>                    &#123;<br>                        flyweightData = flyweightData,<br>                        matrix = matrix,<br>                        name = meshRenderer.name,<br>                    &#125;);<br><br>                &#125;<br><br>                sceneObjectGroup.SceneObjects = sceneObjects.ToArray();<br>                AssetDatabase.CreateAsset(sceneObjectGroup, <span class="hljs-string">&quot;Assets/FlyWeightPattern/sceneObjGroup.asset&quot;</span>);<br>                AssetDatabase.Refresh();<br><br><br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>至此我们就完成拉！快快写到你的项目里面去试试吧！</p>
 
@@ -670,7 +446,7 @@ namespace FlyWeightPattern.ScriptsEditor
 
  
 
-<script async src="/js/app.js?v=1662118985290"></script>
+<script async src="/js/app.js?v=1662119132713"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
