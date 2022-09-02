@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <title>武田晴海</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="C# Unity">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="图论最短路的几种算法刨析及比较（C++）单源最短路算法朴素dijkstra算法以下所有讨论的约定：n为点数，m为边数。所有的图都采用静态模拟的形式，即邻接表或者邻接矩阵。 那什么是dijkstra算法呢？ 迪杰斯特拉算法(Dijkstra)是由荷兰计算机科学家狄克斯特拉于1959年提出的，因此又叫狄克斯特拉算法。是从一个顶点到其余各顶点的最短路径算法，解决的是有权图中最短路径问题。迪杰斯特拉算法主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="武田晴海">
+<meta property="og:url" content="http://example.com/2022/08/15/%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89/index.html">
+<meta property="og:site_name" content="武田晴海">
+<meta property="og:description" content="图论最短路的几种算法刨析及比较（C++）单源最短路算法朴素dijkstra算法以下所有讨论的约定：n为点数，m为边数。所有的图都采用静态模拟的形式，即邻接表或者邻接矩阵。 那什么是dijkstra算法呢？ 迪杰斯特拉算法(Dijkstra)是由荷兰计算机科学家狄克斯特拉于1959年提出的，因此又叫狄克斯特拉算法。是从一个顶点到其余各顶点的最短路径算法，解决的是有权图中最短路径问题。迪杰斯特拉算法主">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="e:/图片/QQ截图20220820213142.png">
+<meta property="article:published_time" content="2022-08-15T06:17:10.889Z">
+<meta property="article:modified_time" content="2022-08-20T13:34:22.208Z">
+<meta property="article:author" content="武田晴海">
+<meta property="article:tag" content="C# Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="e:/图片/QQ截图20220820213142.png">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.min.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662087935508">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1662087935508">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1662087935508">
+        
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(http://r.photo.store.qq.com/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU12cNpT/ruAMsa53pVQWN7FLK88i5qP8pcEXEhHMSTzYmiwToluQZHoil6dFrVN6B4MUHspXDOblX5YJ5asHZutB8RUnUaPEnNCUjLiy3GS.nuaiCto!/r)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="武田晴海" class="mdui-btn mdui-btn-icon"><img src="http://m.qpic.cn/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU0yur17/ruAMsa53pVQWN7FLK88i5nUP3un6Ab9xdqK0Ws9jkn5rRWjZRKqd6Fb*mGzjCAYhutcu6o3pzBIgkZRCovStpcm2vmtgKoNYRMYYTUGOnOs!/b&amp;bo=OAQ4BAAAAAABByA!&amp;rf=viewer_4" alt="武田晴海"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="武田晴海">
+            <img src="http://m.qpic.cn/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU0yur17/ruAMsa53pVQWN7FLK88i5nUP3un6Ab9xdqK0Ws9jkn5rRWjZRKqd6Fb*mGzjCAYhutcu6o3pzBIgkZRCovStpcm2vmtgKoNYRMYYTUGOnOs!/b&amp;bo=OAQ4BAAAAAABByA!&amp;rf=viewer_4" alt="武田晴海" alt="武田晴海">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>3</div>
+        <div><span>Tags</span>0</div>
+        <div><span>Categories</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/662176529"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/wyryyds"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/guo-de-huan-hao-26"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+
+    
+        
+        
+    
+        
+        <!-- 一言 -->
+<div class="nexmoe-widget-wrap">
+  <h3 class="nexmoe-widget-title">
+    一言
+  </h3>
+  <div class="nexmoe-widget">
+    <ul class="hitokoto-box">
+      <li id="hitokoto_text_parent" class="hitokoto-text" hitokotoCategory="">
+        <a href="#" id="hitokoto_text">
+          
+        </a>
+        <a href="#" id="hitokoto_error_text" style="display: none;">
+          
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  let hitokotoText = document.getElementById('hitokoto_text')
+  let hitokotoErroText = document.getElementById('hitokoto_error_text')
+  let hitokotoCategory = document.getElementById('hitokoto_text_parent').getAttribute('hitokotoCategory')
+  window.onload = function () {
+    let url = 'https://v1.hitokoto.cn'
+    if (hitokotoCategory) {
+      url += '?c=' + hitokotoCategory
+    }
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        hitokotoText.innerText = "「 " + data.hitokoto + " 」 from " + data.from
+        hitokotoText.href = 'https://hitokoto.cn/?uuid=' + data.uuid
+      })
+      .catch((reason) => {
+        console.error(11, reason)
+        hitokotoText.style.display = 'none'
+        hitokotoErroText.style.display = 'block'
+      })
+  }
+</script>
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/31/%E5%88%A9%E7%94%A8%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/15/%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/03/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/">我的第一篇文章</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 武田晴海
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 56.71874999999999%;"> 
+              <img data-fancybox="gallery" src="http://r.photo.store.qq.com/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU12cNpT/ruAMsa53pVQWN7FLK88i5qP8pcEXEhHMSTzYmiwToluQZHoil6dFrVN6B4MUHspXDOblX5YJ5asHZutB8RUnUaPEnNCUjLiy3GS.nuaiCto!/r" alt="" loading="lazy">
+              <h1></h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年08月15日</a>
+</div>
+      
+
+      <h1 id="图论最短路的几种算法刨析及比较（C-）"><a href="#图论最短路的几种算法刨析及比较（C-）" class="headerlink" title="图论最短路的几种算法刨析及比较（C++）"></a>图论最短路的几种算法刨析及比较（C++）</h1><h2 id="单源最短路算法"><a href="#单源最短路算法" class="headerlink" title="单源最短路算法"></a>单源最短路算法</h2><h3 id="朴素dijkstra算法"><a href="#朴素dijkstra算法" class="headerlink" title="朴素dijkstra算法"></a>朴素dijkstra算法</h3><p>以下所有讨论的约定：n为点数，m为边数。所有的图都采用静态模拟的形式，即邻接表或者邻接矩阵。</p>
+<p>那什么是dijkstra算法呢？</p>
+<p>迪杰斯特拉算法(Dijkstra)是由荷兰计算机<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%A7%91%E5%AD%A6%E5%AE%B6/1210114">科学家</a><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%8B%84%E5%85%8B%E6%96%AF%E7%89%B9%E6%8B%89/2828872">狄克斯特拉</a>于1959年提出的，因此又叫狄克斯特拉算法。是从一个顶点到其余各顶点的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/6334920">最短路径</a>算法，解决的是有权图中最短路径问题。迪杰斯特拉算法主要特点是从起始点开始，采用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/5411800">贪心算法</a>的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%AD%96%E7%95%A5/4006">策略</a>，每次遍历到始点距离最近且未访问过的顶点的邻接节点，直到扩展到终点为止。（百度百科）</p>
+<p>dijkstra算法的核心思想就是进行n次迭代去确定每个点到起点的最小值，最后输出的终点即为我们要找的最短路的距离。</p>
+<p><strong>需要额外注意一点的是，dijkstra算法并不适用于存在负权边的情况。</strong></p>
+<p>因为dijkstra算法实际上是采用贪心的策略，<strong>我们要找到确定的最短路径加入集合</strong>，如果存在负边权，就有可能更新出更短的距离。举个简单的例子：</p>
+<p>比如下图，我们想从A点走到C点，dijkstra算法会选择直接从A走到C，而不会考虑A-&gt;B-&gt;C这条路。因为它只会考虑局部最优解，但在存在负值边的情况下，局部最优解并不是全局最优解！</p>
+<p><img data-fancybox="gallery" src="E:\图片\QQ截图20220820213142.png" alt="QQ截图20220820213142" data-caption="QQ截图20220820213142" loading="lazy"></p>
+<p>代码如下，题目参考acwing849.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">510</span>;</span><br><span class="line"><span class="type">int</span> g[N][N],dist[N],n,m;</span><br><span class="line"><span class="type">bool</span> st[N];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(dist,<span class="number">0x3f</span>,<span class="keyword">sizeof</span> dist);</span><br><span class="line">	dist[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;	<span class="comment">//n次迭代	覆盖到所有结点 </span></span><br><span class="line">		<span class="type">int</span> t=n+<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;	<span class="comment">//找出未确定节点中距离最短的一个 </span></span><br><span class="line">			<span class="keyword">if</span>(!st[j]&amp;&amp;dist[t]&gt;dist[j])</span><br><span class="line">			t=j;</span><br><span class="line">	 &#125;</span><br><span class="line">	st[t]=<span class="literal">true</span>;</span><br><span class="line">	<span class="comment">//利用该节点进行更新</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(dist[j]&gt;dist[t]+g[t][j])</span><br><span class="line">		&#123;</span><br><span class="line">			dist[j]=dist[t]+g[t][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">if</span>(dist[n]==<span class="number">0x3f3f3f3f</span>)	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"> <span class="keyword">return</span> dist[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">	<span class="built_in">memset</span>(g,<span class="number">0x3f</span>,<span class="keyword">sizeof</span> g);</span><br><span class="line">	<span class="keyword">while</span>(m--)&#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;</span><br><span class="line">		<span class="keyword">if</span>(g[x][y]&gt;z)g[x][y]=z;</span><br><span class="line"> &#125;</span><br><span class="line"> cout&lt;&lt;<span class="built_in">Dijkstra</span>()&lt;&lt;endl;</span><br><span class="line"> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从核心步骤的迭代我们可以看出，朴素版dijkstra算法的时间复杂度是O(n^2)。</p>
+<h3 id="堆优化版dijkstra算法"><a href="#堆优化版dijkstra算法" class="headerlink" title="堆优化版dijkstra算法"></a>堆优化版dijkstra算法</h3><p>即运用堆排序来加快找边的速度，使算法总体时间复杂度达到O（（n+m）logm）。总的来说，就是把图中所有边都压入一个最小堆（即根节点的值最小的堆）中，每次可以直接取堆顶元素入最短路，取边的时间复杂度为O（1），但维护最小堆的时间复杂度为O（log m)。</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt; PII;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1e5</span>+<span class="number">5e4</span>+<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> h[N],w[N],e[N],ne[N],idx;</span><br><span class="line"><span class="type">int</span> dis[N];</span><br><span class="line"><span class="type">bool</span> st[N];</span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> c)</span></span>&#123;</span><br><span class="line">    e[idx]=b,w[idx]=c,ne[idx]=h[a];h[a]=idx++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">    dis[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    priority_queue&lt;PII,vector&lt;PII&gt;,greater&lt;PII&gt; &gt; heap;<span class="comment">//优先队列</span></span><br><span class="line">    heap.<span class="built_in">push</span>(&#123;<span class="number">0</span>,<span class="number">1</span>&#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(heap.<span class="built_in">size</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> t=heap.<span class="built_in">top</span>();heap.<span class="built_in">pop</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> distance=t.first,ver=t.second;</span><br><span class="line">        <span class="keyword">if</span>(st[ver]) <span class="keyword">continue</span>;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=h[ver];i!=<span class="number">-1</span>;i=ne[i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> j=e[i];</span><br><span class="line">            <span class="keyword">if</span>(dis[j]&gt;distance+w[i])</span><br><span class="line">            &#123;</span><br><span class="line">                dis[j]=distance+w[i];</span><br><span class="line">                heap.<span class="built_in">push</span>(&#123;dis[j],j&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        st[ver]=<span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dis[n]==<span class="number">0x3f3f3f3f</span>?<span class="number">-1</span>:dis[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">memset</span>(h,<span class="number">-1</span>,<span class="built_in">sizeof</span>(h));</span><br><span class="line">    <span class="keyword">while</span>(m--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> a,b,c;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        <span class="built_in">add</span>(a,b,c);</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">dijkstra</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="bellman—ford算法"><a href="#bellman—ford算法" class="headerlink" title="bellman—ford算法"></a>bellman—ford算法</h3><p>Bellman - ford 算法是求含负权图的单源最短路径的一种算法，效率较低，代码难度较小。其原理为连续进行松弛，在每次松弛时把每条边都更新一下，若在 n-1 次松弛后还能更新，则说明图中有负环，因此无法得出结果，否则就完成。</p>
+<p>时间复杂度为O（nm）。代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">5e2</span>+<span class="number">10</span>,M=<span class="number">1e4</span>+<span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> n,m,k;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Edge</span>&#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line">    <span class="type">int</span> c;</span><br><span class="line">&#125;e[M];</span><br><span class="line"><span class="type">int</span> dis[N];</span><br><span class="line"><span class="type">int</span> back[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bellman_ford</span><span class="params">()</span></span>&#123;</span><br><span class="line">    dis[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;k;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(back,dis,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;m;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> a=e[j].a,b=e[j].b,c=e[j].c;</span><br><span class="line">            dis[b]=<span class="built_in">min</span>(dis[b],back[a]+c);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dis[n]&gt;<span class="number">0x3f3f3f3f</span>/<span class="number">2</span> ? <span class="number">-100</span>: dis[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;m;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> a,b,c;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        e[i]=&#123;a,b,c&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> res=<span class="built_in">bellman_ford</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(res!=<span class="number">-100</span>)cout&lt;&lt;res;</span><br><span class="line">    <span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;impossible&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SPFA算法"><a href="#SPFA算法" class="headerlink" title="SPFA算法"></a>SPFA算法</h3><p>其实关于spfa算法，还有一段婉转镌刻的故事（bushi，详情各位自行百度。</p>
+<p>spfa算法其实是Bellman—ford的队列优化形式，常用于求含负权边的单源最短路径，以及判断负环。优化过的情况下，一般的时间复杂度为O(m),但是在最坏情况下，其实是与朴素版Bellman—ford算法一样的复杂度。</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N =<span class="number">1e5</span>+<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> dis[N],h[N],e[N],ne[N],w[N],idx;</span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"><span class="type">bool</span> st[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> c)</span></span>&#123;</span><br><span class="line">    e[idx]=b,ne[idx]=h[a],w[idx]=c,h[a]=idx++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">spfa</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(dis));</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">    dis[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    q.<span class="built_in">push</span>(<span class="number">1</span>);</span><br><span class="line">    st[<span class="number">1</span>]=<span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(q.<span class="built_in">size</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> t=q.<span class="built_in">front</span>();</span><br><span class="line">        q.<span class="built_in">pop</span>();</span><br><span class="line">        </span><br><span class="line">        st[t]=<span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=h[t];i!=<span class="number">-1</span>;i=ne[i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> j=e[i];</span><br><span class="line">            <span class="keyword">if</span>(dis[j]&gt;dis[t]+w[i])</span><br><span class="line">            &#123;</span><br><span class="line">                dis[j]=dis[t]+w[i];</span><br><span class="line">                <span class="keyword">if</span>(!st[j])</span><br><span class="line">                &#123;</span><br><span class="line">                    q.<span class="built_in">push</span>(j);</span><br><span class="line">                    st[j]=<span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dis[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">memset</span>(h,<span class="number">-1</span>,<span class="built_in">sizeof</span>(h));</span><br><span class="line">    <span class="keyword">while</span>(m--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> a,b,c;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        <span class="built_in">add</span>(a,b,c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> res=<span class="built_in">spfa</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(res!=<span class="number">0x3f3f3f3f</span>)cout&lt;&lt;res;</span><br><span class="line">    <span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;impossible&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>值得一提的是，在有边数限制的情况下，spfa算法是最好的选择。</p>
+
+      
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>武田晴海<br>
+        <strong>Link：</strong><a href="http://example.com/2022/08/15/%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;08&#x2F;15&#x2F;%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;08&#x2F;15&#x2F;%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C++%EF%BC%89&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E8%AE%BA%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%9A%84%E5%87%A0%E7%A7%8D%E7%AE%97%E6%B3%95%E5%88%A8%E6%9E%90%E5%8F%8A%E6%AF%94%E8%BE%83%EF%BC%88C-%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">图论最短路的几种算法刨析及比较（C++）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">单源最短路算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%B4%E7%B4%A0dijkstra%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.1.</span> <span class="toc-text">朴素dijkstra算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E4%BC%98%E5%8C%96%E7%89%88dijkstra%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.2.</span> <span class="toc-text">堆优化版dijkstra算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bellman%E2%80%94ford%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.3.</span> <span class="toc-text">bellman—ford算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPFA%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.4.</span> <span class="toc-text">SPFA算法</span></a></li></ol></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="Search"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/justifiedGallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1662087935523"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+</body>
+
+</html>
