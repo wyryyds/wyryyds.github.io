@@ -28,13 +28,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662118765052">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662118985284">
     
-    <link rel="stylesheet" href="/css/style.css?v=1662118765052">
+    <link rel="stylesheet" href="/css/style.css?v=1662118985284">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1662118765052">
+            <link rel="stylesheet" href="/custom.css?v=1662118985284">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -349,106 +349,106 @@
 <p>在我们的项目里面，我们想要共享的是什么呢？我们希望共享这些相同mesh跟materials，并且减少我们的预制体数量，对于不同PRS的同类游戏物体，我们仅需要保存它们最简单的预制体，其余所有的信息都由我们加载出来，并且这样的加载速度是会比直接加载快好几倍的。</p>
 <p>以下是代码实现：</p>
 <p>首先我们定义我们的场景元素集合</p>
-<pre><code class="c#">```csharp
+<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">&#96;&#96;&#96;csharp
 using System;
 using UnityEngine;
 
 namespace FlyWeightPattern.Scripts
 &#123;
     [Serializable]
-    public struct ObjectFlyweightData //享元部分
+    public struct ObjectFlyweightData &#x2F;&#x2F;享元部分
     &#123;
-        public Mesh mesh;//相同的mesh在导入模型后自然就只存在一份，享元中的共享就体现在这里
-        public Material[] materials;//这里的材质也是一样的，仅存在一份，这是由模型资源决定的
+        public Mesh mesh;&#x2F;&#x2F;相同的mesh在导入模型后自然就只存在一份，享元中的共享就体现在这里
+        public Material[] materials;&#x2F;&#x2F;这里的材质也是一样的，仅存在一份，这是由模型资源决定的
     &#125;
 
     [Serializable]
     public struct SceneObject
     &#123;
         public ObjectFlyweightData flyweightData;
-        public Matrix4x4 matrix; //4x矩阵，可以直接将PRS信息存储下来，unity的4x矩阵是按列优先填充，但其实访问的索引依然是行列。
+        public Matrix4x4 matrix; &#x2F;&#x2F;4x矩阵，可以直接将PRS信息存储下来，unity的4x矩阵是按列优先填充，但其实访问的索引依然是行列。
         public string name;
     &#125;
-    /// &lt;summary&gt;
-    /// 场景中元素的数据
-    /// &lt;/summary&gt;
+    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+    &#x2F;&#x2F;&#x2F; 场景中元素的数据
+    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
     public class SceneObjectGroup : ScriptableObject
     &#123;
         public SceneObject[] SceneObjects; 
     &#125;
 
 &#125;
-```
-</code></pre>
+&#96;&#96;&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>接着我们利用矩阵加载我们的PRS信息：</p>
-<pre><code class="c#">using UnityEngine;
+<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using UnityEngine;
 
 namespace FlyWeightPattern
 &#123;
-    /// &lt;summary&gt;
-    /// 拓展方法类
-    /// &lt;/summary&gt;
+    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+    &#x2F;&#x2F;&#x2F; 拓展方法类
+    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
     public static class Matrix
     &#123;
-        /// &lt;summary&gt;
-        /// 拓展方法：获取旋转信息
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;matrix&quot;&gt;&lt;/param&gt;
-        /// &lt;returns&gt;&lt;/returns&gt;
+        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+        &#x2F;&#x2F;&#x2F; 拓展方法：获取旋转信息
+        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
+        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;matrix&quot;&gt;&lt;&#x2F;param&gt;
+        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
         public static Quaternion ExtractRotation(this Matrix4x4 matrix)
         &#123;
             Vector3 forward;
-            forward.x = matrix.m02;
-            forward.y = matrix.m12;
-            forward.z = matrix.m22;
+            forward.x &#x3D; matrix.m02;
+            forward.y &#x3D; matrix.m12;
+            forward.z &#x3D; matrix.m22;
 
             Vector3 upwards;
-            upwards.x = matrix.m01;
-            upwards.y = matrix.m11;
-            upwards.z = matrix.m21;
+            upwards.x &#x3D; matrix.m01;
+            upwards.y &#x3D; matrix.m11;
+            upwards.z &#x3D; matrix.m21;
 
-            return Quaternion.LookRotation(forward, upwards);//LookRotation同时使用forward和upward两个参数的时候，就相当于指定了vz和vy两个向量，
-                                                             //根据这两个向量可以直接算出对应的vx，然后再用这三个向量去set对应的3×3旋转矩阵的列向量
-                                                             //即可获得一个旋转矩阵，再接着可以将其转换到四元数。
+            return Quaternion.LookRotation(forward, upwards);&#x2F;&#x2F;LookRotation同时使用forward和upward两个参数的时候，就相当于指定了vz和vy两个向量，
+                                                             &#x2F;&#x2F;根据这两个向量可以直接算出对应的vx，然后再用这三个向量去set对应的3×3旋转矩阵的列向量
+                                                             &#x2F;&#x2F;即可获得一个旋转矩阵，再接着可以将其转换到四元数。
         &#125;
-        /// &lt;summary&gt;
-        /// 拓展方法：获取位置信息
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;matrix&quot;&gt;&lt;/param&gt;
-        /// &lt;returns&gt;&lt;/returns&gt;
+        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+        &#x2F;&#x2F;&#x2F; 拓展方法：获取位置信息
+        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
+        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;matrix&quot;&gt;&lt;&#x2F;param&gt;
+        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
         public static Vector3 ExtractPosition(this Matrix4x4 matrix)
         &#123;
             Vector3 position;
-            position.x = matrix.m03;
-            position.y = matrix.m13;
-            position.z = matrix.m23;
+            position.x &#x3D; matrix.m03;
+            position.y &#x3D; matrix.m13;
+            position.z &#x3D; matrix.m23;
             return position;
         &#125;
         
-        /// &lt;summary&gt;
-        /// 拓展方法：获取缩放信息
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;matrix&quot;&gt;&lt;/param&gt;
-        /// &lt;returns&gt;&lt;/returns&gt;
+        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+        &#x2F;&#x2F;&#x2F; 拓展方法：获取缩放信息
+        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
+        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;matrix&quot;&gt;&lt;&#x2F;param&gt;
+        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
         public static Vector3 ExtractScale(this Matrix4x4 matrix)
         &#123;
-            Vector3 scale = new Vector3(
+            Vector3 scale &#x3D; new Vector3(
                 matrix.GetColumn(0).magnitude,
                 matrix.GetColumn(1).magnitude,
                 matrix.GetColumn(2).magnitude
             );
-            //叉乘判断
-            if (Vector3.Cross(matrix.GetColumn(0), matrix.GetColumn(1)).normalized != (Vector3)matrix.GetColumn(2).normalized)
+            &#x2F;&#x2F;叉乘判断
+            if (Vector3.Cross(matrix.GetColumn(0), matrix.GetColumn(1)).normalized !&#x3D; (Vector3)matrix.GetColumn(2).normalized)
             &#123;
-                scale.x *= -1;
+                scale.x *&#x3D; -1;
             &#125;
             return scale;
         &#125;
     &#125;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>编写加载的代码：</p>
-<pre><code class="c#">using System;
+<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -459,134 +459,134 @@ namespace FlyWeightPattern.Scripts
     &#123;
         [SerializeField]
         public SceneObjectGroup sceneObjectGroup;
-        public int batchCount = 10; //合批数量
+        public int batchCount &#x3D; 10; &#x2F;&#x2F;合批数量
 
 
-        private GameObject _Root; //父节点
+        private GameObject _Root; &#x2F;&#x2F;父节点
 
 
         private void Awake()
         &#123;
             StartCoroutine(StartGenerate());
         &#125;
-        /// &lt;summary&gt;
-        /// 加载场景的协程
-        /// &lt;/summary&gt;
-        /// &lt;returns&gt;&lt;/returns&gt;
+        &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+        &#x2F;&#x2F;&#x2F; 加载场景的协程
+        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
+        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;
         private IEnumerator StartGenerate()
         &#123;
-            int initCount = 0;
-            int totalCount = 0;
+            int initCount &#x3D; 0;
+            int totalCount &#x3D; 0;
 
-            if (_Root != null)
+            if (_Root !&#x3D; null)
             &#123;
                 GameObject.Destroy(_Root);
             &#125;
-            _Root = new GameObject(&quot;root&quot;);
+            _Root &#x3D; new GameObject(&quot;root&quot;);
 
             while (initCount &lt; batchCount)
             &#123;
                 initCount++;
                 yield return null;
-                var sceneObjects = sceneObjectGroup.SceneObjects[totalCount];
-                var go = new GameObject(sceneObjects.name);
+                var sceneObjects &#x3D; sceneObjectGroup.SceneObjects[totalCount];
+                var go &#x3D; new GameObject(sceneObjects.name);
 
-                MeshRenderer renderer = go.AddComponent&lt;MeshRenderer&gt;();
-                MeshFilter filter = go.AddComponent&lt;MeshFilter&gt;();
-                MeshCollider meshCollider = go.AddComponent&lt;MeshCollider&gt;();
+                MeshRenderer renderer &#x3D; go.AddComponent&lt;MeshRenderer&gt;();
+                MeshFilter filter &#x3D; go.AddComponent&lt;MeshFilter&gt;();
+                MeshCollider meshCollider &#x3D; go.AddComponent&lt;MeshCollider&gt;();
 
-                renderer.sharedMaterials = sceneObjects.flyweightData.materials;
-                go.transform.rotation = sceneObjects.matrix.ExtractRotation();
-                go.transform.position = sceneObjects.matrix.ExtractPosition();
-                go.transform.localScale = sceneObjects.matrix.ExtractScale();
+                renderer.sharedMaterials &#x3D; sceneObjects.flyweightData.materials;
+                go.transform.rotation &#x3D; sceneObjects.matrix.ExtractRotation();
+                go.transform.position &#x3D; sceneObjects.matrix.ExtractPosition();
+                go.transform.localScale &#x3D; sceneObjects.matrix.ExtractScale();
                 go.transform.SetParent(_Root.transform, true);
-                filter.mesh = sceneObjects.flyweightData.mesh;
-                meshCollider.sharedMesh = sceneObjects.flyweightData.mesh;
+                filter.mesh &#x3D; sceneObjects.flyweightData.mesh;
+                meshCollider.sharedMesh &#x3D; sceneObjects.flyweightData.mesh;
                 totalCount++;
 
-                if (totalCount &gt;= sceneObjectGroup.SceneObjects.Length) break;
+                if (totalCount &gt;&#x3D; sceneObjectGroup.SceneObjects.Length) break;
 
-                if (initCount == batchCount)initCount = 0;
+                if (initCount &#x3D;&#x3D; batchCount)initCount &#x3D; 0;
                 
             &#125;
         &#125;
 
     &#125;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>写一个编辑器面板的生成面板：</p>
-<pre><code class="c#">using System;
+<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using System;
 using System.Collections;
 using UnityEngine;
 
 namespace FlyWeightPattern.Scripts
 &#123;
-    /// &lt;summary&gt;
-    ///用于创建场景元素资源的存储数据
-    /// &lt;/summary&gt;
+    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+    &#x2F;&#x2F;&#x2F;用于创建场景元素资源的存储数据
+    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
     public class FlyWeightSceneSaver : MonoBehaviour
     &#123;
 
     &#125;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>编辑器及读取数据：</p>
-<pre><code class="c#">using System.Collections.Generic;
+<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using System.Collections.Generic;
 using FlyWeightPattern.Scripts;
 using UnityEditor;
 using UnityEngine;
 
 namespace FlyWeightPattern.ScriptsEditor
 &#123;
-    /// &lt;summary&gt;
-    /// 创建编辑器面板
-    /// &lt;/summary&gt;
+    &#x2F;&#x2F;&#x2F; &lt;summary&gt;
+    &#x2F;&#x2F;&#x2F; 创建编辑器面板
+    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;
     [CustomEditor(typeof(FlyWeightSceneSaver))]
     public class FlyWeightSceneSaverEditor : Editor
     &#123;
         public override void OnInspectorGUI()
         &#123;
-            FlyWeightSceneSaver saver = target as FlyWeightSceneSaver;
+            FlyWeightSceneSaver saver &#x3D; target as FlyWeightSceneSaver;
             if (GUILayout.Button(&quot;生成&quot;))
             &#123;
 
-                SceneObjectGroup sceneObjectGroup = ScriptableObject.CreateInstance&lt;SceneObjectGroup&gt;();//创建数据
-                MeshRenderer[] list = GameObject.FindObjectsOfType&lt;MeshRenderer&gt;(true);
-                if (list.Length == 0)
+                SceneObjectGroup sceneObjectGroup &#x3D; ScriptableObject.CreateInstance&lt;SceneObjectGroup&gt;();&#x2F;&#x2F;创建数据
+                MeshRenderer[] list &#x3D; GameObject.FindObjectsOfType&lt;MeshRenderer&gt;(true);
+                if (list.Length &#x3D;&#x3D; 0)
                 &#123;
                     EditorUtility.DisplayDialog(&quot;Sorrry&quot;, &quot;你没有选中任何包含预制体的物体&quot;, &quot;重选&quot;);
                     return;
                 &#125;
-                List&lt;SceneObject&gt; sceneObjects = new List&lt;SceneObject&gt;();
+                List&lt;SceneObject&gt; sceneObjects &#x3D; new List&lt;SceneObject&gt;();
                 foreach (MeshRenderer meshRenderer in list)
                 &#123;
-                    MeshFilter filter = meshRenderer.gameObject.GetComponent&lt;MeshFilter&gt;();
-                    var transform = meshRenderer.transform;
-                    var matrix = transform.localToWorldMatrix;
-                    ObjectFlyweightData flyweightData = new ObjectFlyweightData()
+                    MeshFilter filter &#x3D; meshRenderer.gameObject.GetComponent&lt;MeshFilter&gt;();
+                    var transform &#x3D; meshRenderer.transform;
+                    var matrix &#x3D; transform.localToWorldMatrix;
+                    ObjectFlyweightData flyweightData &#x3D; new ObjectFlyweightData()
                     &#123;
-                        materials = meshRenderer.sharedMaterials,
-                        mesh = filter.sharedMesh,
+                        materials &#x3D; meshRenderer.sharedMaterials,
+                        mesh &#x3D; filter.sharedMesh,
                     &#125;;
                     sceneObjects.Add(new SceneObject()
                     &#123;
-                        flyweightData = flyweightData,
-                        matrix = matrix,
-                        name = meshRenderer.name,
+                        flyweightData &#x3D; flyweightData,
+                        matrix &#x3D; matrix,
+                        name &#x3D; meshRenderer.name,
                     &#125;);
 
                 &#125;
 
-                sceneObjectGroup.SceneObjects = sceneObjects.ToArray();
-                AssetDatabase.CreateAsset(sceneObjectGroup, &quot;Assets/FlyWeightPattern/sceneObjGroup.asset&quot;);
+                sceneObjectGroup.SceneObjects &#x3D; sceneObjects.ToArray();
+                AssetDatabase.CreateAsset(sceneObjectGroup, &quot;Assets&#x2F;FlyWeightPattern&#x2F;sceneObjGroup.asset&quot;);
                 AssetDatabase.Refresh();
 
 
             &#125;
         &#125;
     &#125;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>至此我们就完成拉！快快写到你的项目里面去试试吧！</p>
 
       
@@ -670,7 +670,7 @@ namespace FlyWeightPattern.ScriptsEditor
 
  
 
-<script async src="/js/app.js?v=1662118765056"></script>
+<script async src="/js/app.js?v=1662118985290"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 

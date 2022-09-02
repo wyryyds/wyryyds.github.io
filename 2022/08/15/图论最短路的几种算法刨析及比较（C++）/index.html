@@ -30,13 +30,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662118765057">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1662118985292">
     
-    <link rel="stylesheet" href="/css/style.css?v=1662118765057">
+    <link rel="stylesheet" href="/css/style.css?v=1662118985292">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1662118765057">
+            <link rel="stylesheet" href="/custom.css?v=1662118985292">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -350,57 +350,57 @@
 <p>比如下图，我们想从A点走到C点，dijkstra算法会选择直接从A走到C，而不会考虑A-&gt;B-&gt;C这条路。因为它只会考虑局部最优解，但在存在负值边的情况下，局部最优解并不是全局最优解！</p>
 <p><img data-fancybox="gallery" src="E:\图片\QQ截图20220820213142.png" alt="QQ截图20220820213142" data-caption="QQ截图20220820213142" loading="lazy"></p>
 <p>代码如下，题目参考acwing849.</p>
-<pre><code class="c++"> #include&lt;iostream&gt;
- #include &lt;cstring&gt;
- #include&lt;cstdio&gt;
- using namespace std;
- const int N=510;
- int g[N][N],dist[N],n,m;
- bool st[N];
- int Dijkstra()&#123;
-     memset(dist,0x3f,sizeof dist);
-     dist[1]=0;
-     
-     for(int i=0;i&lt;n;i++)&#123;    //n次迭代    覆盖到所有结点 
-         int t=n+1;
-         for(int j=1;j&lt;=n;j++)&#123;    //找出未确定节点中距离最短的一个 
-             if(!st[j]&amp;&amp;dist[t]&gt;dist[j])
-             t=j;
-         &#125;
-        st[t]=true;
-        //利用该节点进行更新
-        for(int j=1;j&lt;=n;j++)&#123;
-            if(dist[j]&gt;dist[t]+g[t][j])
-            &#123;
-                dist[j]=dist[t]+g[t][j];
-            &#125;
-        &#125;
-     &#125;
-     if(dist[n]==0x3f3f3f3f)    return -1;
-     return dist[n];
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;iostream&gt;
+#include &lt;cstring&gt;
+#include&lt;cstdio&gt;
+using namespace std;
+const int N&#x3D;510;
+int g[N][N],dist[N],n,m;
+bool st[N];
+int Dijkstra()&#123;
+	memset(dist,0x3f,sizeof dist);
+	dist[1]&#x3D;0;
+	
+	for(int i&#x3D;0;i&lt;n;i++)&#123;	&#x2F;&#x2F;n次迭代	覆盖到所有结点 
+		int t&#x3D;n+1;
+		for(int j&#x3D;1;j&lt;&#x3D;n;j++)&#123;	&#x2F;&#x2F;找出未确定节点中距离最短的一个 
+			if(!st[j]&amp;&amp;dist[t]&gt;dist[j])
+			t&#x3D;j;
+	 &#125;
+	st[t]&#x3D;true;
+	&#x2F;&#x2F;利用该节点进行更新
+	for(int j&#x3D;1;j&lt;&#x3D;n;j++)&#123;
+		if(dist[j]&gt;dist[t]+g[t][j])
+		&#123;
+			dist[j]&#x3D;dist[t]+g[t][j];
+		&#125;
+	&#125;
  &#125;
- 
- int main()&#123;
-     cin&gt;&gt;n&gt;&gt;m;
-     memset(g,0x3f,sizeof g);
-     while(m--)&#123;
-         int x,y,z;
-         cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;
-         if(g[x][y]&gt;z)g[x][y]=z;
-     &#125;
-     cout&lt;&lt;Dijkstra()&lt;&lt;endl;
-     return 0;
+ if(dist[n]&#x3D;&#x3D;0x3f3f3f3f)	return -1;
+ return dist[n];
+&#125;
+
+int main()&#123;
+	cin&gt;&gt;n&gt;&gt;m;
+	memset(g,0x3f,sizeof g);
+	while(m--)&#123;
+		int x,y,z;
+		cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;
+		if(g[x][y]&gt;z)g[x][y]&#x3D;z;
  &#125;
-</code></pre>
+ cout&lt;&lt;Dijkstra()&lt;&lt;endl;
+ return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>从核心步骤的迭代我们可以看出，朴素版dijkstra算法的时间复杂度是O(n^2)。</p>
 <h3 id="堆优化版dijkstra算法"><a href="#堆优化版dijkstra算法" class="headerlink" title="堆优化版dijkstra算法"></a>堆优化版dijkstra算法</h3><p>即运用堆排序来加快找边的速度，使算法总体时间复杂度达到O（（n+m）logm）。总的来说，就是把图中所有边都压入一个最小堆（即根节点的值最小的堆）中，每次可以直接取堆顶元素入最短路，取边的时间复杂度为O（1），但维护最小堆的时间复杂度为O（log m)。</p>
 <p>代码如下：</p>
-<pre><code class="c++">#include&lt;bits/stdc++.h&gt;
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits&#x2F;stdc++.h&gt;
 using namespace std;
 
 typedef pair&lt;int,int&gt; PII;
 
-const int N = 1e5+5e4+10;
+const int N &#x3D; 1e5+5e4+10;
 
 int h[N],w[N],e[N],ne[N],idx;
 int dis[N];
@@ -408,35 +408,35 @@ bool st[N];
 int n,m;
 
 void add(int a,int b,int c)&#123;
-    e[idx]=b,w[idx]=c,ne[idx]=h[a];h[a]=idx++;
+    e[idx]&#x3D;b,w[idx]&#x3D;c,ne[idx]&#x3D;h[a];h[a]&#x3D;idx++;
 &#125;
 
 int dijkstra()&#123;
     memset(dis,0x3f,sizeof(dis));
-    dis[1]=0;
-    priority_queue&lt;PII,vector&lt;PII&gt;,greater&lt;PII&gt; &gt; heap;//优先队列
+    dis[1]&#x3D;0;
+    priority_queue&lt;PII,vector&lt;PII&gt;,greater&lt;PII&gt; &gt; heap;&#x2F;&#x2F;优先队列
     heap.push(&#123;0,1&#125;);
     
     while(heap.size())
     &#123;
-        auto t=heap.top();heap.pop();
+        auto t&#x3D;heap.top();heap.pop();
         
-        int distance=t.first,ver=t.second;
+        int distance&#x3D;t.first,ver&#x3D;t.second;
         if(st[ver]) continue;
             
-        for(int i=h[ver];i!=-1;i=ne[i])
+        for(int i&#x3D;h[ver];i!&#x3D;-1;i&#x3D;ne[i])
         &#123;
-            int j=e[i];
+            int j&#x3D;e[i];
             if(dis[j]&gt;distance+w[i])
             &#123;
-                dis[j]=distance+w[i];
+                dis[j]&#x3D;distance+w[i];
                 heap.push(&#123;dis[j],j&#125;);
             &#125;
             
         &#125;
-        st[ver]=true;
+        st[ver]&#x3D;true;
     &#125;
-    return dis[n]==0x3f3f3f3f?-1:dis[n];
+    return dis[n]&#x3D;&#x3D;0x3f3f3f3f?-1:dis[n];
 &#125;
 
 int main(void)&#123;
@@ -451,14 +451,14 @@ int main(void)&#123;
     &#125;
     cout&lt;&lt;dijkstra();
     return 0;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="bellman—ford算法"><a href="#bellman—ford算法" class="headerlink" title="bellman—ford算法"></a>bellman—ford算法</h3><p>Bellman - ford 算法是求含负权图的单源最短路径的一种算法，效率较低，代码难度较小。其原理为连续进行松弛，在每次松弛时把每条边都更新一下，若在 n-1 次松弛后还能更新，则说明图中有负环，因此无法得出结果，否则就完成。</p>
 <p>时间复杂度为O（nm）。代码如下：</p>
-<pre><code class="c++">#include&lt;bits/stdc++.h&gt;
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits&#x2F;stdc++.h&gt;
 using namespace std;
 
-const int N=5e2+10,M=1e4+10;
+const int N&#x3D;5e2+10,M&#x3D;1e4+10;
 int n,m,k;
 
 struct Edge&#123;
@@ -470,17 +470,17 @@ int dis[N];
 int back[N];
 
 int bellman_ford()&#123;
-    dis[1]=0;
-    for(int i=0;i&lt;k;i++)
+    dis[1]&#x3D;0;
+    for(int i&#x3D;0;i&lt;k;i++)
     &#123;
         memcpy(back,dis,sizeof(dis));
-        for(int j=0;j&lt;m;j++)
+        for(int j&#x3D;0;j&lt;m;j++)
         &#123;
-            int a=e[j].a,b=e[j].b,c=e[j].c;
-            dis[b]=min(dis[b],back[a]+c);
+            int a&#x3D;e[j].a,b&#x3D;e[j].b,c&#x3D;e[j].c;
+            dis[b]&#x3D;min(dis[b],back[a]+c);
         &#125;
     &#125;
-    return dis[n]&gt;0x3f3f3f3f/2 ? -100: dis[n];
+    return dis[n]&gt;0x3f3f3f3f&#x2F;2 ? -100: dis[n];
 &#125;
 
 int main(void)
@@ -488,60 +488,60 @@ int main(void)
     cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;
     memset(dis,0x3f,sizeof(dis));
     
-    for(int i=0;i&lt;m;i++)
+    for(int i&#x3D;0;i&lt;m;i++)
     &#123;
         int a,b,c;
         cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;
-        e[i]=&#123;a,b,c&#125;;
+        e[i]&#x3D;&#123;a,b,c&#125;;
     &#125;
     
-    int res=bellman_ford();
+    int res&#x3D;bellman_ford();
     
-    if(res!=-100)cout&lt;&lt;res;
+    if(res!&#x3D;-100)cout&lt;&lt;res;
     else cout&lt;&lt;&quot;impossible&quot;;
     
     return 0;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="SPFA算法"><a href="#SPFA算法" class="headerlink" title="SPFA算法"></a>SPFA算法</h3><p>其实关于spfa算法，还有一段婉转镌刻的故事（bushi，详情各位自行百度。</p>
 <p>spfa算法其实是Bellman—ford的队列优化形式，常用于求含负权边的单源最短路径，以及判断负环。优化过的情况下，一般的时间复杂度为O(m),但是在最坏情况下，其实是与朴素版Bellman—ford算法一样的复杂度。</p>
 <p>代码如下：</p>
-<pre><code class="c++">#include&lt;bits/stdc++.h&gt;
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;bits&#x2F;stdc++.h&gt;
 using namespace std;
 
-const int N =1e5+10;
+const int N &#x3D;1e5+10;
 
 int dis[N],h[N],e[N],ne[N],w[N],idx;
 int n,m;
 bool st[N];
 
 void add(int a,int b,int c)&#123;
-    e[idx]=b,ne[idx]=h[a],w[idx]=c,h[a]=idx++;
+    e[idx]&#x3D;b,ne[idx]&#x3D;h[a],w[idx]&#x3D;c,h[a]&#x3D;idx++;
 &#125;
 
 int spfa()&#123;
     memset(dis,0x3f,sizeof(dis));
     queue&lt;int&gt;q;
-    dis[1]=0;
+    dis[1]&#x3D;0;
     q.push(1);
-    st[1]=true;
+    st[1]&#x3D;true;
     
     while(q.size())
     &#123;
-        int t=q.front();
+        int t&#x3D;q.front();
         q.pop();
         
-        st[t]=false;
-        for(int i=h[t];i!=-1;i=ne[i])
+        st[t]&#x3D;false;
+        for(int i&#x3D;h[t];i!&#x3D;-1;i&#x3D;ne[i])
         &#123;
-            int j=e[i];
+            int j&#x3D;e[i];
             if(dis[j]&gt;dis[t]+w[i])
             &#123;
-                dis[j]=dis[t]+w[i];
+                dis[j]&#x3D;dis[t]+w[i];
                 if(!st[j])
                 &#123;
                     q.push(j);
-                    st[j]=true;
+                    st[j]&#x3D;true;
                 &#125;
             &#125;
         &#125;
@@ -560,14 +560,14 @@ int main(void)&#123;
         cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;
         add(a,b,c);
     &#125;
-    int res=spfa();
+    int res&#x3D;spfa();
 
-    if(res!=0x3f3f3f3f)cout&lt;&lt;res;
+    if(res!&#x3D;0x3f3f3f3f)cout&lt;&lt;res;
     else cout&lt;&lt;&quot;impossible&quot;;
     
     return 0;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>值得一提的是，在有边数限制的情况下，spfa算法是最好的选择。</p>
 
       
@@ -651,7 +651,7 @@ int main(void)&#123;
 
  
 
-<script async src="/js/app.js?v=1662118765061"></script>
+<script async src="/js/app.js?v=1662118985298"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
