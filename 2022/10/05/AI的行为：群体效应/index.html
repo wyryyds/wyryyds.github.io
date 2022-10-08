@@ -18,7 +18,7 @@
 <meta property="og:description" content="群体通过狭窄通道AI的模拟毫无疑问会涉及到群体的状态。想象一下你的生活： 地铁的先下后上，井然有序的城市交通，排队做核酸……这些看似很平常的一切（当然也许若干年后再也不会有排队核酸的说法），在AI里面可能并不简单。人的行为是不可定义的，你不能保证乘地铁时不会遇到素质低的人挤着人群先冲进去，城市的交通也会有车祸，排队的核酸也会有人插队。然而对于AI的行为，我们却是希望他能保证在定义的范围之内。当然这">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-10-05T15:37:05.584Z">
-<meta property="article:modified_time" content="2022-10-07T09:32:45.560Z">
+<meta property="article:modified_time" content="2022-10-07T12:26:54.130Z">
 <meta property="article:author" content="武田晴海">
 <meta property="article:tag" content="Unity">
 <meta property="article:tag" content="AI">
@@ -29,13 +29,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1665135191875">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1665216679582">
     
-    <link rel="stylesheet" href="/css/style.css?v=1665135191875">
+    <link rel="stylesheet" href="/css/style.css?v=1665216679582">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1665135191875">
+            <link rel="stylesheet" href="/custom.css?v=1665216679582">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -60,7 +60,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>Articles</span>8</div>
+        <div><span>Articles</span>9</div>
         <div><span>Tags</span>11</div>
         <div><span>Categories</span>5</div>
     </div>
@@ -183,7 +183,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/AI/">AI</a>
-          <span class="category-list-count">2</span>
+          <span class="category-list-count">3</span>
         </li>
 
         
@@ -296,7 +296,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">Archive</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">8</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
@@ -309,6 +309,10 @@
     <h3 class="nexmoe-widget-title">Recent Posts</h3>
     <div class="nexmoe-widget">
       <ul>
+        
+          <li>
+            <a href="/2022/10/08/%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F/">游戏AI：个体的追逐，躲避，徘徊与路径跟随</a>
+          </li>
         
           <li>
             <a href="/2022/10/07/AI%E3%80%8A%E6%B8%B8%E6%88%8F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B%E7%B2%BE%E7%B2%B9%E3%80%8B%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93/">AI:《游戏人工智能编程案例精粹》阅读总结</a>
@@ -324,10 +328,6 @@
         
           <li>
             <a href="/2022/09/28/%E9%9A%8F%E6%9C%BA%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95%EF%BC%88%E8%BF%B7%E5%AE%AB%EF%BC%89/">随机地图生成算法（迷宫）</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/15/A%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/">A*寻路算法</a>
           </li>
         
       </ul>
@@ -368,9 +368,7 @@
 <p>出于学习的目的，我们还是应该试着去实现这种排队这种效果的模拟，并且在场景它也是有用处的，比如NPC通过通道涌入某个大厅区域，我们当然还是希望他们更自然地一个一个通过通道。</p>
 <p>我们已经知道，AI的行为实现依赖于我们编写的操控行为，而通道的排队通过行为的操纵行为其实也很简单，就是靠近与躲避：靠近目的地，躲开彼此防止拥挤。</p>
 <p>首先，角色要确定自己的前方是否有其他AI角色，以此来判断自己是前进还是留在原地。计算角色前方的ahead点，如果这个点与某个AI的角色距离小于一个值（Queue_Radius），那么表示这个角色的前方有其他角色，必须减速或者等待。</p>
-<p>ahead的计算：</p>
-<p>qa=normalize(velocity)*Max_Queue_Ahead</p>
-<p>ahead=qa+position</p>
+<p>ahead的计算：                                                                       qa=normalize(velocity)*Max_Queue_Ahead                                                              ahead=qa+position</p>
 
       
   </article>
@@ -453,7 +451,7 @@
 
  
 
-<script async src="/js/app.js?v=1665135191876"></script>
+<script async src="/js/app.js?v=1665216679583"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 

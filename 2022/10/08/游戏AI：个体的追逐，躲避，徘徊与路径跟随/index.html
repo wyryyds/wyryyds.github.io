@@ -4,23 +4,24 @@
 
 <head>
     
-    <title>tags - 武田晴海</title>
+    <title>游戏AI：个体的追逐，躲避，徘徊与路径跟随 - 武田晴海</title>
     <meta charset="UTF-8">
     <meta name="keywords" content="C# Unity">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
     
     <link rel="shortcut icon" href="https://s1.328888.xyz/2022/09/02/kBYis.jpg" type="image/x-icon" />
-    <meta name="description" content="哈喽，这里是Cornelius，你可以叫我海子，这是一个专注于游戏开发的技术博客网站，很高兴能跟你分享一些我的笔记与技术交流，如果您有任何的疑惑或者问题，欢迎来信我的邮箱：2857970654@qq.com,很高兴与你的这次相遇！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://example.com/tags/index.html">
+    <meta name="description" content="个体的简单进阶行为1.追逐行为追逐这一行为我们应该用动态的眼光去看待。靠近是朝着目标的位置进行移动，但是追逐不能这样，我们都有这样的一种感觉，那就是当你追着别人的时候你总是非常敏锐地想要朝着目标下一段时间将要抵达的位置进行移动。预测目标的未来位置，就是追逐的核心。 预测器的实现假设物体是匀速直线运动，那么他的下一刻位置就等于这一刻位置加上这一刻的速度乘以时间，假设采用一个线性预测器，又假设在T时间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="游戏AI：个体的追逐，躲避，徘徊与路径跟随">
+<meta property="og:url" content="http://example.com/2022/10/08/%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F/index.html">
 <meta property="og:site_name" content="武田晴海">
-<meta property="og:description" content="哈喽，这里是Cornelius，你可以叫我海子，这是一个专注于游戏开发的技术博客网站，很高兴能跟你分享一些我的笔记与技术交流，如果您有任何的疑惑或者问题，欢迎来信我的邮箱：2857970654@qq.com,很高兴与你的这次相遇！">
+<meta property="og:description" content="个体的简单进阶行为1.追逐行为追逐这一行为我们应该用动态的眼光去看待。靠近是朝着目标的位置进行移动，但是追逐不能这样，我们都有这样的一种感觉，那就是当你追着别人的时候你总是非常敏锐地想要朝着目标下一段时间将要抵达的位置进行移动。预测目标的未来位置，就是追逐的核心。 预测器的实现假设物体是匀速直线运动，那么他的下一刻位置就等于这一刻位置加上这一刻的速度乘以时间，假设采用一个线性预测器，又假设在T时间">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-08-03T11:02:02.000Z">
-<meta property="article:modified_time" content="2022-08-03T11:28:35.843Z">
+<meta property="article:published_time" content="2022-10-08T08:10:00.221Z">
+<meta property="article:modified_time" content="2022-10-08T08:10:00.221Z">
 <meta property="article:author" content="武田晴海">
-<meta property="article:tag" content="C# Unity">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
     
 <link rel="stylesheet" href="/lib/fancybox/fancybox.css">
@@ -28,13 +29,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1665216679574">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1665216679577">
     
-    <link rel="stylesheet" href="/css/style.css?v=1665216679574">
+    <link rel="stylesheet" href="/css/style.css?v=1665216679577">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1665216679574">
+            <link rel="stylesheet" href="/custom.css?v=1665216679577">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -350,18 +351,24 @@
 
   <article>
       
-          <div class="nexmoe-post-cover" style="padding-bottom: 56.71874999999999%;"> 
-              <img data-fancybox="gallery" src="http://r.photo.store.qq.com/psc?/V54CgKpU34C0Ml4g7nxa1OpoGU12cNpT/ruAMsa53pVQWN7FLK88i5qP8pcEXEhHMSTzYmiwToluQZHoil6dFrVN6B4MUHspXDOblX5YJ5asHZutB8RUnUaPEnNCUjLiy3GS.nuaiCto!/r" alt="tags" loading="lazy">
-              <h1>tags</h1>
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="https://s1.328888.xyz/2022/09/02/k1QbI.jpg" alt="游戏AI：个体的追逐，躲避，徘徊与路径跟随" loading="lazy">
+              <h1>游戏AI：个体的追逐，躲避，徘徊与路径跟随</h1>
           </div>
       
       
       <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2022年08月03日</a>
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年10月08日</a>
 </div>
       
 
-      
+      <h2 id="个体的简单进阶行为"><a href="#个体的简单进阶行为" class="headerlink" title="个体的简单进阶行为"></a>个体的简单进阶行为</h2><h4 id="1-追逐行为"><a href="#1-追逐行为" class="headerlink" title="1.追逐行为"></a>1.追逐行为</h4><p>追逐这一行为我们应该用动态的眼光去看待。靠近是朝着目标的位置进行移动，但是追逐不能这样，我们都有这样的一种感觉，那就是当你追着别人的时候你总是非常敏锐地想要朝着目标下一段时间将要抵达的位置进行移动。预测目标的未来位置，就是追逐的核心。</p>
+<h5 id="预测器的实现"><a href="#预测器的实现" class="headerlink" title="预测器的实现"></a>预测器的实现</h5><p>假设物体是匀速直线运动，那么他的下一刻位置就等于这一刻位置加上这一刻的速度乘以时间，假设采用一个线性预测器，又假设在T时间内角色不会转向，角色经过T时间之后的移动距离可以用当前速度乘以T来预测，然后根据角色当前位置再加上这一距离就可以得到预测位置，对预测位置采取靠近行为就是追逐。</p>
+<p>《游戏人工智能编程案例精粹》中提到，追逐行为的准确度取决于对目标轨迹的预测有多准，在面对非直线运动中这几乎变得很复杂，尤其是对于追逐具有根据输入自由移动的玩家。所以根据项目需求做个足够效率但又不会消耗太多的时钟周期是很有必要的。</p>
+<p>核心代码：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> Vector3 <span class="hljs-title">Force</span>()</span><br>    &#123;<br>        Vector3 toTarget = target.transform.position - transform.position;<br>        <span class="hljs-comment">//计算追逐者与猎物之间的夹角</span><br>        <span class="hljs-built_in">float</span> relativeDirection = Vector3.Dot(transform.forward, target.transform.forward);<br>        <span class="hljs-comment">//如果夹角大于0并且追逐者基本上面对逃避者(点积-1为完全面对)，那么直接向逃避者方向前进。</span><br>        <span class="hljs-keyword">if</span>(Vector3.Dot(toTarget,transform.forward)&gt;<span class="hljs-number">0</span>&amp;&amp;relativeDirection&lt;<span class="hljs-number">-0.95f</span>)<br>        &#123;<br>            desireVelocity = (target.transform.position - transform.position).normalized * maxSpeed;<br>            <span class="hljs-keyword">return</span> desireVelocity - vehicle.Velocity;<br>        &#125;<br>        <span class="hljs-comment">//计算预期时间，正比于追逐者与逃避者的距离，反比于追逐者与逃避者的速度和</span><br>        <span class="hljs-built_in">float</span> lookaheadTime = toTarget.magnitude / (maxSpeed + target.GetComponent&lt;Vehicle&gt;().Velocity.magnitude);<br><br>        desireVelocity = (target.transform.position + target.GetComponent&lt;Vehicle&gt;().Velocity * lookaheadTime - transform.position).normalized * maxSpeed;<br>        <span class="hljs-keyword">return</span> desireVelocity - vehicle.Velocity;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
       
   </article>
 
@@ -369,7 +376,7 @@
       
     <div class="nexmoe-post-copyright">
         <strong>Author：</strong>武田晴海<br>
-        <strong>Link：</strong><a href="http://example.com/tags/index.html" title="http:&#x2F;&#x2F;example.com&#x2F;tags&#x2F;index.html" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;tags&#x2F;index.html</a><br>
+        <strong>Link：</strong><a href="http://example.com/2022/10/08/%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;10&#x2F;08&#x2F;%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;10&#x2F;08&#x2F;%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -380,6 +387,10 @@
   
   <div class="nexmoe-post-meta nexmoe-rainbow">
     
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/AI/">AI</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/AI/" rel="tag">AI</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Unity/" rel="tag">Unity</a>
     
 </div>
 
@@ -396,6 +407,13 @@
                       
                         
                           
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BD%93%E7%9A%84%E7%AE%80%E5%8D%95%E8%BF%9B%E9%98%B6%E8%A1%8C%E4%B8%BA"><span class="toc-number">1.</span> <span class="toc-text">个体的简单进阶行为</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%BF%BD%E9%80%90%E8%A1%8C%E4%B8%BA"><span class="toc-number">1.0.1.</span> <span class="toc-text">1.追逐行为</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A2%84%E6%B5%8B%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">预测器的实现</span></a></li></ol></li></ol></li></ol></li></ol>
+                                  </div>
+                              </button>
                           
                           
                       
@@ -432,7 +450,7 @@
 
  
 
-<script async src="/js/app.js?v=1665216679576"></script>
+<script async src="/js/app.js?v=1665216679579"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
