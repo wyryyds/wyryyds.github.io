@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <title>A*寻路算法 - 武田晴海</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="C# Unity">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="https://cloudimge.com/image/WUORz" type="image/x-icon" />
+    <meta name="description" content="A*算法实现的网格寻路什么是A*算法？百度百科给出了官方的回答： A*(A-Star)算法是一种静态路网中求解最短路径最有效的直接搜索方法，也是解决许多搜索问题的有效算法。算法中的距离估算值与实际值越接近，最终搜索速度越快。 A*算法在灵魂的地方就在于它的启发式策略，它综合了广搜跟dijkstra算法的优点，即在保证广搜跟贪心的策略下，通过启发式函数计算每个节点的优先级进而估算最优路径。 函数表达">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A*寻路算法">
+<meta property="og:url" content="http://example.com/2022/09/15/A%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="武田晴海">
+<meta property="og:description" content="A*算法实现的网格寻路什么是A*算法？百度百科给出了官方的回答： A*(A-Star)算法是一种静态路网中求解最短路径最有效的直接搜索方法，也是解决许多搜索问题的有效算法。算法中的距离估算值与实际值越接近，最终搜索速度越快。 A*算法在灵魂的地方就在于它的启发式策略，它综合了广搜跟dijkstra算法的优点，即在保证广搜跟贪心的策略下，通过启发式函数计算每个节点的优先级进而估算最优路径。 函数表达">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.328888.xyz/2022/09/15/cM140.png">
+<meta property="og:image" content="https://s1.328888.xyz/2022/09/15/cMans.png">
+<meta property="article:published_time" content="2022-09-15T08:33:06.208Z">
+<meta property="article:modified_time" content="2022-09-28T10:04:04.119Z">
+<meta property="article:author" content="武田晴海">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="AStar">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.328888.xyz/2022/09/15/cM140.png">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.min.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1666619174822">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1666619174822">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1666619174822">
+        
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cloudimge.com/image/WbviJ)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="武田晴海" class="mdui-btn mdui-btn-icon"><img src="https://cloudimge.com/image/WUORz" alt="武田晴海"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="武田晴海">
+            <img src="https://cloudimge.com/image/WUORz" alt="武田晴海" alt="武田晴海">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>9</div>
+        <div><span>Tags</span>11</div>
+        <div><span>Categories</span>5</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/662176529"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/wyryyds"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/guo-de-huan-hao-26"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/AI/">AI</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/C/">C#</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Unity/">Unity</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/书籍/">书籍</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/算法/">算法</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/AI/" style="font-size: 16.67px;">AI</a> <a href="/tags/AStar/" style="font-size: 10px;">AStar</a> <a href="/tags/C/" style="font-size: 10px;">C#</a> <a href="/tags/Knuth-Durstenfeld-Shuffle%E7%AE%97%E6%B3%95/" style="font-size: 10px;">Knuth-Durstenfeld Shuffle算法</a> <a href="/tags/Unity/" style="font-size: 20px;">Unity</a> <a href="/tags/%E4%B9%A6%E7%B1%8D/" style="font-size: 10px;">书籍</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/" style="font-size: 10px;">地图加载</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" style="font-size: 10px;">地图生成</a> <a href="/tags/%E6%B4%AA%E6%B0%B4%E5%A1%AB%E5%85%85%E7%AE%97%E6%B3%95/" style="font-size: 10px;">洪水填充算法</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;">算法</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(17);
+        var tags_length = parseInt(11);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+        
+        <!-- 一言 -->
+<div class="nexmoe-widget-wrap">
+  <h3 class="nexmoe-widget-title">
+    一言
+  </h3>
+  <div class="nexmoe-widget">
+    <ul class="hitokoto-box">
+      <li id="hitokoto_text_parent" class="hitokoto-text" hitokotoCategory="">
+        <a href="#" id="hitokoto_text">
+          
+        </a>
+        <a href="#" id="hitokoto_error_text" style="display: none;">
+          
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  let hitokotoText = document.getElementById('hitokoto_text')
+  let hitokotoErroText = document.getElementById('hitokoto_error_text')
+  let hitokotoCategory = document.getElementById('hitokoto_text_parent').getAttribute('hitokotoCategory')
+  window.onload = function () {
+    let url = 'https://v1.hitokoto.cn'
+    if (hitokotoCategory) {
+      url += '?c=' + hitokotoCategory
+    }
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        hitokotoText.innerText = "「 " + data.hitokoto + " 」 from " + data.from
+        hitokotoText.href = 'https://hitokoto.cn/?uuid=' + data.uuid
+      })
+      .catch((reason) => {
+        console.error(11, reason)
+        hitokotoText.style.display = 'none'
+        hitokotoErroText.style.display = 'block'
+      })
+  }
+</script>
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/10/08/%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F/">游戏AI：个体的追逐，躲避，徘徊与路径跟随</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/07/AI%E3%80%8A%E6%B8%B8%E6%88%8F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B%E7%B2%BE%E7%B2%B9%E3%80%8B%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93/">AI:《游戏人工智能编程案例精粹》阅读总结</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/05/AI%E7%9A%84%E8%A1%8C%E4%B8%BA%EF%BC%9A%E7%BE%A4%E4%BD%93%E6%95%88%E5%BA%94/">游戏AI：群体效应的行为</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/30/AI%EF%BC%9AVehicle%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E7%B1%BB/">游戏AI：AI行为的基类</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/28/%E9%9A%8F%E6%9C%BA%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95%EF%BC%88%E8%BF%B7%E5%AE%AB%EF%BC%89/">随机地图生成算法（迷宫）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 武田晴海
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="https://s1.328888.xyz/2022/09/02/k1zdX.jpg" alt="A*寻路算法" loading="lazy">
+              <h1>A*寻路算法</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年09月15日</a>
+</div>
+      
+
+      <h1 id="A-算法实现的网格寻路"><a href="#A-算法实现的网格寻路" class="headerlink" title="A*算法实现的网格寻路"></a>A*算法实现的网格寻路</h1><h2 id="什么是A-算法？"><a href="#什么是A-算法？" class="headerlink" title="什么是A*算法？"></a>什么是A*算法？</h2><p>百度百科给出了官方的回答：</p>
+<p>A*(A-Star)算法是一种静态路网中求解<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/6334920?fromModule=lemma_inlink">最短路径</a>最有效的<strong>直接</strong>搜索方法，也是解决许多搜索问题的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9C%89%E6%95%88?fromModule=lemma_inlink">有效</a>算法。算法中的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%B7%9D%E7%A6%BB/16370594?fromModule=lemma_inlink">距离</a>估算值与实际值越接近，最终<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%90%9C%E7%B4%A2/1806?fromModule=lemma_inlink">搜索</a>速度越快。</p>
+<p>A*算法在灵魂的地方就在于它的启发式策略，它综合了广搜跟dijkstra算法的优点，即在保证广搜跟贪心的策略下，通过启发式函数计算每个节点的优先级进而估算最优路径。</p>
+<h4 id="函数表达式为-F-n-G-n-H-n"><a href="#函数表达式为-F-n-G-n-H-n" class="headerlink" title="函数表达式为 F(n) = G(n) + H(n);"></a>函数表达式为 F(n) = G(n) + H(n);</h4><p>其中，F是节点n的综合优先级，当我们选择下一个将要遍历的节点时，总是会选取最小的F。</p>
+<p>G时节点n距离起点的代价。H时节点n距离终点的预计代价。</p>
+<p>“在极端情况下，当启发函数h(n)始终为0，则将由g(n)决定节点的优先级，此时算法就退化成了Dijkstra算法。<br>如果h(n)始终小于等于节点n到终点的代价，则A<em>算法保证一定能够找到最短路径。但是当h(n)的值越小，算法将遍历越多的节点，也就导致算法越慢。<br>如果h(n)完全等于节点n到终点的代价，则A</em>算法将找到最佳路径，并且速度很快。可惜的是，并非所有场景下都能做到这一点。因为在没有达到终点之前，我们很难确切算出距离终点还有多远。<br>如果h(n)的值比节点n到终点的代价要大，则A*算法不能保证找到最短路径，不过此时会很快。<br>在另外一个极端情况下，如果h()n相较于g(n)大很多，则此时只有h(n)产生效果，这也就变成了最佳优先搜索。”（摘自知乎阿里云云栖号）</p>
+<p>综上，我们也就了解了A*算法的概念了。</p>
+<p>下面是在unity中的实现。（感谢橘神的指导</p>
+<p>代码没有做过多的优化，对于很多遍历非常的粗暴，仅供学习。</p>
+<p>首先我们定义A*节点，设置状态那里摆烂了，效果好看就行了（bushi</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> System.Collections.Generic;<br><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> UnityEngine.UI;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AstarNode</span> : <span class="hljs-title">MonoBehaviour</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> x;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> y;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> f;<span class="hljs-comment">//g+h</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> g;<span class="hljs-comment">//从起点到该点的估计代价</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> h;<span class="hljs-comment">//从该点到终点的估计代价</span><br><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> clickCount = <span class="hljs-number">0</span>; <br><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">bool</span> isObstacle = <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">bool</span> isStart = <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">bool</span> isEnd = <span class="hljs-literal">false</span>;<br><br>    <span class="hljs-keyword">public</span> AstarNode parent;<br><br>    <span class="hljs-keyword">public</span> SpriteRenderer sprite;<br>    <span class="hljs-keyword">public</span> Text text;<br><br>    <span class="hljs-keyword">public</span> List&lt;AstarNode&gt; Neighbor = <span class="hljs-keyword">new</span> List&lt;AstarNode&gt;();<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>    &#123;<br>        sprite = GetComponent&lt;SpriteRenderer&gt;();<br>        text = transform.Find(<span class="hljs-string">&quot;Canvas/Text&quot;</span>)?.GetComponent&lt;Text&gt;();<br>        parent = <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>    &#123;<br>        text.text = <span class="hljs-string">$&quot;x:<span class="hljs-subst">&#123;x&#125;</span>      y:<span class="hljs-subst">&#123;y&#125;</span>\nf:<span class="hljs-subst">&#123;f&#125;</span>\ng:<span class="hljs-subst">&#123;g&#125;</span>\nh;<span class="hljs-subst">&#123;h&#125;</span>&quot;</span>;<br>        SetNode(sprite);<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 设置节点状态</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;sprite&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SetNode</span>(<span class="hljs-params">SpriteRenderer sprite</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">switch</span>(clickCount%<span class="hljs-number">6</span>)<br>        &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                isObstacle = <span class="hljs-literal">false</span>;<br>                isStart = <span class="hljs-literal">false</span>;<br>                isEnd = <span class="hljs-literal">false</span>;<br>                sprite.color = Color.white;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>                isObstacle = <span class="hljs-literal">true</span>;<br>                isStart = <span class="hljs-literal">false</span>;<br>                isEnd = <span class="hljs-literal">false</span>;<br>                sprite.color = Color.black;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                isObstacle = <span class="hljs-literal">false</span>;<br>                isStart = <span class="hljs-literal">true</span>;<br>                isEnd = <span class="hljs-literal">false</span>;<br>                sprite.color = Color.red;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:<br>                isObstacle = <span class="hljs-literal">false</span>;<br>                isStart = <span class="hljs-literal">false</span>;<br>                isEnd = <span class="hljs-literal">true</span>;<br>                sprite.color = Color.blue;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:<br>                sprite.color = Color.green;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:<br>                sprite.color = Color.yellow;<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br>        <br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 评估节点的代价</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;currentNode&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;targetNode&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">float</span> <span class="hljs-title">EvaluationCost</span>(<span class="hljs-params">AstarNode currentNode, AstarNode targetNode</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (currentNode == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>       <span class="hljs-keyword">return</span>  Vector2.Distance(<span class="hljs-keyword">new</span> Vector2(currentNode.x, currentNode.y),<br>        <span class="hljs-keyword">new</span> Vector2(targetNode.x, targetNode.y));<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 获取总代价</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">GetCost</span>(<span class="hljs-params">AstarNode sourceNode,AstarNode targetNode</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (sourceNode != <span class="hljs-literal">null</span>)<br>        &#123;<br>            g = sourceNode.g + EvaluationCost(sourceNode, <span class="hljs-keyword">this</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (targetNode != <span class="hljs-literal">null</span>)<br>        &#123;<br>            h = EvaluationCost(<span class="hljs-keyword">this</span>, targetNode);<br>        &#125;<br>        f = g + h;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnMouseDown</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (Input.GetMouseButtonDown(<span class="hljs-number">0</span>)) clickCount++;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>然后我们实现节点的管理器，写得超级暴力。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> System.Collections.Generic;<br><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> UnityEngine.UI;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AStarManager</span> : <span class="hljs-title">MonoBehaviour</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> col=<span class="hljs-number">10</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> row=<span class="hljs-number">10</span>;<br>    <span class="hljs-keyword">public</span> GameObject AstarNodePrefab;<br><br>    <span class="hljs-keyword">public</span> AstarNode[,] AstarNodes;<br>    <span class="hljs-keyword">public</span> List&lt;AstarNode&gt; OpenList = <span class="hljs-keyword">new</span> List&lt;AstarNode&gt;();<br>    <span class="hljs-keyword">public</span> List&lt;AstarNode&gt; CloseList = <span class="hljs-keyword">new</span> List&lt;AstarNode&gt;();<br>    <span class="hljs-keyword">public</span> List&lt;AstarNode&gt; path = <span class="hljs-keyword">new</span> List&lt;AstarNode&gt;();<br><br>    <span class="hljs-keyword">public</span> AstarNode startNode, endNode;<br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>    &#123;<br>        AstarNodes = <span class="hljs-keyword">new</span> AstarNode[col, row];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> y=<span class="hljs-number">0</span>;y&lt;row;y++)<br>            <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> x=<span class="hljs-number">0</span>;x&lt;col;x++)<br>            &#123;<br>                <span class="hljs-keyword">var</span> objNode=Instantiate(AstarNodePrefab, <span class="hljs-keyword">new</span> Vector3(x, y), Quaternion.identity);<br>                objNode.transform.SetParent(transform, <span class="hljs-literal">false</span>);<br>                objNode.transform.name = <span class="hljs-string">$&quot;Astar<span class="hljs-subst">&#123;x&#125;</span>:<span class="hljs-subst">&#123;y&#125;</span>&quot;</span>;<br>                AstarNode node = objNode.GetComponent&lt;AstarNode&gt;();<br>                <span class="hljs-keyword">if</span> (node)<br>                &#123;<br>                    node.x = x;node.y = y;<br>                    AstarNodes[x, y] = node;<br>                &#125;<br>            &#125;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (Input.GetKeyDown(KeyCode.S)) ShowAstar();<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;AstarNode&gt; <span class="hljs-title">GetSuccess</span>(<span class="hljs-params">AstarNode node</span>)</span><br>    &#123;<br>        List&lt;AstarNode&gt; list = <span class="hljs-keyword">new</span> List&lt;AstarNode&gt;();<br>        <span class="hljs-keyword">var</span> tempNode = node;<br>        <span class="hljs-keyword">while</span>(tempNode.parent!=<span class="hljs-literal">null</span>)<br>        &#123;<br>            list.Add(tempNode);<br>            tempNode = tempNode.parent;<br>        &#125;<br>        <span class="hljs-keyword">return</span> list;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ShowAstar</span>()</span><br>    &#123;<br>        path = StartAstar();<br>        <span class="hljs-keyword">if</span>(path!=<span class="hljs-literal">null</span>)<br>        &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; path.Count; i++)<span class="hljs-keyword">if</span>(!path[i].isEnd) path[i].clickCount = <span class="hljs-number">4</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 开始寻路</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;AstarNode&gt;  <span class="hljs-title">StartAstar</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> y=<span class="hljs-number">0</span>;y&lt;row;y++)<br>            <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> x=<span class="hljs-number">0</span>;x&lt;col;x++)<br>            &#123;<br>                <span class="hljs-keyword">if</span> (AstarNodes[x, y].isStart) startNode = AstarNodes[x, y];<br>                <span class="hljs-keyword">if</span> (AstarNodes[x, y].isEnd) endNode = AstarNodes[x, y];<br>            &#125;<br>        OpenList.Clear();<br>        CloseList.Clear();<br>        OpenList.Add(startNode);<br>        startNode.GetCost(<span class="hljs-literal">null</span>, endNode);<br>        <span class="hljs-keyword">while</span>(OpenList.Count&gt;<span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-keyword">var</span> node= GetMinCostNode();<br>            <span class="hljs-keyword">if</span>(node.x==endNode.x&amp;&amp;node.y==endNode.y)<br>            &#123;<br>                <span class="hljs-keyword">return</span> GetSuccess(node);<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                List&lt;AstarNode&gt; neighbors = GetNeighbors(node);<br>                <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i=<span class="hljs-number">0</span>;i&lt;neighbors.Count;i++)<br>                &#123;<br><br>                    <span class="hljs-keyword">if</span> (neighbors[i] == <span class="hljs-literal">null</span>) <span class="hljs-keyword">continue</span>;<br>                    <span class="hljs-keyword">var</span> tempNode = neighbors[i];<br><br>                    <span class="hljs-keyword">var</span> newCost = node.g + AstarNode.EvaluationCost(node, tempNode);<br><br>                    <span class="hljs-keyword">var</span> isInOpenList = CheckInList(tempNode, OpenList);<br>                    <span class="hljs-keyword">var</span> isInCloseList = CheckInList(tempNode, CloseList);<br>                    <span class="hljs-keyword">if</span> ((isInOpenList || isInCloseList) &amp;&amp; tempNode.g &lt; newCost) <span class="hljs-keyword">continue</span>;<br>                    <span class="hljs-keyword">else</span><br>                    &#123;<br>                        tempNode.parent = node;<br>                        tempNode.g = newCost;<br>                        tempNode.h = AstarNode.EvaluationCost(tempNode, endNode);<br>                        tempNode.f = tempNode.g + tempNode.h;<br>                        <span class="hljs-keyword">if</span>(isInCloseList)CloseList.Remove(tempNode);<br>                        <span class="hljs-keyword">if</span> (!isInOpenList) &#123; OpenList.Add(tempNode); <span class="hljs-keyword">if</span>(!tempNode.isEnd)tempNode.clickCount = <span class="hljs-number">5</span>; &#125;<br>                    &#125;<br>                &#125;    <br>            &#125;<br>            CloseList.Add(node);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 检查是否在列表中</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;node&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;list&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">bool</span> <span class="hljs-title">CheckInList</span>(<span class="hljs-params">AstarNode node,List&lt;AstarNode&gt; list</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (list.Count == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i=<span class="hljs-number">0</span>;i&lt;list.Count;i++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (list[i].x == node.x &amp;&amp; list[i].y == node.y) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 获取最小代价的节点</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> AstarNode <span class="hljs-title">GetMinCostNode</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> node = OpenList[<span class="hljs-number">0</span>];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i=<span class="hljs-number">1</span>;i&lt;OpenList.Count;i++)<br>        &#123;<br>            node=OpenList[i].f&lt;node.f?OpenList[i]:node;<br>        &#125;<br>        OpenList.Remove(node);<br>        <span class="hljs-keyword">return</span> node;<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 获取周围节点</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;node&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;AstarNode&gt; <span class="hljs-title">GetNeighbors</span>(<span class="hljs-params">AstarNode node</span>)</span><br>    &#123;<br>        List&lt;AstarNode&gt; nodes = <span class="hljs-keyword">new</span> List&lt;AstarNode&gt;();<br>        <span class="hljs-built_in">int</span> x = node.x, y = node.y;<br>        nodes.Add(GetNode(x - <span class="hljs-number">1</span>, y));<br>        nodes.Add(GetNode(x + <span class="hljs-number">1</span>, y));<br>        nodes.Add(GetNode(x ,y - <span class="hljs-number">1</span>));<br>        nodes.Add(GetNode(x ,y + <span class="hljs-number">1</span>));<br>        nodes.Add(GetNode(x - <span class="hljs-number">1</span>, y<span class="hljs-number">-1</span>));<br>        nodes.Add(GetNode(x - <span class="hljs-number">1</span>, y+<span class="hljs-number">1</span>));<br>        nodes.Add(GetNode(x + <span class="hljs-number">1</span>, y<span class="hljs-number">-1</span>));<br>        nodes.Add(GetNode(x + <span class="hljs-number">1</span>, y+<span class="hljs-number">1</span>));<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i=nodes.Count<span class="hljs-number">-1</span>;i&gt;=<span class="hljs-number">0</span>;i--)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (nodes[i] == <span class="hljs-literal">null</span>) nodes.RemoveAt(i);<br>        &#125;<br>        <span class="hljs-keyword">return</span> nodes;<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 获取节点</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;x&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;y&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> AstarNode <span class="hljs-title">GetNode</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x,<span class="hljs-built_in">int</span> y</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span> || x &gt;= col || y &lt; <span class="hljs-number">0</span> || y &gt;= row) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">if</span> (AstarNodes[x, y].isObstacle) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">return</span> AstarNodes[x, y];<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>下面是效果图：</p>
+<p><img data-fancybox="gallery" src="https://s1.328888.xyz/2022/09/15/cM140.png" alt="图一" data-caption="图一" loading="lazy"></p>
+<p><img data-fancybox="gallery" src="https://s1.328888.xyz/2022/09/15/cMans.png" alt="图二" data-caption="图二" loading="lazy"></p>
+
+      
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>武田晴海<br>
+        <strong>Link：</strong><a href="http://example.com/2022/09/15/A%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;09&#x2F;15&#x2F;A%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;09&#x2F;15&#x2F;A%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Unity/">Unity</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/AStar/" rel="tag">AStar</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Unity/" rel="tag">Unity</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#A-%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%9A%84%E7%BD%91%E6%A0%BC%E5%AF%BB%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">A*算法实现的网格寻路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFA-%E7%AE%97%E6%B3%95%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">什么是A*算法？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%BA-F-n-G-n-H-n"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">函数表达式为 F(n) &#x3D; G(n) + H(n);</span></a></li></ol></li></ol></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="Search"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/justifiedGallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1666619174831"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+</body>
+
+</html>

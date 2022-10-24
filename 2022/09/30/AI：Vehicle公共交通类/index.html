@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <title>游戏AI：AI行为的基类 - 武田晴海</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="C# Unity">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="https://cloudimge.com/image/WUORz" type="image/x-icon" />
+    <meta name="description" content="在阅读本博客所有游戏AI的内容时，我将强烈建议您去阅读《游戏人工智能编程案例精粹》这本书，这是一本无论理论还是实现都非常优秀的一本书，网络上大部分关于游戏AI行为的开发博客都是基于他的理论与设计实现的。当然如果您对此感兴趣，也可以去把《Unity人工智能游戏开发》这本书顺便看了，后者相比较前者内容相对少而简单，而且实用性很高，理论部分总结得很好，并且有非常详细的功能实现。但是我会认为前者应该是每一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="游戏AI：AI行为的基类">
+<meta property="og:url" content="http://example.com/2022/09/30/AI%EF%BC%9AVehicle%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E7%B1%BB/index.html">
+<meta property="og:site_name" content="武田晴海">
+<meta property="og:description" content="在阅读本博客所有游戏AI的内容时，我将强烈建议您去阅读《游戏人工智能编程案例精粹》这本书，这是一本无论理论还是实现都非常优秀的一本书，网络上大部分关于游戏AI行为的开发博客都是基于他的理论与设计实现的。当然如果您对此感兴趣，也可以去把《Unity人工智能游戏开发》这本书顺便看了，后者相比较前者内容相对少而简单，而且实用性很高，理论部分总结得很好，并且有非常详细的功能实现。但是我会认为前者应该是每一">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-09-30T14:08:44.810Z">
+<meta property="article:modified_time" content="2022-10-09T08:17:21.253Z">
+<meta property="article:author" content="武田晴海">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.min.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1666619174814">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1666619174814">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1666619174814">
+        
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cloudimge.com/image/WbviJ)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="武田晴海" class="mdui-btn mdui-btn-icon"><img src="https://cloudimge.com/image/WUORz" alt="武田晴海"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="武田晴海">
+            <img src="https://cloudimge.com/image/WUORz" alt="武田晴海" alt="武田晴海">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>9</div>
+        <div><span>Tags</span>11</div>
+        <div><span>Categories</span>5</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/662176529"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/wyryyds"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/guo-de-huan-hao-26"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/AI/">AI</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/C/">C#</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Unity/">Unity</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/书籍/">书籍</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/算法/">算法</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/AI/" style="font-size: 16.67px;">AI</a> <a href="/tags/AStar/" style="font-size: 10px;">AStar</a> <a href="/tags/C/" style="font-size: 10px;">C#</a> <a href="/tags/Knuth-Durstenfeld-Shuffle%E7%AE%97%E6%B3%95/" style="font-size: 10px;">Knuth-Durstenfeld Shuffle算法</a> <a href="/tags/Unity/" style="font-size: 20px;">Unity</a> <a href="/tags/%E4%B9%A6%E7%B1%8D/" style="font-size: 10px;">书籍</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/" style="font-size: 10px;">地图加载</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" style="font-size: 10px;">地图生成</a> <a href="/tags/%E6%B4%AA%E6%B0%B4%E5%A1%AB%E5%85%85%E7%AE%97%E6%B3%95/" style="font-size: 10px;">洪水填充算法</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;">算法</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(17);
+        var tags_length = parseInt(11);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+        
+        <!-- 一言 -->
+<div class="nexmoe-widget-wrap">
+  <h3 class="nexmoe-widget-title">
+    一言
+  </h3>
+  <div class="nexmoe-widget">
+    <ul class="hitokoto-box">
+      <li id="hitokoto_text_parent" class="hitokoto-text" hitokotoCategory="">
+        <a href="#" id="hitokoto_text">
+          
+        </a>
+        <a href="#" id="hitokoto_error_text" style="display: none;">
+          
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  let hitokotoText = document.getElementById('hitokoto_text')
+  let hitokotoErroText = document.getElementById('hitokoto_error_text')
+  let hitokotoCategory = document.getElementById('hitokoto_text_parent').getAttribute('hitokotoCategory')
+  window.onload = function () {
+    let url = 'https://v1.hitokoto.cn'
+    if (hitokotoCategory) {
+      url += '?c=' + hitokotoCategory
+    }
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        hitokotoText.innerText = "「 " + data.hitokoto + " 」 from " + data.from
+        hitokotoText.href = 'https://hitokoto.cn/?uuid=' + data.uuid
+      })
+      .catch((reason) => {
+        console.error(11, reason)
+        hitokotoText.style.display = 'none'
+        hitokotoErroText.style.display = 'block'
+      })
+  }
+</script>
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/10/08/%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F/">游戏AI：个体的追逐，躲避，徘徊与路径跟随</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/07/AI%E3%80%8A%E6%B8%B8%E6%88%8F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B%E7%B2%BE%E7%B2%B9%E3%80%8B%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93/">AI:《游戏人工智能编程案例精粹》阅读总结</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/05/AI%E7%9A%84%E8%A1%8C%E4%B8%BA%EF%BC%9A%E7%BE%A4%E4%BD%93%E6%95%88%E5%BA%94/">游戏AI：群体效应的行为</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/30/AI%EF%BC%9AVehicle%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E7%B1%BB/">游戏AI：AI行为的基类</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/28/%E9%9A%8F%E6%9C%BA%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95%EF%BC%88%E8%BF%B7%E5%AE%AB%EF%BC%89/">随机地图生成算法（迷宫）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 武田晴海
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="https://s1.328888.xyz/2022/09/02/k1520.jpg" alt="游戏AI：AI行为的基类" loading="lazy">
+              <h1>游戏AI：AI行为的基类</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年09月30日</a>
+</div>
+      
+
+      <p>在阅读本博客所有游戏AI的内容时，我将强烈建议您去阅读《游戏人工智能编程案例精粹》这本书，这是一本无论理论还是实现都非常优秀的一本书，网络上大部分关于游戏AI行为的开发博客都是基于他的理论与设计实现的。当然如果您对此感兴趣，也可以去把《Unity人工智能游戏开发》这本书顺便看了，后者相比较前者内容相对少而简单，而且实用性很高，理论部分总结得很好，并且有非常详细的功能实现。但是我会认为前者应该是每一位开发者都必读的书籍之一。</p>
+<h1 id="基础AI的三层结构：决策层-战略层-运动层"><a href="#基础AI的三层结构：决策层-战略层-运动层" class="headerlink" title="基础AI的三层结构：决策层 战略层 运动层"></a>基础AI的三层结构：决策层 战略层 运动层</h1><h2 id="运动层："><a href="#运动层：" class="headerlink" title="运动层："></a>运动层：</h2><p>比如寻路，定义成一个交通工具类（Vehicle）,它实际上指的是非常宽泛的游戏物品，包括了任何可以自主移动的AI角色。比如游戏中的动物，城市中的汽车，交通工具，以及NPC。AI架构中，把Vechicle基类看作是一个质点。</p>
+<h4 id="Vehicle类："><a href="#Vehicle类：" class="headerlink" title="Vehicle类："></a>Vehicle类：</h4><p>它包含了 位置（position） 质量（mass） 速度（velocity），而速度会随着力的变化而变化。速度意味着实际的物理实体，施加在上面的力和能达到的速度是有限制的，所以对一切实际意义的物理量进行限制是很有必要的。除此之外，我们还需要设计AI方向的信息。计算方法应该是这样的：</p>
+<p>1.在每一帧我们确认当前操控力（保证最大不超过max_force）。</p>
+<p>2.模拟实际物理效果，计算加速度，计算更新速度，计算实际位移。</p>
+<p>3.获得并更新AI的实际状态。</p>
+<p>对于每一个交通工具类，我们都应该明确一件事，那就是他们需要包含若干个操纵行为类。比如躲避这一行为，追逐这一行为，亦或是静止这一行为。我们需要将AI写得惟妙惟肖，那绝不仅仅是采取某一段固定的或者可变性极其低的策略去实现。而是应该有一些属于AI自身的，他们自己的“思考”：什么时候进行追逐，什么时候躲避，什么时候静止。而绝对不是一个写死的循环摆在那。在这就不延伸AI的一些理论概念了，当然这或许也算是我的个人偏见hhh（我说他是他就是！看不了别看）</p>
+<p>最简单的实现方式是：为每个行为类设置权重，根据环境的变化采用某种适当可行的策略去更新AI的实际状态。</p>
+<h4 id="操纵行为类（靠近，离开，抵达……）："><a href="#操纵行为类（靠近，离开，抵达……）：" class="headerlink" title="操纵行为类（靠近，离开，抵达……）："></a>操纵行为类（靠近，离开，抵达……）：</h4><p>我们已经知道，AI物体的实际移动将由各个操纵行为决定。</p>
+<p>比如一个动物AI，他在v1方向上有着一个靠近食物的行为，但是在v2方向上有着一个躲避天敌的行为，那么他最终的移动就应该是考虑权重之后v1与v2的合速度v3。</p>
+<p>综上我们在实际的行为类里面编写他们的行为，综合到一起就是AI整体的行为。在这里采取的是最简单行为：靠近，离开，抵达。</p>
+<p>Vehicle类的代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> System.Collections.Generic;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Vehicle</span> : <span class="hljs-title">MonoBehaviour</span><br>&#123;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 质量</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> Mass = <span class="hljs-number">1f</span>;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 行为列表</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> Steering[] Steerings;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 最大速度</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    [<span class="hljs-meta">Range(5f,20f)</span>]<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> MaxSpeed;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 最大力</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    [<span class="hljs-meta">Range(20f,100f)</span>]<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> MaxForce;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 计算操纵力(三维向量)</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">private</span> Vector3 steeringForce;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 速度(三维向量)</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> Vector3 Velocity;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 加速度(三维向量)</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> Vector3 acceleration;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-built_in">float</span> timer;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 更新操作力的时间间隔，由于一帧的时间非常短，我们并不需要在那么短的时间内去实时更新我们的操纵力，同时避免过小的更新导致的浮点数误差。</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> ComputeInterval = <span class="hljs-number">0.2f</span>;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 缓存最大速度的平方,避免反复计算平方的开销</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">float</span> sqrMaxspeed;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 是否只在地面上</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">bool</span> IsPlaner;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 控制转向的速度</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> damping=<span class="hljs-number">0.9f</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>    &#123;<br>        steeringForce = Vector3.zero;<br>        Steerings = GetComponents&lt;Steering&gt;();<br>        timer = <span class="hljs-number">0</span>;<br>        sqrMaxspeed = MaxSpeed * MaxSpeed;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>    &#123;<br>        timer += Time.deltaTime;<br>        steeringForce = Vector3.zero;<br><br>        <span class="hljs-keyword">if</span>(timer&gt;ComputeInterval)<br>        &#123;<br>            <span class="hljs-keyword">foreach</span>(<span class="hljs-keyword">var</span> _steering <span class="hljs-keyword">in</span> Steerings)<br>            &#123;<br>                <span class="hljs-keyword">if</span>(_steering.enabled)<br>                steeringForce += _steering.Force() * _steering.Weight;<br>            &#125;<br>            <span class="hljs-comment">//避免超过最大力，限制大小。</span><br>            steeringForce = Vector3.ClampMagnitude(steeringForce, MaxForce);<br>            <span class="hljs-comment">//物理计算</span><br>            acceleration = steeringForce / Mass;<br>            timer = <span class="hljs-number">0</span>;<br>        &#125;<br>    &#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>至于Steering类以及继承Vehicle的实际AILocomotion大家可以根据需求自行编写。</p>
+<p>美美出去吃火锅了。国庆还在code，以后找不到好工作我真的会紫砂喵。嘤嘤嘤。</p>
+
+      
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>武田晴海<br>
+        <strong>Link：</strong><a href="http://example.com/2022/09/30/AI%EF%BC%9AVehicle%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E7%B1%BB/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;09&#x2F;30&#x2F;AI%EF%BC%9AVehicle%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E7%B1%BB&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;09&#x2F;30&#x2F;AI%EF%BC%9AVehicle%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E7%B1%BB&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/AI/">AI</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/AI/" rel="tag">AI</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Unity/" rel="tag">Unity</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80AI%E7%9A%84%E4%B8%89%E5%B1%82%E7%BB%93%E6%9E%84%EF%BC%9A%E5%86%B3%E7%AD%96%E5%B1%82-%E6%88%98%E7%95%A5%E5%B1%82-%E8%BF%90%E5%8A%A8%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">基础AI的三层结构：决策层 战略层 运动层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E5%8A%A8%E5%B1%82%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">运动层：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vehicle%E7%B1%BB%EF%BC%9A"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">Vehicle类：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%93%8D%E7%BA%B5%E8%A1%8C%E4%B8%BA%E7%B1%BB%EF%BC%88%E9%9D%A0%E8%BF%91%EF%BC%8C%E7%A6%BB%E5%BC%80%EF%BC%8C%E6%8A%B5%E8%BE%BE%E2%80%A6%E2%80%A6%EF%BC%89%EF%BC%9A"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">操纵行为类（靠近，离开，抵达……）：</span></a></li></ol></li></ol></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="Search"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/justifiedGallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1666619174816"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+</body>
+
+</html>

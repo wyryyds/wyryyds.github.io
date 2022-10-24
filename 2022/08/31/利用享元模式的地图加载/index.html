@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <title>利用享元模式高效加载地图 - 武田晴海</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="C# Unity">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="https://cloudimge.com/image/WUORz" type="image/x-icon" />
+    <meta name="description" content="利用享元模式的地图加载我们都知道，一张一定面积的地图上面会有着非常多的相同元素的地面物品，比如不同种类的树木，石子，一些草坪，蘑菇，枯枝等等，在games104里面我们也把它叫做decorations，也就是地面的装饰品。 其实对于它们中的任何一种，数量都是非常多的，并且有一个非常核心的问题，那就是即便它们是同样的某样场景物体，比如说都是松树，但是在他们的位置，旋转，缩放信息其实不尽是相同的。如果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用享元模式高效加载地图">
+<meta property="og:url" content="http://example.com/2022/08/31/%E5%88%A9%E7%94%A8%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/index.html">
+<meta property="og:site_name" content="武田晴海">
+<meta property="og:description" content="利用享元模式的地图加载我们都知道，一张一定面积的地图上面会有着非常多的相同元素的地面物品，比如不同种类的树木，石子，一些草坪，蘑菇，枯枝等等，在games104里面我们也把它叫做decorations，也就是地面的装饰品。 其实对于它们中的任何一种，数量都是非常多的，并且有一个非常核心的问题，那就是即便它们是同样的某样场景物体，比如说都是松树，但是在他们的位置，旋转，缩放信息其实不尽是相同的。如果">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-08-31T12:37:16.320Z">
+<meta property="article:modified_time" content="2022-09-28T10:04:39.656Z">
+<meta property="article:author" content="武田晴海">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="地图加载">
+<meta name="twitter:card" content="summary">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.min.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1666619174831">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1666619174831">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1666619174831">
+        
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cloudimge.com/image/WbviJ)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="武田晴海" class="mdui-btn mdui-btn-icon"><img src="https://cloudimge.com/image/WUORz" alt="武田晴海"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="武田晴海">
+            <img src="https://cloudimge.com/image/WUORz" alt="武田晴海" alt="武田晴海">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>9</div>
+        <div><span>Tags</span>11</div>
+        <div><span>Categories</span>5</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/662176529"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/wyryyds"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/guo-de-huan-hao-26"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/AI/">AI</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/C/">C#</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Unity/">Unity</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/书籍/">书籍</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/算法/">算法</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/AI/" style="font-size: 16.67px;">AI</a> <a href="/tags/AStar/" style="font-size: 10px;">AStar</a> <a href="/tags/C/" style="font-size: 10px;">C#</a> <a href="/tags/Knuth-Durstenfeld-Shuffle%E7%AE%97%E6%B3%95/" style="font-size: 10px;">Knuth-Durstenfeld Shuffle算法</a> <a href="/tags/Unity/" style="font-size: 20px;">Unity</a> <a href="/tags/%E4%B9%A6%E7%B1%8D/" style="font-size: 10px;">书籍</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/" style="font-size: 10px;">地图加载</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" style="font-size: 10px;">地图生成</a> <a href="/tags/%E6%B4%AA%E6%B0%B4%E5%A1%AB%E5%85%85%E7%AE%97%E6%B3%95/" style="font-size: 10px;">洪水填充算法</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;">算法</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(17);
+        var tags_length = parseInt(11);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+        
+        <!-- 一言 -->
+<div class="nexmoe-widget-wrap">
+  <h3 class="nexmoe-widget-title">
+    一言
+  </h3>
+  <div class="nexmoe-widget">
+    <ul class="hitokoto-box">
+      <li id="hitokoto_text_parent" class="hitokoto-text" hitokotoCategory="">
+        <a href="#" id="hitokoto_text">
+          
+        </a>
+        <a href="#" id="hitokoto_error_text" style="display: none;">
+          
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  let hitokotoText = document.getElementById('hitokoto_text')
+  let hitokotoErroText = document.getElementById('hitokoto_error_text')
+  let hitokotoCategory = document.getElementById('hitokoto_text_parent').getAttribute('hitokotoCategory')
+  window.onload = function () {
+    let url = 'https://v1.hitokoto.cn'
+    if (hitokotoCategory) {
+      url += '?c=' + hitokotoCategory
+    }
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        hitokotoText.innerText = "「 " + data.hitokoto + " 」 from " + data.from
+        hitokotoText.href = 'https://hitokoto.cn/?uuid=' + data.uuid
+      })
+      .catch((reason) => {
+        console.error(11, reason)
+        hitokotoText.style.display = 'none'
+        hitokotoErroText.style.display = 'block'
+      })
+  }
+</script>
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/10/08/%E6%B8%B8%E6%88%8FAI%EF%BC%9A%E4%B8%AA%E4%BD%93%E7%9A%84%E8%BF%BD%E9%80%90%EF%BC%8C%E8%BA%B2%E9%81%BF%EF%BC%8C%E5%BE%98%E5%BE%8A%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%B7%9F%E9%9A%8F/">游戏AI：个体的追逐，躲避，徘徊与路径跟随</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/07/AI%E3%80%8A%E6%B8%B8%E6%88%8F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B%E7%B2%BE%E7%B2%B9%E3%80%8B%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93/">AI:《游戏人工智能编程案例精粹》阅读总结</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/05/AI%E7%9A%84%E8%A1%8C%E4%B8%BA%EF%BC%9A%E7%BE%A4%E4%BD%93%E6%95%88%E5%BA%94/">游戏AI：群体效应的行为</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/30/AI%EF%BC%9AVehicle%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E7%B1%BB/">游戏AI：AI行为的基类</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/28/%E9%9A%8F%E6%9C%BA%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95%EF%BC%88%E8%BF%B7%E5%AE%AB%EF%BC%89/">随机地图生成算法（迷宫）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 武田晴海
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="https://s1.328888.xyz/2022/09/02/k1Wgg.png" alt="利用享元模式高效加载地图" loading="lazy">
+              <h1>利用享元模式高效加载地图</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年08月31日</a>
+</div>
+      
+
+      <h1 id="利用享元模式的地图加载"><a href="#利用享元模式的地图加载" class="headerlink" title="利用享元模式的地图加载"></a>利用享元模式的地图加载</h1><p>我们都知道，一张一定面积的地图上面会有着非常多的相同元素的地面物品，比如不同种类的树木，石子，一些草坪，蘑菇，枯枝等等，在games104里面我们也把它叫做decorations，也就是地面的装饰品。</p>
+<p>其实对于它们中的任何一种，数量都是非常多的，并且有一个非常核心的问题，那就是即便它们是同样的某样场景物体，比如说都是松树，但是在他们的位置，旋转，缩放信息其实不尽是相同的。如果提前把它们做成预制体摆放在场景中，其实加载的速度也是不容乐观的。但其实仔细想想，它们有着共同的mesh以及material，相同的mesh在unity的镜像资源管理里面又是来自同一个model，所以我们可以采取享元模式来更高效快速地进行场景的实例化。同时还可以利用shader实现一些非常炫酷的生成效果（学了之后一定补）。</p>
+<p>那什么是享元模式呢？</p>
+<p>菜鸟教程是这么说的：享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。</p>
+<p>享元模式尝试重用现有的同类对象，如果未找到匹配的对象，则创建新对象。</p>
+<p>这么看起来似乎跟我们的方法有点差异，我们并没有减少我们创建对象的数量啊。菜鸟教程下还有着这样的一句话：</p>
+<p>运用共享技术有效地支持大量细粒度的对象。</p>
+<p>在我们的项目里面，我们想要共享的是什么呢？我们希望共享这些相同mesh跟materials，并且减少我们的预制体数量，对于不同PRS的同类游戏物体，我们仅需要保存它们最简单的预制体，其余所有的信息都由我们加载出来，并且这样的加载速度是会比直接加载快好几倍的。</p>
+<p>以下是代码实现：</p>
+<p>首先我们定义我们的场景元素集合</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.Scripts</span><br>&#123;<br>    [<span class="hljs-meta">Serializable</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">struct</span> ObjectFlyweightData <span class="hljs-comment">//享元部分</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> Mesh mesh;<span class="hljs-comment">//相同的mesh在导入模型后自然就只存在一份，享元中的共享就体现在这里</span><br>        <span class="hljs-keyword">public</span> Material[] materials;<span class="hljs-comment">//这里的材质也是一样的，仅存在一份，这是由模型资源决定的</span><br>    &#125;<br><br>    [<span class="hljs-meta">Serializable</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">struct</span> SceneObject<br>    &#123;<br>        <span class="hljs-keyword">public</span> ObjectFlyweightData flyweightData;<br>        <span class="hljs-keyword">public</span> Matrix4x4 matrix; <span class="hljs-comment">//4x矩阵，可以直接将PRS信息存储下来，unity的4x矩阵是按列优先填充，但其实访问的索引依然是行列。</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> name;<br>    &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 场景中元素的数据</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SceneObjectGroup</span> : <span class="hljs-title">ScriptableObject</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> SceneObject[] SceneObjects; <br>    &#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>接着我们利用矩阵加载我们的PRS信息：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern</span><br>&#123;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法类</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Matrix</span><br>    &#123;<br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法：获取旋转信息</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;matrix&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Quaternion <span class="hljs-title">ExtractRotation</span>(<span class="hljs-params"><span class="hljs-keyword">this</span> Matrix4x4 matrix</span>)</span><br>        &#123;<br>            Vector3 forward;<br>            forward.x = matrix.m02;<br>            forward.y = matrix.m12;<br>            forward.z = matrix.m22;<br><br>            Vector3 upwards;<br>            upwards.x = matrix.m01;<br>            upwards.y = matrix.m11;<br>            upwards.z = matrix.m21;<br><br>            <span class="hljs-keyword">return</span> Quaternion.LookRotation(forward, upwards);<span class="hljs-comment">//LookRotation同时使用forward和upward两个参数的时候，就相当于指定了vz和vy两个向量，</span><br>                                                             <span class="hljs-comment">//根据这两个向量可以直接算出对应的vx，然后再用这三个向量去set对应的3×3旋转矩阵的列向量</span><br>                                                             <span class="hljs-comment">//即可获得一个旋转矩阵，再接着可以将其转换到四元数。</span><br>        &#125;<br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法：获取位置信息</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;matrix&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Vector3 <span class="hljs-title">ExtractPosition</span>(<span class="hljs-params"><span class="hljs-keyword">this</span> Matrix4x4 matrix</span>)</span><br>        &#123;<br>            Vector3 position;<br>            position.x = matrix.m03;<br>            position.y = matrix.m13;<br>            position.z = matrix.m23;<br>            <span class="hljs-keyword">return</span> position;<br>        &#125;<br>        <br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 拓展方法：获取缩放信息</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;matrix&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Vector3 <span class="hljs-title">ExtractScale</span>(<span class="hljs-params"><span class="hljs-keyword">this</span> Matrix4x4 matrix</span>)</span><br>        &#123;<br>            Vector3 scale = <span class="hljs-keyword">new</span> Vector3(<br>                matrix.GetColumn(<span class="hljs-number">0</span>).magnitude,<br>                matrix.GetColumn(<span class="hljs-number">1</span>).magnitude,<br>                matrix.GetColumn(<span class="hljs-number">2</span>).magnitude<br>            );<br>            <span class="hljs-comment">//叉乘判断</span><br>            <span class="hljs-keyword">if</span> (Vector3.Cross(matrix.GetColumn(<span class="hljs-number">0</span>), matrix.GetColumn(<span class="hljs-number">1</span>)).normalized != (Vector3)matrix.GetColumn(<span class="hljs-number">2</span>).normalized)<br>            &#123;<br>                scale.x *= <span class="hljs-number">-1</span>;<br>            &#125;<br>            <span class="hljs-keyword">return</span> scale;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编写加载的代码：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> UnityEngine.UI;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.Scripts</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">FlyWeightInstanceGeneration</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        [<span class="hljs-meta">SerializeField</span>]<br>        <span class="hljs-keyword">public</span> SceneObjectGroup sceneObjectGroup;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> batchCount = <span class="hljs-number">10</span>; <span class="hljs-comment">//合批数量</span><br><br><br>        <span class="hljs-keyword">private</span> GameObject _Root; <span class="hljs-comment">//父节点</span><br><br><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span><br>        &#123;<br>            StartCoroutine(StartGenerate());<br>        &#125;<br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 加载场景的协程</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> IEnumerator <span class="hljs-title">StartGenerate</span>()</span><br>        &#123;<br>            <span class="hljs-built_in">int</span> initCount = <span class="hljs-number">0</span>;<br>            <span class="hljs-built_in">int</span> totalCount = <span class="hljs-number">0</span>;<br><br>            <span class="hljs-keyword">if</span> (_Root != <span class="hljs-literal">null</span>)<br>            &#123;<br>                GameObject.Destroy(_Root);<br>            &#125;<br>            _Root = <span class="hljs-keyword">new</span> GameObject(<span class="hljs-string">&quot;root&quot;</span>);<br><br>            <span class="hljs-keyword">while</span> (initCount &lt; batchCount)<br>            &#123;<br>                initCount++;<br>                <span class="hljs-keyword">yield</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>                <span class="hljs-keyword">var</span> sceneObjects = sceneObjectGroup.SceneObjects[totalCount];<br>                <span class="hljs-keyword">var</span> go = <span class="hljs-keyword">new</span> GameObject(sceneObjects.name);<br><br>                MeshRenderer renderer = go.AddComponent&lt;MeshRenderer&gt;();<br>                MeshFilter filter = go.AddComponent&lt;MeshFilter&gt;();<br>                MeshCollider meshCollider = go.AddComponent&lt;MeshCollider&gt;();<br><br>                renderer.sharedMaterials = sceneObjects.flyweightData.materials;<br>                go.transform.rotation = sceneObjects.matrix.ExtractRotation();<br>                go.transform.position = sceneObjects.matrix.ExtractPosition();<br>                go.transform.localScale = sceneObjects.matrix.ExtractScale();<br>                go.transform.SetParent(_Root.transform, <span class="hljs-literal">true</span>);<br>                filter.mesh = sceneObjects.flyweightData.mesh;<br>                meshCollider.sharedMesh = sceneObjects.flyweightData.mesh;<br>                totalCount++;<br><br>                <span class="hljs-keyword">if</span> (totalCount &gt;= sceneObjectGroup.SceneObjects.Length) <span class="hljs-keyword">break</span>;<br><br>                <span class="hljs-keyword">if</span> (initCount == batchCount)initCount = <span class="hljs-number">0</span>;<br>                <br>            &#125;<br>        &#125;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>写一个编辑器面板的生成面板：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.Scripts</span><br>&#123;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span>用于创建场景元素资源的存储数据</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">FlyWeightSceneSaver</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编辑器及读取数据：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Collections.Generic;<br><span class="hljs-keyword">using</span> FlyWeightPattern.Scripts;<br><span class="hljs-keyword">using</span> UnityEditor;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">FlyWeightPattern.ScriptsEditor</span><br>&#123;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 创建编辑器面板</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    [<span class="hljs-meta">CustomEditor(typeof(FlyWeightSceneSaver))</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">FlyWeightSceneSaverEditor</span> : <span class="hljs-title">Editor</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnInspectorGUI</span>()</span><br>        &#123;<br>            FlyWeightSceneSaver saver = target <span class="hljs-keyword">as</span> FlyWeightSceneSaver;<br>            <span class="hljs-keyword">if</span> (GUILayout.Button(<span class="hljs-string">&quot;生成&quot;</span>))<br>            &#123;<br><br>                SceneObjectGroup sceneObjectGroup = ScriptableObject.CreateInstance&lt;SceneObjectGroup&gt;();<span class="hljs-comment">//创建数据</span><br>                MeshRenderer[] list = GameObject.FindObjectsOfType&lt;MeshRenderer&gt;(<span class="hljs-literal">true</span>);<br>                <span class="hljs-keyword">if</span> (list.Length == <span class="hljs-number">0</span>)<br>                &#123;<br>                    EditorUtility.DisplayDialog(<span class="hljs-string">&quot;Sorrry&quot;</span>, <span class="hljs-string">&quot;你没有选中任何包含预制体的物体&quot;</span>, <span class="hljs-string">&quot;重选&quot;</span>);<br>                    <span class="hljs-keyword">return</span>;<br>                &#125;<br>                List&lt;SceneObject&gt; sceneObjects = <span class="hljs-keyword">new</span> List&lt;SceneObject&gt;();<br>                <span class="hljs-keyword">foreach</span> (MeshRenderer meshRenderer <span class="hljs-keyword">in</span> list)<br>                &#123;<br>                    MeshFilter filter = meshRenderer.gameObject.GetComponent&lt;MeshFilter&gt;();<br>                    <span class="hljs-keyword">var</span> transform = meshRenderer.transform;<br>                    <span class="hljs-keyword">var</span> matrix = transform.localToWorldMatrix;<br>                    ObjectFlyweightData flyweightData = <span class="hljs-keyword">new</span> ObjectFlyweightData()<br>                    &#123;<br>                        materials = meshRenderer.sharedMaterials,<br>                        mesh = filter.sharedMesh,<br>                    &#125;;<br>                    sceneObjects.Add(<span class="hljs-keyword">new</span> SceneObject()<br>                    &#123;<br>                        flyweightData = flyweightData,<br>                        matrix = matrix,<br>                        name = meshRenderer.name,<br>                    &#125;);<br><br>                &#125;<br><br>                sceneObjectGroup.SceneObjects = sceneObjects.ToArray();<br>                AssetDatabase.CreateAsset(sceneObjectGroup, <span class="hljs-string">&quot;Assets/FlyWeightPattern/sceneObjGroup.asset&quot;</span>);<br>                AssetDatabase.Refresh();<br><br><br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>至此我们就完成拉！快快写到你的项目里面去试试吧！</p>
+
+      
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>武田晴海<br>
+        <strong>Link：</strong><a href="http://example.com/2022/08/31/%E5%88%A9%E7%94%A8%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;08&#x2F;31&#x2F;%E5%88%A9%E7%94%A8%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;08&#x2F;31&#x2F;%E5%88%A9%E7%94%A8%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Unity/">Unity</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Unity/" rel="tag">Unity</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD/" rel="tag">地图加载</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text">利用享元模式的地图加载</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="Search"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/justifiedGallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1666619174835"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+</body>
+
+</html>
