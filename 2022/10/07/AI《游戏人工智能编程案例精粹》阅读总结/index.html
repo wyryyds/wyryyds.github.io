@@ -18,7 +18,7 @@
 <meta property="og:description" content="游戏人工智能编程案例精粹个人总结整本书看下来，收获到的理论知识非常多，全书对一些案例的描述非常的生动，比喻也很有趣，代码是用C++写的，由于个人水平有限，对我来说还是稍微有点晦涩难懂，不过依然有着非常大的收获。感觉自己的记忆力一直是很差的那种，所以也决定以后对于所有阅读过的开发类的书籍都应该花点时间把书中对于那个时间段的我的最深刻印象的感悟写下来。 也许某些想法是错误的一己之见，还望海涵并纠正。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-10-07T09:11:53.325Z">
-<meta property="article:modified_time" content="2022-10-24T14:51:53.896Z">
+<meta property="article:modified_time" content="2022-10-25T13:57:59.996Z">
 <meta property="article:author" content="武田晴海">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="Unity">
@@ -30,13 +30,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1666673993100">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1666706341551">
     
-    <link rel="stylesheet" href="/css/style.css?v=1666673993100">
+    <link rel="stylesheet" href="/css/style.css?v=1666706341551">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1666673993100">
+            <link rel="stylesheet" href="/custom.css?v=1666706341551">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -370,6 +370,15 @@
 <h4 id="2-单例模式驱动状态机"><a href="#2-单例模式驱动状态机" class="headerlink" title="2.单例模式驱动状态机"></a>2.单例模式驱动状态机</h4><p>单例模式几乎是最常用也最简单的开发模式，利用它我们可以采取管理的策略非常方便的切换状态，他消除了状态每次改变时分配内存和释放内存的需要，如果你有很多的智能体共享一个复杂的FSM，这会为你带来极大的便捷，因为你可以随时随地地访问这一状态，当然这也会带来很多问题，单例的所有数据都是共享出去了的，假如A跟B物体共享了某个单例的C状态机，那对于C状态机而言，它就不应该保存每个物体的个人信息，比如说位置，旋转等等，因为对于A跟B来说，他们的PRS信息肯定是不尽相同的，那这样也就需要我们多次的进行外部数据的访问，这其实又是很不单例的做法，所以这种做法虽然方便，但是也要具体问题具体考量。</p>
 <h4 id="3-StateMachine"><a href="#3-StateMachine" class="headerlink" title="3.StateMachine"></a>3.StateMachine</h4><p>通过把所有与状态相关的数据和方法封装到一个StateMachine类里面可以使设计更加简洁，利用它委托管理当前状态，全局状态，ahead的状态。而一个AI所需要做的事情就是去拥有一个StateMachine类，并且实现更新状态的方法。</p>
 <h4 id="4-为FSM增加消息功能"><a href="#4-为FSM增加消息功能" class="headerlink" title="4.为FSM增加消息功能"></a>4.为FSM增加消息功能</h4><p>利用事件系统对FSM及其他模块进行驱动将会更大地提升游戏的精度。比如只狼中在打屑一郎的时候，会有一件很有意思的事情，主人公使用轻舟渡这个技能无论什么时候都会被百分比地格挡下来，因为这个技能是屑一郎的原创，设定就是不能伤害到他。用消息机制的眼光来看，当主人公使用这一技能时，我们就会通知到屑一郎，告诉他，你的对手用你的技能打你啦，你必须百分百接下来，然后屑一郎就会在心底冷哼一声，用我的技能对付我？真是不自量力！然后轻松格挡你的招式。这不仅会使AI做出非常个性化的事情，效率也是极高的。对于消息的发送跟管理，我们都可以在外部用一个上帝采取某种策略进行监听以及分发，甚至你可以用这种方式实现一些非常精妙的效果，比如玩家走过某棵大树或者在树下战斗，树叶会改变它的状态发出沙沙声等等效果。</p>
+<h3 id="自治移动体"><a href="#自治移动体" class="headerlink" title="自治移动体"></a>自治移动体</h3><p>在我博客的AI行为内容中大致进行了实现，这里也不再做过多的赘述。</p>
+<p>值得注意的一点是，组合使用操作行为时，我们需要考虑计算合力的最佳方法。</p>
+<h4 id="加权截断总和"><a href="#加权截断总和" class="headerlink" title="加权截断总和"></a>加权截断总和</h4><p>为每个行为乘上一个权重，将它们加在一起。这种方式最直观也最简单，但是有以下几个问题，每一个被激活的行为每帧都要计算，这是一件很昂贵的事情，而且很难调节权值，当许多行为组合到一起时，某一个行为的权值的改变都会对其他的行为差生影响，很容易发生奇怪的行为。</p>
+<h4 id="带优先级的加权截断累计"><a href="#带优先级的加权截断累计" class="headerlink" title="带优先级的加权截断累计"></a>带优先级的加权截断累计</h4><p>这是最常用的方式去计算合力，他在速度跟精确度之间做了很好的折衷，它会认为某些行为比其他行为是更重要的，并且确保操控力不会超过预期的最大值。它将迭代每一个激活的方法，计算力的总和。</p>
+<h4 id="带优先级的抖动"><a href="#带优先级的抖动" class="headerlink" title="带优先级的抖动"></a>带优先级的抖动</h4><p>该方法检查第一优先级是否将在这一步模拟中求值，这取决于预设的概率，如果求值且结果非0，这个方法会返回计算后的力而不再考虑其他激活行为，否则考虑下一个优先级的行为，以此类推。它的计算量将会降低，但是会损失一些精度。</p>
+<h3 id="应对大量需要管理的游戏物体：空间划分思想"><a href="#应对大量需要管理的游戏物体：空间划分思想" class="headerlink" title="应对大量需要管理的游戏物体：空间划分思想"></a>应对大量需要管理的游戏物体：空间划分思想</h3><p>这有很多经典的划分方式：BSP树，二维的四叉树，三维的八叉树。我也有在尝试去实现四叉树，这里就先点到为止，等后面写了些自己的东西之后会再详细地说明。</p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>至此大概博客对书中不到三分之一的内容进行了概括与笔记。</p>
+<p>整本书虽然已经历史悠久了，但是书中的内容非常的厚实并且不过时。除了对游戏AI做了大篇幅的描写外，书中也对体育游戏的模拟，AI的智能足球进行了非常详细的叙述。此外也对图论相关的概念及算法做了普及，包括非常常见的迪杰斯特拉算法跟A*算法。对Lua也进行了探讨。如果有缘你能看到这里，我希望能将后面更多的内容交给你自己去书中阅读。可以说这是一本内容非常丰富的优秀书籍，非常感谢前辈们愿意将这样的知识总结，也致敬那些在游戏开发道路上做出过伟大探索的实践家以及所有努力的游戏客户端程序员。</p>
+<p>希望若干年后的自己，也能拥有不俗的技术力，做出一些值得青睐的作品。The End。</p>
 
       
   </article>
@@ -413,7 +422,7 @@
                               <button class="mdui-fab catalog" style="overflow:unset;">
                                   <i class="nexmoefont icon-i-catalog"></i>
                                   <div class="nexmoe-toc">
-                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B%E7%B2%BE%E7%B2%B9%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">游戏人工智能编程案例精粹个人总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FSM"><span class="toc-number">1.1.</span> <span class="toc-text">FSM</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%9F%BA%E7%B1%BB"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">1.状态机的基类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E9%A9%B1%E5%8A%A8%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">2.单例模式驱动状态机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-StateMachine"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">3.StateMachine</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E4%B8%BAFSM%E5%A2%9E%E5%8A%A0%E6%B6%88%E6%81%AF%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.0.4.</span> <span class="toc-text">4.为FSM增加消息功能</span></a></li></ol></li></ol></li></ol></li></ol>
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B%E7%B2%BE%E7%B2%B9%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">游戏人工智能编程案例精粹个人总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FSM"><span class="toc-number">1.1.</span> <span class="toc-text">FSM</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%9F%BA%E7%B1%BB"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">1.状态机的基类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E9%A9%B1%E5%8A%A8%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">2.单例模式驱动状态机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-StateMachine"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">3.StateMachine</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E4%B8%BAFSM%E5%A2%9E%E5%8A%A0%E6%B6%88%E6%81%AF%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.0.4.</span> <span class="toc-text">4.为FSM增加消息功能</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E6%B2%BB%E7%A7%BB%E5%8A%A8%E4%BD%93"><span class="toc-number">1.1.1.</span> <span class="toc-text">自治移动体</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E6%9D%83%E6%88%AA%E6%96%AD%E6%80%BB%E5%92%8C"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">加权截断总和</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%E4%BC%98%E5%85%88%E7%BA%A7%E7%9A%84%E5%8A%A0%E6%9D%83%E6%88%AA%E6%96%AD%E7%B4%AF%E8%AE%A1"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">带优先级的加权截断累计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%E4%BC%98%E5%85%88%E7%BA%A7%E7%9A%84%E6%8A%96%E5%8A%A8"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">带优先级的抖动</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E5%AF%B9%E5%A4%A7%E9%87%8F%E9%9C%80%E8%A6%81%E7%AE%A1%E7%90%86%E7%9A%84%E6%B8%B8%E6%88%8F%E7%89%A9%E4%BD%93%EF%BC%9A%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86%E6%80%9D%E6%83%B3"><span class="toc-number">1.1.2.</span> <span class="toc-text">应对大量需要管理的游戏物体：空间划分思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">1.1.3.</span> <span class="toc-text">写在最后</span></a></li></ol></li></ol></li></ol>
                                   </div>
                               </button>
                           
@@ -452,7 +461,7 @@
 
  
 
-<script async src="/js/app.js?v=1666673993108"></script>
+<script async src="/js/app.js?v=1666706341553"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
