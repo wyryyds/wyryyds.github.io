@@ -19,7 +19,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://pic1.imgdb.cn/item/635764bd16f2c2beb1365c28.png">
 <meta property="article:published_time" content="2022-10-08T08:10:00.221Z">
-<meta property="article:modified_time" content="2022-10-25T04:23:10.866Z">
+<meta property="article:modified_time" content="2022-10-25T04:25:58.529Z">
 <meta property="article:author" content="武田晴海">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="Unity">
@@ -31,13 +31,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1666671881732">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1666671967225">
     
-    <link rel="stylesheet" href="/css/style.css?v=1666671881732">
+    <link rel="stylesheet" href="/css/style.css?v=1666671967225">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1666671881732">
+            <link rel="stylesheet" href="/custom.css?v=1666671967225">
         
     
 <meta name="generator" content="Hexo 5.4.2"></head>
@@ -374,7 +374,7 @@
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> Vector3 <span class="hljs-title">Force</span>()</span><br>    &#123;<br>        Vector3 toTarget = target.transform.position - transform.position;<br><br>        <span class="hljs-built_in">float</span> lookAheadTime = toTarget.magnitude / (maxSpeed + target.GetComponent&lt;Vehicle&gt;().Velocity.magnitude);<br><br>        <span class="hljs-comment">//预期速度</span><br>        desireVelocity = (transform.position - (target.transform.position + target.GetComponent&lt;Vehicle&gt;().Velocity * lookAheadTime).normalized * maxSpeed);<br><br>        <span class="hljs-keyword">return</span> desireVelocity - vehicle.Velocity;<br><br>    &#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="3-随机徘徊"><a href="#3-随机徘徊" class="headerlink" title="3.随机徘徊"></a>3.随机徘徊</h4><p>随机徘徊是非常常见的AI行为，比如巡逻的士兵，吃草的牛羊，地上跳来跳去的小鸟随着角色的到来扑地飞向天空。随机能体现出一种生动的意识性，让很多AI看起来更加真实合理。对于wander的更多阐述跟实现我会非常推荐你去看《游戏人工智能编程案例精粹》这本书。在z-library上下的这本书的PDF就是很糊。</p>
-<p><img src="https://pic1.imgdb.cn/item/635764bd16f2c2beb1365c28.png"></p>
+<p><img data-fancybox="gallery" src="https://pic1.imgdb.cn/item/635764bd16f2c2beb1365c28.png" alt="AI" data-caption="AI" loading="lazy"></p>
 <p>如果是三维空间的wander，需要改变的是限制wander的目标是一个球体而不是圆周。</p>
 <p>核心代码：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 徘徊半径</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> wanderRadius;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 徘徊距离</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> wanderDistance;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 每秒加到目标的随即位移的最大值。</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> wanderJitter;<br></code></pre></td></tr></table></figure>
@@ -466,7 +466,7 @@
 
  
 
-<script async src="/js/app.js?v=1666671881746"></script>
+<script async src="/js/app.js?v=1666671967239"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
