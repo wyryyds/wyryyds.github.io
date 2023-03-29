@@ -21,11 +21,11 @@
     <link rel="shortcut icon" href="https://pic.imgdb.cn/item/6356a27a16f2c2beb1710098.jpg" type="image/x-icon" />
     <meta property="og:type" content="website">
 <meta property="og:title" content="donate">
-<meta property="og:url" content="http://example.com/archive.thml">
+<meta property="og:url" content="http://example.com/donate.thml">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-03-29T10:21:43.251Z">
-<meta property="article:modified_time" content="2023-03-29T10:21:43.247Z">
+<meta property="article:published_time" content="2023-03-29T10:22:24.364Z">
+<meta property="article:modified_time" content="2023-03-29T10:22:24.364Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
     
@@ -33,13 +33,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1680085309447">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1680085350264">
     
-    <link rel="stylesheet" href="/css/style.css?v=1680085309447">
+    <link rel="stylesheet" href="/css/style.css?v=1680085350264">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1680085309447">
+            <link rel="stylesheet" href="/custom.css?v=1680085350264">
         
     
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -341,7 +341,7 @@
       
     <div class="nexmoe-post-copyright">
         <strong>Author：</strong>John Doe<br>
-        <strong>Link：</strong><a href="http://example.com/archive.thml" title="http:&#x2F;&#x2F;example.com&#x2F;archive.thml" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;archive.thml</a><br>
+        <strong>Link：</strong><a href="http://example.com/donate.thml" title="http:&#x2F;&#x2F;example.com&#x2F;donate.thml" target="_blank" rel="noopener">http:&#x2F;&#x2F;example.com&#x2F;donate.thml</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
 
@@ -357,7 +357,7 @@
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1680085309438"></script>
+    <script async src="/js/copy-codeblock.js?v=1680085350256"></script>
   
 
   
@@ -407,7 +407,7 @@
 
  
 
-<script async src="/js/app.js?v=1680085309448"></script>
+<script async src="/js/app.js?v=1680085350265"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
