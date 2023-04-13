@@ -4,7 +4,7 @@
 
 <head>
     
-    <title>Archive：2023/3 - 武田晴海</title>
+    <title>对C#与C++中事件类型的解析 - 武田晴海</title>
     <meta charset="UTF-8">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -19,25 +19,31 @@
 </script>
 
     <link rel="shortcut icon" href="https://pic.imgdb.cn/item/6356a27a16f2c2beb1710098.jpg" type="image/x-icon" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="武田晴海">
-<meta property="og:url" content="https://wyryyds.github.io/archives/2023/03/index.html">
+    <meta name="description" content="在对C++项目的学习中，也是慢慢接触到了C++中的事件机制。之前最早的博客里面也是有我大一曾经对C#中的委托与事件做的笔记，现在把两者重新放在一起进行比较讨论。 C#中的Event在提到C#中的Event时，有必要先认识一下C#的委托(delegate)： C#中的Delegate在C#中，委托是一种类，它包装了一个或者多个方法，并且允许以类似函数调用的方式来调用这些方法，类似C++中的函数指针。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对C#与C++中事件类型的解析">
+<meta property="og:url" content="https://wyryyds.github.io/2023/04/13/%E5%AF%B9C#%E4%B8%8EC++%E4%B8%AD%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="武田晴海">
+<meta property="og:description" content="在对C++项目的学习中，也是慢慢接触到了C++中的事件机制。之前最早的博客里面也是有我大一曾经对C#中的委托与事件做的笔记，现在把两者重新放在一起进行比较讨论。 C#中的Event在提到C#中的Event时，有必要先认识一下C#的委托(delegate)： C#中的Delegate在C#中，委托是一种类，它包装了一个或者多个方法，并且允许以类似函数调用的方式来调用这些方法，类似C++中的函数指针。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-13T07:03:28.131Z">
+<meta property="article:modified_time" content="2023-04-13T07:04:24.635Z">
 <meta property="article:author" content="武田晴海">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
     
 <link rel="stylesheet" href="/lib/fancybox/fancybox.css">
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681369652148">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681369652135">
     
-    <link rel="stylesheet" href="/css/style.css?v=1681369652148">
+    <link rel="stylesheet" href="/css/style.css?v=1681369652135">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1681369652148">
+            <link rel="stylesheet" href="/custom.css?v=1681369652135">
         
     
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -331,23 +337,21 @@
     </div>
     <div id="nexmoe-content">
         <div class="nexmoe-primary">
-            <section class="nexmoe-posts">
-    
-    <div class="nexmoe-post">
-        <a href="/2023/03/29/2023%E6%98%A5%E6%8B%9B%E6%80%BB%E7%BB%93/">
-            
-                <div class="nexmoe-post-cover mdui-ripple absolute" style="padding-top: 50%;"> 
-                    <img src="https://pic.imgdb.cn/item/635762a216f2c2beb134021b.jpg" alt="2023春招总结" loading="lazy">
-                    <h1>2023春招总结</h1>
-                </div>
-            
-        </a>
+            <div class="nexmoe-post">
 
-        <div class="nexmoe-post-meta">
+  <article>
+    
+        <div class="nexmoe-post-cover absolute" style="padding-top: 50%;"> 
+            <img src="https://pic.imgdb.cn/item/6356a59e16f2c2beb177fbf5.jpg" alt="对C#与C++中事件类型的解析" loading="lazy">
+            <h1>对C#与C++中事件类型的解析</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta">
     <div class="nexmoe-rainbow">
-        <a class="nexmoefont icon-calendar-fill">2023年03月29日</a>
+        <a class="nexmoefont icon-calendar-fill">2023年04月13日</a>
         
-            <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E6%B1%82%E8%81%8C/">求职</a>
+            <a class="nexmoefont icon-appstore-fill -link" href="/categories/C/">C++</a><a class="nexmoefont icon-appstore-fill -link" href="/categories/C/C/">C#</a>
         
         
     </div>
@@ -358,13 +362,62 @@
     
 </div>
 
-        <article>
-            
-        </article>
-    </div>
-    
-</section>
+    <p>在对C++项目的学习中，也是慢慢接触到了C++中的事件机制。之前最早的博客里面也是有我大一曾经对C#中的委托与事件做的笔记，现在把两者重新放在一起进行比较讨论。</p>
+<h3 id="C-中的Event"><a href="#C-中的Event" class="headerlink" title="C#中的Event"></a>C#中的Event</h3><p>在提到C#中的Event时，有必要先认识一下C#的委托(delegate)：</p>
+<h4 id="C-中的Delegate"><a href="#C-中的Delegate" class="headerlink" title="C#中的Delegate"></a>C#中的Delegate</h4><p>在C#中，委托是一种类，它包装了一个或者多个方法，并且允许以类似函数调用的方式来调用这些方法，类似C++中的函数指针。下面是委托的几种<strong>显式</strong>声明格式：</p>
+<p><strong>1.不含参数列表，使用void作为返回类型的委托声明格式：</strong></p>
+<p><code>public delegate void MyDelegate();</code></p>
+<p><strong>2.接受一个int类型参数，使用void作为返回类型的委托声明格式</strong></p>
+<p><code>public delegate void MyDelegate(int param);</code></p>
+<p><strong>3.接受一个int类型与一个string类型的参数，使用int作为返回类型的委托声明格式：</strong></p>
+<p><code>public delegate int MyDelegate(int param1,string param2);</code></p>
+<p><strong>4.接受一个泛型参数，返回值为泛型的委托声明格式：</strong></p>
+<p><code>public delegate TResult MyDelegate&lt;T,TResult&gt;(T param);</code></p>
+<p>委托的声明方式远不止以上几种，他跟函数的声明一样的灵活，只需要加上<code>delegate</code>关键词即可。C#也内置了几种泛型委托提供了更简洁的委托声明方式，我们可以使用<code>Action</code>与<code>Func</code>简化上面的几种声明格式：</p>
+<p><strong>1.不含参数列表，使用void作为返回类型的委托声明格式：</strong></p>
+<p><code>public Action MyDelegate;</code></p>
+<p><strong>2.接受一个int类型参数，使用void作为返回类型的委托声明格式</strong></p>
+<p><code>public Action&lt;int&gt; MyDelegate;</code></p>
+<p><strong>3.接受一个int类型与一个string类型的参数，使用int作为返回类型的委托声明格式：</strong></p>
+<p><code>public Func&lt;int,string,int&gt; MyDelegate;</code></p>
+<p><strong>4.接受一个泛型参数，返回值为泛型的委托声明格式：</strong></p>
+<p><code>public Func&lt;T,TResult&gt; MyDelegate;</code></p>
+<p>C#规定，<code>Action</code>用来声明无返回值类型委托，<code>Func</code>用来声明有返回值委托。在实际开发中，我们都应该尽量使用这种方式来对委托进行声明，他们的优点显而易见，一是避免了显式委托声明的繁琐，二是对委托是否具有返回值进行了界定，非常的清晰。</p>
 
+    
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>武田晴海<br>
+        <strong>Link：</strong><a href="https://wyryyds.github.io/2023/04/13/%E5%AF%B9C#%E4%B8%8EC++%E4%B8%AD%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A7%A3%E6%9E%90/" title="https:&#x2F;&#x2F;wyryyds.github.io&#x2F;2023&#x2F;04&#x2F;13&#x2F;%E5%AF%B9C#%E4%B8%8EC++%E4%B8%AD%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A7%A3%E6%9E%90&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;wyryyds.github.io&#x2F;2023&#x2F;04&#x2F;13&#x2F;%E5%AF%B9C#%E4%B8%8EC++%E4%B8%AD%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A7%A3%E6%9E%90&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+   
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/C/" rel="tag">C#</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/C/" rel="tag">C++</a>
+    
+</div>
+  
+  
+    <script async src="/js/copy-codeblock.js?v=1681369652117"></script>
+  
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
             <div class="nexmoe-post-right">
               <div class="nexmoe-fixed">
                   <div class="nexmoe-tool"> 
@@ -372,6 +425,13 @@
                       
                         
                           
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E4%B8%AD%E7%9A%84Event"><span class="toc-number">1.</span> <span class="toc-text">C#中的Event</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E4%B8%AD%E7%9A%84Delegate"><span class="toc-number">1.1.</span> <span class="toc-text">C#中的Delegate</span></a></li></ol></li></ol>
+                                  </div>
+                              </button>
                           
                           
                       
@@ -406,7 +466,7 @@
 
  
 
-<script async src="/js/app.js?v=1681369652149"></script>
+<script async src="/js/app.js?v=1681369652139"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
