@@ -27,7 +27,7 @@
 <meta property="og:description" content="在对C++项目的学习中，也是慢慢接触到了C++中的事件机制。之前最早的博客里面也是有我大一曾经对C#中的委托与事件做的笔记，现在把两者重新放在一起进行比较讨论。 C#中的Event在提到C#中的Event时，有必要先认识一下C#的委托(delegate)： C#中的Delegate在C#中，委托是一种类，它包装了一个或者多个方法，并且允许以类似函数调用的方式来调用这些方法，类似C++中的函数指针。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-04-13T07:21:11.150Z">
-<meta property="article:modified_time" content="2023-04-13T07:44:55.134Z">
+<meta property="article:modified_time" content="2023-04-13T09:54:09.691Z">
 <meta property="article:author" content="武田晴海">
 <meta property="article:tag" content="C#">
 <meta property="article:tag" content="C++">
@@ -37,13 +37,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681372257951">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681379669093">
     
-    <link rel="stylesheet" href="/css/style.css?v=1681372257951">
+    <link rel="stylesheet" href="/css/style.css?v=1681379669093">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1681372257951">
+            <link rel="stylesheet" href="/custom.css?v=1681379669093">
         
     
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -365,26 +365,51 @@
     <p>在对C++项目的学习中，也是慢慢接触到了C++中的事件机制。之前最早的博客里面也是有我大一曾经对C#中的委托与事件做的笔记，现在把两者重新放在一起进行比较讨论。</p>
 <h3 id="C-中的Event"><a href="#C-中的Event" class="headerlink" title="C#中的Event"></a>C#中的Event</h3><p>在提到C#中的Event时，有必要先认识一下C#的委托(delegate)：</p>
 <h4 id="C-中的Delegate"><a href="#C-中的Delegate" class="headerlink" title="C#中的Delegate"></a>C#中的Delegate</h4><p>在C#中，委托是一种类，它包装了一个或者多个方法，并且允许以类似函数调用的方式来调用这些方法，类似C++中的函数指针。下面是委托的几种<strong>显式</strong>声明格式：</p>
+<p><strong>1.不含参数列表，使用void作为返回类型的委托定义与声明格式：</strong></p>
+<p><code>public delegate void MyDelegate1();</code></p>
+<p><code>public MyDelegate1 handler1</code></p>
+<p><strong>2.接受一个int类型参数，使用void作为返回类型的委托定义与声明格式</strong></p>
+<p><code>public delegate void MyDelegate2(int param);</code></p>
+<p><code>public MyDelegate2 handler2</code></p>
+<p><strong>3.接受一个int类型与一个string类型的参数，使用int作为返回类型的委托定义与声明格式：</strong></p>
+<p><code>public delegate int MyDelegate3(int param1,string param2);</code></p>
+<p><code>public MyDelegate3 handler3</code></p>
+<p><strong>4.接受两个泛型参数，返回值为泛型的委托定义与声明格式：</strong></p>
+<p><code>public delegate TResult MyDelegate4&lt;in T1, in T2, out TResult&gt;(T1 param1, T2 param2);</code></p>
+<p><code>public MyDelegate4&lt;int,string,int&gt; handler4</code></p>
+<p>委托的声明方式远不止以上几种，他跟函数的声明一样的灵活，只需要加上<code>delegate</code>关键词即可。C#也内置了几种泛型委托提供了更简洁的委托声明方式，我们可以使用<code>Action</code>与<code>Func</code>简化上面的几种声明格式，其中第四种就是<code>Func</code>的一种定义：</p>
 <p><strong>1.不含参数列表，使用void作为返回类型的委托声明格式：</strong></p>
-<p><code>public delegate void MyDelegate();</code></p>
+<p><code>public Action handler1;</code></p>
 <p><strong>2.接受一个int类型参数，使用void作为返回类型的委托声明格式</strong></p>
-<p><code>public delegate void MyDelegate(int param);</code></p>
+<p><code>public Action&lt;int&gt; handler2;</code></p>
 <p><strong>3.接受一个int类型与一个string类型的参数，使用int作为返回类型的委托声明格式：</strong></p>
-<p><code>public delegate int MyDelegate(int param1,string param2);</code></p>
-<p><strong>4.接受一个泛型参数，返回值为泛型的委托声明格式：</strong></p>
-<p><code>public delegate TResult MyDelegate&lt;T,TResult&gt;(T param);</code></p>
-<p>委托的声明方式远不止以上几种，他跟函数的声明一样的灵活，只需要加上<code>delegate</code>关键词即可。C#也内置了几种泛型委托提供了更简洁的委托声明方式，我们可以使用<code>Action</code>与<code>Func</code>简化上面的几种声明格式：</p>
-<p><strong>1.不含参数列表，使用void作为返回类型的委托声明格式：</strong></p>
-<p><code>public Action MyDelegate1;</code></p>
-<p><strong>2.接受一个int类型参数，使用void作为返回类型的委托声明格式</strong></p>
-<p><code>public Action&lt;int&gt; MyDelegate2;</code></p>
-<p><strong>3.接受一个int类型与一个string类型的参数，使用int作为返回类型的委托声明格式：</strong></p>
-<p><code>public Func&lt;int,string,int&gt; MyDelegate3;</code></p>
-<p><strong>4.接受一个泛型参数，返回值为泛型的委托声明格式：</strong></p>
-<p><code>public Func&lt;T,TResult&gt; MyDelegate4;</code></p>
+<p><code>public Func&lt;int,string,int&gt; handler3;</code></p>
+<p><strong>4.接受两个泛型参数，返回值为泛型的委托声明格式：</strong></p>
+<p><code>public delegate TResult Func&lt;in T1, in T2, out TResult&gt;(T1 param1,T2 param2);</code></p>
+<p><code>public Func&lt;int,string,int&gt; handler4;</code></p>
 <p>C#规定，<code>Action</code>用来声明无返回值类型委托，<code>Func</code>用来声明有返回值委托。在实际开发中，我们都应该尽量使用这种方式来对委托进行声明，他们的优点显而易见，一是避免了显式委托声明的繁琐，二是对委托是否具有返回值进行了界定，非常的清晰。</p>
-<p>对上面四种情况的委托进行使用：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//声明委托</span><br><span class="hljs-keyword">public</span> Action MyDelegate;<br><span class="hljs-comment">//无参数，void返回类型的函数声明</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConsoleString</span>()</span><br>&#123;<br>    Console.Writeline(<span class="hljs-string">&quot;调用MyDelegate&quot;</span>);<br>&#125;<br><span class="hljs-comment">//将方法添加到委托中。</span><br>MyDelegate+=ConsoleString;<br><span class="hljs-comment">//调用委托</span><br><span class="hljs-comment">//MyDelegate();</span><br><span class="hljs-comment">//显式调用委托</span><br>MyDelegate.Invoke();<br><br><span class="hljs-comment">//输出</span><br>调用MyDelegate<br></code></pre></td></tr></table></figure>
+<p>对上面第一种情况的委托进行使用：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//声明委托</span><br><span class="hljs-keyword">public</span> Action handler1;<br><br><span class="hljs-comment">//无参数，void返回类型的函数声明</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConsoleString</span>()</span><br>&#123;<br>    Console.Writeline(<span class="hljs-string">&quot;调用handler1&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">//将方法添加到委托中。</span><br>handler1 += ConsoleString;<br><br><span class="hljs-comment">//调用委托</span><br><span class="hljs-comment">//handler1();</span><br><span class="hljs-comment">//显式调用委托</span><br>handler1?.Invoke();<br><br><span class="hljs-comment">//输出:</span><br>调用handler1<br></code></pre></td></tr></table></figure>
+
+<p>从对于第一种委托的声明与使用，我们可以发现似乎委托就是函数指针，调用该委托等价于调用该函数方法。在单播的情况下确实是这样，考虑下面这种情况：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//声明委托</span><br><span class="hljs-keyword">public</span> Action handler1;<br><br><span class="hljs-comment">//无参数，void返回类型的函数声明</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConsoleString</span>()</span><br>&#123;<br>    Console.Writeline(<span class="hljs-string">&quot;调用handler1&quot;</span>);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConsoleNumber</span>()</span><br>&#123;<br>    Console.WriteLine(<span class="hljs-number">114514</span>);<br>&#125;<br><br><span class="hljs-comment">//将方法添加到委托中。</span><br>handler1 += ConsoleString;<br>handler1 += ConsoleNumber;<br><br><span class="hljs-comment">//显式调用委托</span><br>handler1?.Invoke();<br><br><span class="hljs-comment">//输出:</span><br>调用handler1<br><span class="hljs-number">114514</span><br></code></pre></td></tr></table></figure>
+
+<p>这就是委托的多播，我们可以发现委托会调用所有已添加的方法，它并不是对函数指针的封装，而应该是对函数指针数组的封装，对于某个委托的执行，我们会遍历它的函数指针数组，对每个函数都进行一遍调用。我们可以使用<code>lambda表达式</code>来简化这两个函数的声明：</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-comment">//声明委托</span><br>public Action handler1;<br><br><span class="hljs-comment">//利用lambda表达式将方法添加到委托中。</span><br>handler1 += <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123; <span class="hljs-built_in">Console</span>.WriteLine(<span class="hljs-string">&quot;调用MyDelegate1&quot;</span>); &#125;;<br>handler1 += <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123; <span class="hljs-built_in">Console</span>.WriteLine(<span class="hljs-number">114514</span>); &#125;;<br><br><span class="hljs-comment">//显式调用委托</span><br>handler1?.Invoke();<br><br><span class="hljs-comment">//输出:</span><br>调用handler1<br><span class="hljs-number">114514</span><br></code></pre></td></tr></table></figure>
+
+<p>再来看一下有返回值类型的<code>Func</code>委托,对于我们定义的第三种委托进行使用，同样采取<code>lambda表达式</code>简化函数声明过程：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c#"> <span class="hljs-keyword">public</span> Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">int</span>&gt; handler3;<br><br> <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> x = <span class="hljs-number">0</span>;<br><br> handler3 += (param1, param2) =&gt; <br> &#123; <br>     <span class="hljs-built_in">int</span> sum = param1 + x++;<br>     Console.WriteLine(param2 + <span class="hljs-string">&quot;:&quot;</span> + sum);<br>     <span class="hljs-keyword">return</span> sum;<br> &#125;;<br>  <span class="hljs-comment">//在只添加一个函数的情况下调用</span><br>  handler3?.Invoke(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;填入的数字加上x后是&quot;</span>);<br><br>  handler3 += (param1, param2) =&gt; <br>  &#123; <br>     <span class="hljs-built_in">int</span> sum = param1 + x++;<br>     Console.WriteLine(param2 + <span class="hljs-string">&quot;:&quot;</span> + sum);<br>     <span class="hljs-keyword">return</span> sum;<br>  &#125;;<br>  <span class="hljs-comment">//在添加了两个一模一样的函数的情况下调用</span><br>  <span class="hljs-keyword">var</span> t = handler3?.Invoke(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;填入的数字加上x后是&quot;</span>);<br>  <span class="hljs-comment">//输出返回值</span><br>  Console.WriteLine(<span class="hljs-string">&quot;最终返回值是：&quot;</span>+t);<br><br><span class="hljs-comment">//全部输出:</span><br>填入的数字加上x后是:<span class="hljs-number">0</span><br>填入的数字加上x后是:<span class="hljs-number">1</span><br>填入的数字加上x后是:<span class="hljs-number">2</span><br>最终返回值是：<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<p>对于这个<code>Func</code>委托，我们添加了两个一模一样的方法，即对于同一个方法添加两次。我们发现在添加了这个方法两次的时候，我们执行委托将会执行两遍这个函数，然而委托的返回值并不是一个函数返回值列表<code>int[]</code>，而仅仅是一个int，从这里我们可以知道，<strong>对于一个有返回值的委托，它的最终返回值将会是最后一次调用的方法的返回值</strong>。最后我们来讲一下委托的缺点：</p>
+<p><strong>委托的缺点：</strong></p>
+<ul>
+<li>委托会造成内存泄漏：委托会引用一个方法，如果这个方法是一个实例方法（非静态方法）的话，那么这个方法必须隶属于一个对象，拿一个委托引用这个方法，那么这个对象必须存在在内存中，即便没有其他引用变量引用这个对象了，这个对象的内存也不能被释放，因为一旦释放，内存就不能再间接调用对象的方法了。</li>
+<li>多播委托同样在维护上存在一定的困难性，容易导致所有的方法重置。我们在上面所有的例子中给委托添加方法都是使用的<code>+=</code>，但是委托可以使用<code>=</code>赋值，一旦使用了等号赋值，委托之前添加的所有函数将会被清空，也就是会从多播变成单播，并且不会有任何的报错，而如果大项目中出现了这样的小错误，排查起来也是需要费点功夫的。</li>
+<li>嵌套调用可读性差</li>
+</ul>
+<p>讲到这里，C#中的委托差不多就讲完了，那什么又是C#中的事件呢，委托看起来已经很已经很方便了，为什么还要事件呢？</p>
+<h4 id="C-中的Event-1"><a href="#C-中的Event-1" class="headerlink" title="C#中的Event"></a>C#中的Event</h4><p><strong>事件的本质就是委托字段的包装器</strong>，声明的关键词为event。对于显式声明的委托，事件的声明方式如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//定义一个不含参数列表，使用void作为返回类型的委托</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">MyDelegate</span>()</span>;<br><span class="hljs-comment">//声明该委托的字段</span><br><span class="hljs-keyword">public</span> MyDelegate1 handler;<br><span class="hljs-comment">//声明该委托类型的事件</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">event</span> MyDelegate1 eventArgs;<br></code></pre></td></tr></table></figure>
 
 
     
@@ -412,7 +437,7 @@
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1681372257933"></script>
+    <script async src="/js/copy-codeblock.js?v=1681379669079"></script>
   
 
   
@@ -432,7 +457,7 @@
                               <button class="mdui-fab catalog" style="overflow:unset;">
                                   <i class="nexmoefont icon-i-catalog"></i>
                                   <div class="nexmoe-toc">
-                                      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E4%B8%AD%E7%9A%84Event"><span class="toc-number">1.</span> <span class="toc-text">C#中的Event</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E4%B8%AD%E7%9A%84Delegate"><span class="toc-number">1.1.</span> <span class="toc-text">C#中的Delegate</span></a></li></ol></li></ol>
+                                      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E4%B8%AD%E7%9A%84Event"><span class="toc-number">1.</span> <span class="toc-text">C#中的Event</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E4%B8%AD%E7%9A%84Delegate"><span class="toc-number">1.1.</span> <span class="toc-text">C#中的Delegate</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E4%B8%AD%E7%9A%84Event-1"><span class="toc-number">1.2.</span> <span class="toc-text">C#中的Event</span></a></li></ol></li></ol>
                                   </div>
                               </button>
                           
@@ -469,7 +494,7 @@
 
  
 
-<script async src="/js/app.js?v=1681372257954"></script>
+<script async src="/js/app.js?v=1681379669099"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
