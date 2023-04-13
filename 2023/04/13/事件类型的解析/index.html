@@ -27,7 +27,7 @@
 <meta property="og:description" content="在对C++项目的学习中，也是慢慢接触到了C++中的事件机制。之前最早的博客里面也是有我大一曾经对C#中的委托与事件做的笔记，现在把两者重新放在一起进行比较讨论。 C#中的Event在提到C#中的Event时，有必要先认识一下C#的委托(delegate)： C#中的Delegate在C#中，委托是一种类，它包装了一个或者多个方法，并且允许以类似函数调用的方式来调用这些方法，类似C++中的函数指针。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-04-13T07:21:11.150Z">
-<meta property="article:modified_time" content="2023-04-13T07:22:12.562Z">
+<meta property="article:modified_time" content="2023-04-13T07:44:55.134Z">
 <meta property="article:author" content="武田晴海">
 <meta property="article:tag" content="C#">
 <meta property="article:tag" content="C++">
@@ -37,13 +37,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681370959537">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681372080436">
     
-    <link rel="stylesheet" href="/css/style.css?v=1681370959537">
+    <link rel="stylesheet" href="/css/style.css?v=1681372080436">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1681370959537">
+            <link rel="stylesheet" href="/custom.css?v=1681372080436">
         
     
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -375,14 +375,32 @@
 <p><code>public delegate TResult MyDelegate&lt;T,TResult&gt;(T param);</code></p>
 <p>委托的声明方式远不止以上几种，他跟函数的声明一样的灵活，只需要加上<code>delegate</code>关键词即可。C#也内置了几种泛型委托提供了更简洁的委托声明方式，我们可以使用<code>Action</code>与<code>Func</code>简化上面的几种声明格式：</p>
 <p><strong>1.不含参数列表，使用void作为返回类型的委托声明格式：</strong></p>
-<p><code>public Action MyDelegate;</code></p>
+<p><code>public Action MyDelegate1;</code></p>
 <p><strong>2.接受一个int类型参数，使用void作为返回类型的委托声明格式</strong></p>
-<p><code>public Action&lt;int&gt; MyDelegate;</code></p>
+<p><code>public Action&lt;int&gt; MyDelegate2;</code></p>
 <p><strong>3.接受一个int类型与一个string类型的参数，使用int作为返回类型的委托声明格式：</strong></p>
-<p><code>public Func&lt;int,string,int&gt; MyDelegate;</code></p>
+<p><code>public Func&lt;int,string,int&gt; MyDelegate3;</code></p>
 <p><strong>4.接受一个泛型参数，返回值为泛型的委托声明格式：</strong></p>
-<p><code>public Func&lt;T,TResult&gt; MyDelegate;</code></p>
+<p><code>public Func&lt;T,TResult&gt; MyDelegate4;</code></p>
 <p>C#规定，<code>Action</code>用来声明无返回值类型委托，<code>Func</code>用来声明有返回值委托。在实际开发中，我们都应该尽量使用这种方式来对委托进行声明，他们的优点显而易见，一是避免了显式委托声明的繁琐，二是对委托是否具有返回值进行了界定，非常的清晰。</p>
+<p>对上面四种情况的委托进行使用：</p>
+<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">&#x2F;&#x2F;声明委托
+public Action MyDelegate;
+&#x2F;&#x2F;无参数，void返回类型的函数声明
+public void ConsoleString()
+&#123;
+    Console.Writeline(&quot;调用MyDelegate&quot;);
+&#125;
+&#x2F;&#x2F;将方法添加到委托中。
+MyDelegate+&#x3D;ConsoleString;
+&#x2F;&#x2F;调用委托
+&#x2F;&#x2F;MyDelegate();
+&#x2F;&#x2F;显式调用委托
+MyDelegate.Invoke();
+
+&#x2F;&#x2F;输出
+调用MyDelegate<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     
   </article>
@@ -409,7 +427,7 @@
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1681370959519"></script>
+    <script async src="/js/copy-codeblock.js?v=1681372080418"></script>
   
 
   
@@ -466,7 +484,7 @@
 
  
 
-<script async src="/js/app.js?v=1681370959539"></script>
+<script async src="/js/app.js?v=1681372080439"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
