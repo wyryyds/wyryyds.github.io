@@ -37,13 +37,13 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681372080436">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1681372257951">
     
-    <link rel="stylesheet" href="/css/style.css?v=1681372080436">
+    <link rel="stylesheet" href="/css/style.css?v=1681372257951">
 
     
         
-            <link rel="stylesheet" href="/custom.css?v=1681372080436">
+            <link rel="stylesheet" href="/custom.css?v=1681372257951">
         
     
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -384,22 +384,7 @@
 <p><code>public Func&lt;T,TResult&gt; MyDelegate4;</code></p>
 <p>C#规定，<code>Action</code>用来声明无返回值类型委托，<code>Func</code>用来声明有返回值委托。在实际开发中，我们都应该尽量使用这种方式来对委托进行声明，他们的优点显而易见，一是避免了显式委托声明的繁琐，二是对委托是否具有返回值进行了界定，非常的清晰。</p>
 <p>对上面四种情况的委托进行使用：</p>
-<pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">&#x2F;&#x2F;声明委托
-public Action MyDelegate;
-&#x2F;&#x2F;无参数，void返回类型的函数声明
-public void ConsoleString()
-&#123;
-    Console.Writeline(&quot;调用MyDelegate&quot;);
-&#125;
-&#x2F;&#x2F;将方法添加到委托中。
-MyDelegate+&#x3D;ConsoleString;
-&#x2F;&#x2F;调用委托
-&#x2F;&#x2F;MyDelegate();
-&#x2F;&#x2F;显式调用委托
-MyDelegate.Invoke();
-
-&#x2F;&#x2F;输出
-调用MyDelegate<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//声明委托</span><br><span class="hljs-keyword">public</span> Action MyDelegate;<br><span class="hljs-comment">//无参数，void返回类型的函数声明</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConsoleString</span>()</span><br>&#123;<br>    Console.Writeline(<span class="hljs-string">&quot;调用MyDelegate&quot;</span>);<br>&#125;<br><span class="hljs-comment">//将方法添加到委托中。</span><br>MyDelegate+=ConsoleString;<br><span class="hljs-comment">//调用委托</span><br><span class="hljs-comment">//MyDelegate();</span><br><span class="hljs-comment">//显式调用委托</span><br>MyDelegate.Invoke();<br><br><span class="hljs-comment">//输出</span><br>调用MyDelegate<br></code></pre></td></tr></table></figure>
 
 
     
@@ -427,7 +412,7 @@ MyDelegate.Invoke();
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1681372080418"></script>
+    <script async src="/js/copy-codeblock.js?v=1681372257933"></script>
   
 
   
@@ -484,7 +469,7 @@ MyDelegate.Invoke();
 
  
 
-<script async src="/js/app.js?v=1681372080439"></script>
+<script async src="/js/app.js?v=1681372257954"></script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
 
